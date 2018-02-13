@@ -1,0 +1,76 @@
+\documentclass{jarticle}
+\usepackage[dvipdfmx]{graphicx}
+\graphicspath{{./image/}}
+\usepackage{here}
+\usepackage{listings,jlisting}
+
+\lstset{%
+  language={C},
+  basicstyle={\small},%
+  identifierstyle={\small},%
+  commentstyle={\small\itshape},%
+  keywordstyle={\small\bfseries},%
+  ndkeywordstyle={\small},%
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},%
+  numbers=left,%
+  xrightmargin=0zw,%
+  xleftmargin=3zw,%
+  numberstyle={\scriptsize},%
+  stepnumber=1,
+  numbersep=1zw,%
+  lineskip=-0.5ex%
+}
+\title{サウンドミキサー仕様書}
+\author{NPO法人ETy}
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{概要}
+\subsection{仕様書の目的}
+開発するアプリケーションについて，曖昧な点を無くし，完成イメージのズレを無くすことがこの企画書の目的である．
+\subsection{アプリケーションの概要}
+アプリケーション名はサウンドミキサーとする．サウンドミキサーで音楽を再生することで，リラックス効果が得られ，障がい児がパニック状態に陥らないよう予防することや，パニック状態に陥った児童を落ち着けることができるようにすることが目標である．
+
+\section{アプリケーションの全容}
+\subsection{開発目的}
+発達障害のある人がパニック状態に陥った場合，パニック状態から通常の状態に落ち着ける必要がある．特定の条件に従った音楽を聴かせることで，パニック状態から落ち着ける効果があることがわかっている為,落ち着かせることのできる音楽を再生するアプリケーションを作成し、どのような条件で落ち着けることができるのかを調べることが開発の目的である.
+\subsection{システムインターフェース(機能)}
+\begin{itemize}
+  \item 再生する音楽
+    \begin{itemize}
+      \item リラックス効果があるとされている音楽．
+      \item 健常者が落ち着きやすいとされているカラーノイズ.
+      \item 発達障害のある人が落ち着きやすいとされているカラーノイズ.．
+      \item 川のせせらぎや，葉の擦れる音等の自然の音
+      \item 音楽，ノイズ，自然の音をそれぞれ別のプレイリストにして用意する．
+    \end{itemize}
+  \item 音源処理機能
+    \begin{itemize}
+      \item 周波数帯をユーザーが設定でき，指定した周波数帯で音楽を再生する．
+    \end{itemize}
+   \item 音楽再生機能
+    \begin{itemize}
+      \item 最大音量をアプリ側で固定し，それ以上大きい音は再生しない．
+      \item 音楽を再生開始すると，徐々に音量を上げていくフェードイン機能.
+      \item 音楽を停止，または終了すると，徐々に音量を下げていくフェードアウト機能.
+      \item 二種類以上の音楽を同時に再生する機能．
+    \end{itemize}
+  \item 視覚効果
+    \begin{itemize}
+      \item 音楽再生中に音楽に応じたリズムで画面の左右に視線を向けさせるアニメーション機能．
+    \end{itemize}
+  \item 設定保存機能
+    \begin{itemize}
+      \item あるユーザーが落ち着くと感じた周波数帯，音量などの設定を保存し，再現できる機能． 
+      \item 5から10ユーザーの情報を保存できるようにする．
+    \end{itemize}
+\end{itemize}
+\subsection{ユーザーインターフェース}
+添付ファイルのPDF参照．
+\subsection{制約}
+使用デバイスはiPadAir2，iOS10.xあるいはiPadPro2 iOS11.xで、開発開始後にどちらが良いか決定する
+\end{document}
