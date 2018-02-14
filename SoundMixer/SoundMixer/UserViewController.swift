@@ -34,4 +34,15 @@ class UserViewController: UITableViewController{
         cell.textLabel?.text = users[indexPath.row].Name
         return cell
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            let user = users[indexPath.row]
+            let controller = segue.destination as! MainTabBarController
+            controller.title = user.Name
+            controller.Id = user.Id
+            
+        }
+    }
+    
 }

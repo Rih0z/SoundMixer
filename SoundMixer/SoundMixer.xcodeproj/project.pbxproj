@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		903661C920340B63008D2B39 /* PlaylistSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */; };
+		903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903661CC20342329008D2B39 /* MainTabBarController.swift */; };
 		90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E102032E0ED00D46AF9 /* AppDelegate.swift */; };
-		90577E132032E0ED00D46AF9 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E122032E0ED00D46AF9 /* FirstViewController.swift */; };
 		90577E152032E0ED00D46AF9 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E142032E0ED00D46AF9 /* SecondViewController.swift */; };
 		90577E182032E0ED00D46AF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90577E162032E0ED00D46AF9 /* Main.storyboard */; };
 		90577E1A2032E0ED00D46AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90577E192032E0ED00D46AF9 /* Assets.xcassets */; };
@@ -19,9 +20,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSelectionViewController.swift; sourceTree = "<group>"; };
+		903661CC20342329008D2B39 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		90577E0D2032E0EC00D46AF9 /* SoundMixer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundMixer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90577E102032E0ED00D46AF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		90577E122032E0ED00D46AF9 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		90577E142032E0ED00D46AF9 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		90577E172032E0ED00D46AF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90577E192032E0ED00D46AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -62,12 +64,13 @@
 		90577E0F2032E0EC00D46AF9 /* SoundMixer */ = {
 			isa = PBXGroup;
 			children = (
+				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				90577E2820330C4100D46AF9 /* ThirdViewController.swift */,
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
-				90577E122032E0ED00D46AF9 /* FirstViewController.swift */,
 				90577E142032E0ED00D46AF9 /* SecondViewController.swift */,
 				90577E162032E0ED00D46AF9 /* Main.storyboard */,
 				90577E2A20330E9300D46AF9 /* UserViewController.swift */,
+				903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */,
 				90577E192032E0ED00D46AF9 /* Assets.xcassets */,
 				90577E1B2032E0ED00D46AF9 /* LaunchScreen.storyboard */,
 				90577E1E2032E0ED00D46AF9 /* Info.plist */,
@@ -151,9 +154,10 @@
 				90577E252033070900D46AF9 /* User.swift in Sources */,
 				90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */,
 				90577E152032E0ED00D46AF9 /* SecondViewController.swift in Sources */,
+				903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */,
 				90577E2920330C4100D46AF9 /* ThirdViewController.swift in Sources */,
 				90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */,
-				90577E132032E0ED00D46AF9 /* FirstViewController.swift in Sources */,
+				903661C920340B63008D2B39 /* PlaylistSelectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
