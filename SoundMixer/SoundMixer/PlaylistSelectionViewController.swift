@@ -15,19 +15,19 @@ class PlaylistSelectionViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
 //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
-    /*
+    
         let myPlaylistQuery = MPMediaQuery.playlists()
-        let playlists = myPlaylistQuery.collections
-        
-        for playlist in playlists! {
-            print(playlist.value(forProperty: MPMediaPlaylistPropertyName)!)
-            
-            let songs = playlist.items
-            for song in songs {
-                let songTitle = song.value(forProperty: MPMediaItemPropertyTitle)
-                print("\t\t", songTitle!)
+        if let playlists = myPlaylistQuery.collections {
+            for playlist in playlists {
+                print(playlist.value(forProperty: MPMediaPlaylistPropertyName)!)
+                
+                let songs = playlist.items
+                for song in songs {
+                    let songTitle = song.value(forProperty: MPMediaItemPropertyTitle)
+                    print("\t\t", songTitle!)
+                }
             }
-        }*/
+        }
  
         
         
