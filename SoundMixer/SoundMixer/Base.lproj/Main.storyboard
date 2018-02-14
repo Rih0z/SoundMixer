@@ -88,7 +88,7 @@
             </objects>
             <point key="canvasLocation" x="102" y="841"/>
         </scene>
-        <!--ユーザー名-->
+        <!--ユーザー選択-->
         <scene sceneID="Vrp-vh-zyg">
             <objects>
                 <tableViewController id="3r6-4s-wHn" customClass="UserViewController" customModule="SoundMixer" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,7 +123,7 @@
                             <outlet property="delegate" destination="3r6-4s-wHn" id="y6M-31-nST"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="ユーザー名" id="yGn-U9-k09">
+                    <navigationItem key="navigationItem" title="ユーザー選択" id="yGn-U9-k09">
                         <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="DXz-yo-thi">
                             <connections>
                                 <action selector="AddUser:" destination="3r6-4s-wHn" id="sUa-az-RLW"/>

@@ -12,4 +12,6 @@ class User {
     var Name:String = ""
     var Id:Int = 0
     var Playing_1:String! = nil
-    var Playing_2:String! = nil}
+    var Playing_2:String! = nil
+    
+}
