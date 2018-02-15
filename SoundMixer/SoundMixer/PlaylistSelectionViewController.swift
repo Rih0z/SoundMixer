@@ -9,8 +9,20 @@
 import UIKit
 import MediaPlayer
 
-class PlaylistSelectionViewController: UIViewController{
-    var Id:Int!
+class PlaylistSelectionViewController: UITableViewController{
+    var PlaylistNum:Int!
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
+        return self.PlaylistNum
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PlaylistCell",for: indexPath)
+        
+       // cell.textLabel?.text = self.users[indexPath.row].Name
+        return cell
+    }
+ 
     //画面が呼び出される前に実行
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +30,8 @@ class PlaylistSelectionViewController: UIViewController{
     
         let myPlaylistQuery = MPMediaQuery.playlists()
         if let playlists = myPlaylistQuery.collections {
+           self.PlaylistNum = playlists.count
+            print(self.PlaylistNum)
             for playlist in playlists {
                 print(playlist.value(forProperty: MPMediaPlaylistPropertyName)!)
                 
