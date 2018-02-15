@@ -11,15 +11,15 @@ import MediaPlayer
 
 class PlaylistSelectionViewController: UITableViewController{
     var PlaylistNum:Int!
-    
+    var PlaylistNames = [String]()
+    var PlaylistName: String!
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
         return self.PlaylistNum
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaylistCell",for: indexPath)
-        
-       // cell.textLabel?.text = self.users[indexPath.row].Name
+        cell.textLabel?.text = self.PlaylistNames[indexPath.row]
         return cell
     }
  
@@ -33,8 +33,9 @@ class PlaylistSelectionViewController: UITableViewController{
            self.PlaylistNum = playlists.count
             print(self.PlaylistNum)
             for playlist in playlists {
-                print(playlist.value(forProperty: MPMediaPlaylistPropertyName)!)
-                
+                self.PlaylistName = playlist.value(forProperty: MPMediaPlaylistPropertyName)! as! String
+                print(self.PlaylistName)
+                self.PlaylistNames.append(self.PlaylistName)
                 let songs = playlist.items
                 for song in songs {
                     let songTitle = song.value(forProperty: MPMediaItemPropertyTitle)
