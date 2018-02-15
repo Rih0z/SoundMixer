@@ -23,6 +23,8 @@ class UserViewController: UITableViewController{
         
     }
     
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
         return self.users.count
     }
@@ -40,8 +42,7 @@ class UserViewController: UITableViewController{
             let controller = segue.destination as! MainTabBarController
             controller.title = user.Name
             controller.Id = user.Id
-            
         }
     }
-    
+
 }

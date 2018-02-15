@@ -9,17 +9,19 @@
 import UIKit
 import MediaPlayer
 
-class PlaylistSelectionViewController: UITableViewController{
+class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate{
     var PlaylistNum:Int!
-    var PlaylistNames = [String]()
+    var PlaylistsName = [String]()
     var PlaylistName: String!
+    var PlaylistsHash = [Int]()
+    var Id:Int!
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
         return self.PlaylistNum
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaylistCell",for: indexPath)
-        cell.textLabel?.text = self.PlaylistNames[indexPath.row]
+        cell.textLabel?.text = self.PlaylistsName[indexPath.row]
         return cell
     }
  
@@ -33,9 +35,11 @@ class PlaylistSelectionViewController: UITableViewController{
            self.PlaylistNum = playlists.count
             print(self.PlaylistNum)
             for playlist in playlists {
+               
                 self.PlaylistName = playlist.value(forProperty: MPMediaPlaylistPropertyName)! as! String
                 print(self.PlaylistName)
-                self.PlaylistNames.append(self.PlaylistName)
+                self.PlaylistsHash.append(playlist.hash)
+                self.PlaylistsName.append(self.PlaylistName)
                 let songs = playlist.items
                 for song in songs {
                     let songTitle = song.value(forProperty: MPMediaItemPropertyTitle)
@@ -43,8 +47,6 @@ class PlaylistSelectionViewController: UITableViewController{
                 }
             }
         }
- 
-        
         
     }
 
@@ -52,7 +54,18 @@ class PlaylistSelectionViewController: UITableViewController{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            let playlistname = self.PlaylistsName[indexPath.row]
+            let controller = segue.destination as! MusicSelectonTableViewController
+            controller.title = playlistname
+            controller.PlaylistHash = self.PlaylistsHash[indexPath.row]
+        }
+    }
     
+    func didSelectTab(mainTabBarController: MainTabBarController) {
+        print("PlaylistControllerView")
+    }
     /*
     // MARK: - Navigation
 

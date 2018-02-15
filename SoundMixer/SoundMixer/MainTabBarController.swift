@@ -7,7 +7,27 @@
 //
 
 import UIKit
+import MediaPlayer
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     var Id:Int!
+    var PlayingSong:MPMediaItem!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.delegate = self
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    //仮　データの受け渡し研究中
+    func mainTabBarController(mainTabBarController: UITabBarController, didSelectViewController viewController: UITableViewController) {
+        if viewController is MainTabBarDelegate {
+            let v = viewController as! MainTabBarDelegate
+            v.didSelectTab(mainTabBarController:  self)
+        }
+    }
+ 
 }
+

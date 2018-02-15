@@ -11,13 +11,15 @@
 		903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903661CC20342329008D2B39 /* MainTabBarController.swift */; };
 		903661D020342701008D2B39 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903661CF20342701008D2B39 /* MediaPlayer.framework */; };
 		90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E102032E0ED00D46AF9 /* AppDelegate.swift */; };
-		90577E152032E0ED00D46AF9 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E142032E0ED00D46AF9 /* SecondViewController.swift */; };
+		90577E152032E0ED00D46AF9 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E142032E0ED00D46AF9 /* PlayerViewController.swift */; };
 		90577E182032E0ED00D46AF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90577E162032E0ED00D46AF9 /* Main.storyboard */; };
 		90577E1A2032E0ED00D46AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90577E192032E0ED00D46AF9 /* Assets.xcassets */; };
 		90577E1D2032E0ED00D46AF9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90577E1B2032E0ED00D46AF9 /* LaunchScreen.storyboard */; };
 		90577E252033070900D46AF9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E242033070900D46AF9 /* User.swift */; };
 		90577E2920330C4100D46AF9 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2820330C4100D46AF9 /* ThirdViewController.swift */; };
 		90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2A20330E9300D46AF9 /* UserViewController.swift */; };
+		905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */; };
+		905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B820357C73004BE779 /* MainTabBarDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +28,7 @@
 		903661CF20342701008D2B39 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		90577E0D2032E0EC00D46AF9 /* SoundMixer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoundMixer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		90577E102032E0ED00D46AF9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		90577E142032E0ED00D46AF9 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		90577E142032E0ED00D46AF9 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		90577E172032E0ED00D46AF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		90577E192032E0ED00D46AF9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		90577E1C2032E0ED00D46AF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -34,6 +36,8 @@
 		90577E242033070900D46AF9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		90577E2820330C4100D46AF9 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThirdViewController.swift; path = ../ThirdViewController.swift; sourceTree = "<group>"; };
 		90577E2A20330E9300D46AF9 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSelectonTableViewController.swift; sourceTree = "<group>"; };
+		905E86B820357C73004BE779 /* MainTabBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,10 +81,12 @@
 			isa = PBXGroup;
 			children = (
 				903661CC20342329008D2B39 /* MainTabBarController.swift */,
+				905E86B820357C73004BE779 /* MainTabBarDelegate.swift */,
 				90577E2820330C4100D46AF9 /* ThirdViewController.swift */,
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
-				90577E142032E0ED00D46AF9 /* SecondViewController.swift */,
+				90577E142032E0ED00D46AF9 /* PlayerViewController.swift */,
 				90577E162032E0ED00D46AF9 /* Main.storyboard */,
+				905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */,
 				90577E2A20330E9300D46AF9 /* UserViewController.swift */,
 				903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */,
 				90577E192032E0ED00D46AF9 /* Assets.xcassets */,
@@ -164,11 +170,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				90577E252033070900D46AF9 /* User.swift in Sources */,
+				905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */,
 				90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */,
-				90577E152032E0ED00D46AF9 /* SecondViewController.swift in Sources */,
+				90577E152032E0ED00D46AF9 /* PlayerViewController.swift in Sources */,
 				903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */,
 				90577E2920330C4100D46AF9 /* ThirdViewController.swift in Sources */,
 				90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */,
+				905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */,
 				903661C920340B63008D2B39 /* PlaylistSelectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
