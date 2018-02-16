@@ -7,12 +7,16 @@
 //
 
 import UIKit
-
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+import MediaPlayer
+@UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    var UserName: String?
+    var userID: Int?
+    var playlistHash:Int?
+    var playingSong:MPMediaItem?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true

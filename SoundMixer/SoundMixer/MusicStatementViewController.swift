@@ -18,6 +18,11 @@ class MusicStatementViewController: UIViewController {
         present(nextView!, animated: true, completion: nil)
         
     }
+    @IBAction func pickPlatlist(_ sender: Any) {
+        let storyboard: UIStoryboard = UIStoryboard(name: "PlaylistSelection", bundle: nil)
+        let nextView = storyboard.instantiateInitialViewController()
+        present(nextView!, animated: true, completion: nil)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         //ViewTitle.text = self.title

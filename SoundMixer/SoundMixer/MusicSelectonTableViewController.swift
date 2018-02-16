@@ -18,6 +18,14 @@ class MusicSelectonTableViewController: UITableViewController {
     var SongHash:Int!
     var Song:MPMediaItem!
     
+    // Cell が選択された場合
+    override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
+        let storyboard: UIStoryboard = UIStoryboard(name: "Player", bundle: nil)
+        let nextView = storyboard.instantiateInitialViewController()
+        present(nextView!, animated: true, completion: nil)
+        //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
         return SongNum
     }
@@ -30,7 +38,10 @@ class MusicSelectonTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
+        
 
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -38,19 +49,29 @@ class MusicSelectonTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
         
+       
+        
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+    
+        super.viewDidDisappear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.PlaylistHash = appDelegate.playlistHash
+        
         let myPlaylistQuery = MPMediaQuery.playlists()
         if let playlists = myPlaylistQuery.collections {
-           // self.PlaylistNum = playlists.count
+            // self.PlaylistNum = playlists.count
             
             for playlist in playlists {
-                if playlist.hash == PlaylistHash
+                if playlist.hash == self.PlaylistHash
                 {
-                
+                    
                     let songs = playlist.items
                     self.SongNum = songs.count
                     print(self.SongNum)
                     for song in songs {
-                       // self.Song = song
+                        // self.Song = song
                         
                         let songTitle = song.value(forProperty: MPMediaItemPropertyTitle)
                         print("\t\t", songTitle!)
@@ -62,9 +83,17 @@ class MusicSelectonTableViewController: UITableViewController {
                 }
             }
         }
-        
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            
+            appDelegate.playingSong = self.Songs[indexPath.row]
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

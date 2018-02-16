@@ -26,6 +26,9 @@
                                     <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <state key="normal" title="音楽変更"/>
+                                    <connections>
+                                        <action selector="pickPlatlist:" destination="En8-cZ-hqc" eventType="touchUpInside" id="MTa-u0-vw5"/>
+                                    </connections>
                                 </button>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="U82-uI-IL5">

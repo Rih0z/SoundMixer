@@ -46,6 +46,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
 
         
     }
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewDidDisappear(animated)
+        if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+        {
+            self.PlayingSong = appDelegate.playingSong
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
       //  player = MPMusicPlayerController.applicationMusicPlayer()

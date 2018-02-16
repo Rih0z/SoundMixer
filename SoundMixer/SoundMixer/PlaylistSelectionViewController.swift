@@ -15,6 +15,15 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     var PlaylistName: String!
     var PlaylistsHash = [Int]()
     var Id:Int!
+    
+    // Cell が選択された場合
+    override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
+        let storyboard: UIStoryboard = UIStoryboard(name: "MusicSelection", bundle: nil)
+        let nextView = storyboard.instantiateInitialViewController()
+        present(nextView!, animated: true, completion: nil)
+        //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
         return self.PlaylistNum
     }
@@ -50,6 +59,16 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
         
     }
 
+    
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            
+            appDelegate.playlistHash = self.PlaylistsHash[indexPath.row]
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
