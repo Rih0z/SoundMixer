@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ThirdViewController: UIViewController  {
+class MetronomeViewController: UIViewController  {
 
     override func viewDidLoad() {
         super.viewDidLoad()

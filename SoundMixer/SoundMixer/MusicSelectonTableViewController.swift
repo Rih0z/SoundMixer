@@ -73,8 +73,7 @@ class MusicSelectonTableViewController: UITableViewController {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let controller = segue.destination as! PlayerViewController
             controller.title = self.SongNames[indexPath.row]
-            controller.PlayingSong = self.Songs[indexPath.row]
-            
+            controller.PlayingSong = self.Songs[indexPath.row]            
         }
     }
     // MARK: - Table view data source

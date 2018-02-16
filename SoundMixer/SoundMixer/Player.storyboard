@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="r8q-XZ-Qfp">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--音楽編集-->
+        <scene sceneID="6cH-ZV-a68">
+            <objects>
+                <viewController storyboardIdentifier="Player" id="r8q-XZ-Qfp" customClass="PlayerViewController" customModule="SoundMixer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="KPz-FK-krC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NNb-WI-KvC">
+                                <rect key="frame" x="156" y="366" width="62" height="30"/>
+                                <state key="normal" title="一時停止"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-eX-w03">
+                                <rect key="frame" x="173" y="318" width="30" height="30"/>
+                                <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="Play:" destination="r8q-XZ-Qfp" eventType="touchUpInside" id="2yp-P5-qg7"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AzC-wR-2CZ">
+                                <rect key="frame" x="172" y="422" width="31" height="30"/>
+                                <state key="normal" title="停止"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="3wE-eX-w03" firstAttribute="centerY" secondItem="KPz-FK-krC" secondAttribute="centerY" id="FbE-oD-8WU"/>
+                            <constraint firstItem="NNb-WI-KvC" firstAttribute="top" secondItem="3wE-eX-w03" secondAttribute="bottom" constant="18" id="Fx2-fY-foy"/>
+                            <constraint firstItem="NNb-WI-KvC" firstAttribute="centerX" secondItem="KPz-FK-krC" secondAttribute="centerX" id="PSF-zP-sPD"/>
+                            <constraint firstItem="NNb-WI-KvC" firstAttribute="centerX" secondItem="AzC-wR-2CZ" secondAttribute="centerX" id="UGa-QY-omU"/>
+                            <constraint firstItem="AzC-wR-2CZ" firstAttribute="top" secondItem="NNb-WI-KvC" secondAttribute="bottom" constant="26" id="lyO-W1-8on"/>
+                            <constraint firstItem="3wE-eX-w03" firstAttribute="trailing" secondItem="AzC-wR-2CZ" secondAttribute="trailing" id="zmj-Zd-IV9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BQW-B6-E7V"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="音楽編集" id="amn-AI-11f"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RfI-tl-Hc2" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1194" y="827"/>
+        </scene>
+    </scenes>
+</document>

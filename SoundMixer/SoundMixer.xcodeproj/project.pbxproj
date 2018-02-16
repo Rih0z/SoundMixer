@@ -16,10 +16,17 @@
 		90577E1A2032E0ED00D46AF9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 90577E192032E0ED00D46AF9 /* Assets.xcassets */; };
 		90577E1D2032E0ED00D46AF9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90577E1B2032E0ED00D46AF9 /* LaunchScreen.storyboard */; };
 		90577E252033070900D46AF9 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E242033070900D46AF9 /* User.swift */; };
-		90577E2920330C4100D46AF9 /* ThirdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2820330C4100D46AF9 /* ThirdViewController.swift */; };
+		90577E2920330C4100D46AF9 /* MetronomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2820330C4100D46AF9 /* MetronomeViewController.swift */; };
 		90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2A20330E9300D46AF9 /* UserViewController.swift */; };
 		905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */; };
 		905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B820357C73004BE779 /* MainTabBarDelegate.swift */; };
+		9081D44B203677B40085A8EA /* PlaylistSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */; };
+		9081D44D203678530085A8EA /* MusicSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D44C203678530085A8EA /* MusicSelection.storyboard */; };
+		9081D45120367A040085A8EA /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D45020367A040085A8EA /* Player.storyboard */; };
+		9081D45320367A370085A8EA /* Metronome.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D45220367A370085A8EA /* Metronome.storyboard */; };
+		9081D45520367AA20085A8EA /* MainTabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D45420367AA20085A8EA /* MainTabBar.storyboard */; };
+		9081D4572036A17A0085A8EA /* MusicStatement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D4562036A17A0085A8EA /* MusicStatement.storyboard */; };
+		9081D4592036A2690085A8EA /* MusicStatementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9081D4582036A2690085A8EA /* MusicStatementViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,10 +41,17 @@
 		90577E1C2032E0ED00D46AF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		90577E1E2032E0ED00D46AF9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90577E242033070900D46AF9 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		90577E2820330C4100D46AF9 /* ThirdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThirdViewController.swift; path = ../ThirdViewController.swift; sourceTree = "<group>"; };
+		90577E2820330C4100D46AF9 /* MetronomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MetronomeViewController.swift; path = ../MetronomeViewController.swift; sourceTree = "<group>"; };
 		90577E2A20330E9300D46AF9 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSelectonTableViewController.swift; sourceTree = "<group>"; };
 		905E86B820357C73004BE779 /* MainTabBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarDelegate.swift; sourceTree = "<group>"; };
+		9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaylistSelection.storyboard; sourceTree = "<group>"; };
+		9081D44C203678530085A8EA /* MusicSelection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MusicSelection.storyboard; sourceTree = "<group>"; };
+		9081D45020367A040085A8EA /* Player.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
+		9081D45220367A370085A8EA /* Metronome.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Metronome.storyboard; sourceTree = "<group>"; };
+		9081D45420367AA20085A8EA /* MainTabBar.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainTabBar.storyboard; sourceTree = "<group>"; };
+		9081D4562036A17A0085A8EA /* MusicStatement.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MusicStatement.storyboard; sourceTree = "<group>"; };
+		9081D4582036A2690085A8EA /* MusicStatementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicStatementViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,10 +96,17 @@
 			children = (
 				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				905E86B820357C73004BE779 /* MainTabBarDelegate.swift */,
-				90577E2820330C4100D46AF9 /* ThirdViewController.swift */,
+				90577E2820330C4100D46AF9 /* MetronomeViewController.swift */,
+				9081D4582036A2690085A8EA /* MusicStatementViewController.swift */,
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
 				90577E142032E0ED00D46AF9 /* PlayerViewController.swift */,
 				90577E162032E0ED00D46AF9 /* Main.storyboard */,
+				9081D45420367AA20085A8EA /* MainTabBar.storyboard */,
+				9081D4562036A17A0085A8EA /* MusicStatement.storyboard */,
+				9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */,
+				9081D44C203678530085A8EA /* MusicSelection.storyboard */,
+				9081D45020367A040085A8EA /* Player.storyboard */,
+				9081D45220367A370085A8EA /* Metronome.storyboard */,
 				905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */,
 				90577E2A20330E9300D46AF9 /* UserViewController.swift */,
 				903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */,
@@ -157,8 +178,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				90577E1D2032E0ED00D46AF9 /* LaunchScreen.storyboard in Resources */,
+				9081D45120367A040085A8EA /* Player.storyboard in Resources */,
+				9081D44D203678530085A8EA /* MusicSelection.storyboard in Resources */,
 				90577E1A2032E0ED00D46AF9 /* Assets.xcassets in Resources */,
 				90577E182032E0ED00D46AF9 /* Main.storyboard in Resources */,
+				9081D45520367AA20085A8EA /* MainTabBar.storyboard in Resources */,
+				9081D44B203677B40085A8EA /* PlaylistSelection.storyboard in Resources */,
+				9081D45320367A370085A8EA /* Metronome.storyboard in Resources */,
+				9081D4572036A17A0085A8EA /* MusicStatement.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,10 +198,11 @@
 			files = (
 				90577E252033070900D46AF9 /* User.swift in Sources */,
 				905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */,
+				9081D4592036A2690085A8EA /* MusicStatementViewController.swift in Sources */,
 				90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */,
 				90577E152032E0ED00D46AF9 /* PlayerViewController.swift in Sources */,
 				903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */,
-				90577E2920330C4100D46AF9 /* ThirdViewController.swift in Sources */,
+				90577E2920330C4100D46AF9 /* MetronomeViewController.swift in Sources */,
 				90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */,
 				905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */,
 				903661C920340B63008D2B39 /* PlaylistSelectionViewController.swift in Sources */,
