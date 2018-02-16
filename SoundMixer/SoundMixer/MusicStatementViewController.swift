@@ -35,7 +35,23 @@ class MusicStatementViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewDidDisappear(animated)
+        if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+        {
+            self.Id = appDelegate.userID
+            self.title = appDelegate.title
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
 
+            appDelegate.userID = self.Id
+            appDelegate.title = self.title
+        
+    }
     /*
     // MARK: - Navigation
 

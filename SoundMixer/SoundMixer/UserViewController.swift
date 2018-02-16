@@ -42,6 +42,15 @@ class UserViewController: UITableViewController{
         return cell
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            let user = users[indexPath.row]
+            appDelegate.userID = user.Id
+            appDelegate.title = user.Name
+        }
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let user = users[indexPath.row]

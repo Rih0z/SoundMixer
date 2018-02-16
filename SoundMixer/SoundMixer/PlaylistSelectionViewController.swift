@@ -69,6 +69,15 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
             appDelegate.playlistHash = self.PlaylistsHash[indexPath.row]
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewDidDisappear(animated)
+        if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+        {
+            self.Id = appDelegate.userID
+            self.title = appDelegate.title
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
