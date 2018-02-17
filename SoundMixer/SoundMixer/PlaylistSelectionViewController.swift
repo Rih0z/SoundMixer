@@ -18,10 +18,13 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     
     // Cell が選択された場合
     override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "MusicSelection", bundle: nil)
-        let nextView = storyboard.instantiateInitialViewController()
-        present(nextView!, animated: true, completion: nil)
+        self.goNextPage(page: "MusicSelection")
         //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
+    }
+    func goNextPage(page:String){
+        let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
+        let secondViewController = storyboard.instantiateInitialViewController()
+        self.navigationController?.pushViewController(secondViewController!, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
@@ -38,19 +41,19 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         let myPlaylistQuery = MPMediaQuery.playlists()
-        if let playlists = myPlaylistQuery.collections {
-            self.PlaylistNum = playlists.count
-            print(self.PlaylistNum)
-            for playlist in playlists {
-                
-                self.PlaylistName = playlist.value(forProperty: MPMediaPlaylistPropertyName)! as! String
-                print(self.PlaylistName)
-                self.Playlists.append(playlist)
-                self.PlaylistsName.append(self.PlaylistName)
+            if let playlists = myPlaylistQuery.collections {
+                self.PlaylistNum = playlists.count
+                print(self.PlaylistNum)
+                for playlist in playlists {
+                    
+                    self.PlaylistName = playlist.value(forProperty: MPMediaPlaylistPropertyName)! as! String
+                    print(self.PlaylistName)
+                    self.Playlists.append(playlist)
+                    self.PlaylistsName.append(self.PlaylistName)
 
+                }
+            
         }
-        
-    }
     }
 
     

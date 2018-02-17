@@ -14,12 +14,6 @@ class MusicStatementViewController: UIViewController {
     var Id:Int!
     @IBOutlet weak var infomationLabel: UILabel!
     
-    @IBAction func backUser(_ sender: Any) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let nextView = storyboard.instantiateInitialViewController()
-        present(nextView!, animated: true, completion: nil)
-        
-    }
     @IBAction func pickPlaylist1(_ sender: Any) {
         //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
         
@@ -34,10 +28,8 @@ class MusicStatementViewController: UIViewController {
             appDelegate.userID = self.Id
             appDelegate.title = self.title
 
+              self.goNextPage(page: "PlaylistSelection")
             
-            let storyboard: UIStoryboard = UIStoryboard(name: "PlaylistSelection", bundle: nil)
-            let nextView = storyboard.instantiateInitialViewController()
-            present(nextView!, animated: true, completion: nil)
         }else{
             infomationLabel.text = "選択可能なプレイリストがありません"
           
@@ -46,6 +38,13 @@ class MusicStatementViewController: UIViewController {
         
     }
 
+    
+
+    func goNextPage(page:String){
+        let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
+        let secondViewController = storyboard.instantiateInitialViewController()
+        self.navigationController?.pushViewController(secondViewController!, animated: true)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)

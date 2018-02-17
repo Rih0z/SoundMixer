@@ -20,11 +20,17 @@ class MusicSelectonTableViewController: UITableViewController {
     
     // Cell が選択された場合
     override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Player", bundle: nil)
-        let nextView = storyboard.instantiateInitialViewController()
-        present(nextView!, animated: true, completion: nil)
+  self.goNextPage(page: "MainTabBar")
         //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
     }
+
+    
+    func goNextPage(page:String){
+        let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
+        let secondViewController = storyboard.instantiateInitialViewController()
+        self.navigationController?.pushViewController(secondViewController!, animated: true)
+    }
+
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
         return SongNum
