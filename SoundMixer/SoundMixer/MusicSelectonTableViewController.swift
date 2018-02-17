@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 class MusicSelectonTableViewController: UITableViewController {
     var Id:Int!
-    var PlaylistHash:Int!
+    var Playlist:MPMediaItemCollection!
     var SongNum:Int!
     var SongNames = [String]()
     var Songs = [MPMediaItem]()
@@ -57,17 +57,8 @@ class MusicSelectonTableViewController: UITableViewController {
     
         super.viewDidDisappear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.PlaylistHash = appDelegate.playlistHash
-        
-        let myPlaylistQuery = MPMediaQuery.playlists()
-        if let playlists = myPlaylistQuery.collections {
-            // self.PlaylistNum = playlists.count
-            
-            for playlist in playlists {
-                if playlist.hash == self.PlaylistHash
-                {
-                    
-                    let songs = playlist.items
+        self.Playlist = appDelegate.Playlists     
+                    let songs = self.Playlist.items
                     self.SongNum = songs.count
                     print(self.SongNum)
                     for song in songs {
@@ -80,9 +71,7 @@ class MusicSelectonTableViewController: UITableViewController {
                         self.Songs.append(song)
                         self.SongHash = song.hash
                     }
-                }
-            }
-        }
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

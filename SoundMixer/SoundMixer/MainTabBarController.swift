@@ -60,13 +60,14 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     }
     
  override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+    /*
      let controller = segue.destination as! MusicStatementViewController
             controller.title = self.title
     let controller2 = segue.destination as! PlayerViewController
     
     let controller3 = segue.destination as! MetronomeViewController
     // controller.Id = user.Id 
-    
+    */
     }
  
 }

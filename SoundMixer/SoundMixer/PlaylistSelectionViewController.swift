@@ -13,7 +13,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     var PlaylistNum:Int!
     var PlaylistsName = [String]()
     var PlaylistName: String!
-    var PlaylistsHash = [Int]()
+    var Playlists = [MPMediaItemCollection]()
     var Id:Int!
     
     // Cell が選択された場合
@@ -37,26 +37,20 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     //画面が呼び出される前に実行
     override func viewDidLoad() {
         super.viewDidLoad()
-//https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
-    
         let myPlaylistQuery = MPMediaQuery.playlists()
         if let playlists = myPlaylistQuery.collections {
-           self.PlaylistNum = playlists.count
+            self.PlaylistNum = playlists.count
             print(self.PlaylistNum)
             for playlist in playlists {
-               
+                
                 self.PlaylistName = playlist.value(forProperty: MPMediaPlaylistPropertyName)! as! String
                 print(self.PlaylistName)
-                self.PlaylistsHash.append(playlist.hash)
+                self.Playlists.append(playlist)
                 self.PlaylistsName.append(self.PlaylistName)
-                let songs = playlist.items
-                for song in songs {
-                    let songTitle = song.value(forProperty: MPMediaItemPropertyTitle)
-                    print("\t\t", songTitle!)
-                }
-            }
+
         }
         
+    }
     }
 
     
@@ -65,8 +59,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
         super.viewDidDisappear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let indexPath = self.tableView.indexPathForSelectedRow {
-            
-            appDelegate.playlistHash = self.PlaylistsHash[indexPath.row]
+            appDelegate.Playlists = self.Playlists[indexPath.row]
         }
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -87,7 +80,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
             let playlistname = self.PlaylistsName[indexPath.row]
             let controller = segue.destination as! MusicSelectonTableViewController
             controller.title = playlistname
-            controller.PlaylistHash = self.PlaylistsHash[indexPath.row]
+          ///  controller.PlaylistHash = self.PlaylistsHash[indexPath.row]
         }
     }
     

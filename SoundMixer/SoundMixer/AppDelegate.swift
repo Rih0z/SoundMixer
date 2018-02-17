@@ -14,8 +14,8 @@ import MediaPlayer
 
     var UserName: String?
     var userID: Int?
-    var playlistHash:Int?
     var playingSong:MPMediaItem?
+    var Playlists:MPMediaItemCollection?
     var title:String?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
