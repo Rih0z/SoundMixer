@@ -97,7 +97,7 @@ class MusicStatementViewController: UIViewController {
         music1Label.text = music1
     }
     if(self.user.Playing_2 != nil){
-        let music2 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
         print("musicstatement music")
         print(music2)
         music2Label.text = music2

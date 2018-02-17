@@ -65,10 +65,9 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
           self.receiveData()
-        
         if (self.user.SelectionFlag != 0)
         {
-            self.user.SelectionFlag = 0
+           // self.user.SelectionFlag = 0
             self.selectedIndex = 1
         }
         if(self.user.Playing_1 != nil){

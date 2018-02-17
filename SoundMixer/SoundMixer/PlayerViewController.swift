@@ -19,7 +19,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
         print("play")
         
-        self.PlayingSong = self.user.Playing_1
+        switch self.user.SelectionFlag {
+        case 1:
+            self.PlayingSong = self.user.Playing_1
+        case 2:
+            self.PlayingSong = self.user.Playing_2
+        default:
+            print("フラグが立っていませんmusicselection")
+            print(self.user.SelectionFlag)
+        }
+        
         print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)!)
         if(PlayingSong != nil){
             let url: URL  = PlayingSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
@@ -48,6 +57,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                      print("URLがおかしい")
                   }
 
+        
+     self.user.SelectionFlag = 0
         
     }
     override func viewWillAppear(_ animated: Bool) {
