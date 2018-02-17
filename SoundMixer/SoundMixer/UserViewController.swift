@@ -22,6 +22,46 @@ class UserViewController: UITableViewController{
         self.tableView.reloadData()
         
     }
+    
+
+    
+    // ボタンを用意
+    var addBtn: UIBarButtonItem!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print("Loadaaaaaaaaaaaaaaaaasssssssssssssssssss")
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        self.tableView.delegate   = self
+        self.tableView.dataSource = self        // タイトルを付けておきましょう
+        self.title = "ユーザー選択"
+        
+        // NavigationBarの表示する.
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        // addBtnを設置
+        addBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onClick))
+        self.navigationItem.rightBarButtonItem = addBtn
+    }
+
+    @objc func onClick()
+    {
+        print("onClick clicked!!!")
+        Clicked()
+        
+    }
+    func Clicked(){
+        self.user = User()//Userクラスのインスタンス作成
+        self.user?.Id = self.userNumber
+        self.user?.Name = "User ID : "+(self.user!.Id).description//ここを任意に入力させて任意の名前をつけさせればいい
+        //https://joyplot.com/documents/2016/09/04/swift_textfield_uialertcontroller/ これ見たらできそう
+        self.users.append(self.user!)
+        self.userNumber += 1;
+
+        self.tableView.reloadData()
+   
+
+    }
     // Cell が選択された場合
     override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
         let storyboard: UIStoryboard = UIStoryboard(name: "MainTabBar", bundle: nil)

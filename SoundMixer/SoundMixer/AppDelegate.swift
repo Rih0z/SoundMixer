@@ -18,9 +18,21 @@ import MediaPlayer
     var Playlists:MPMediaItemCollection?
     var title:String?
     
+    private var nc: UINavigationController?
+    
+
+    
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+       
         // Override point for customization after application launch.
+        let FirstViewController = UserViewController()
+        nc = UINavigationController(rootViewController: FirstViewController)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = nc
+ 
         return true
+        
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

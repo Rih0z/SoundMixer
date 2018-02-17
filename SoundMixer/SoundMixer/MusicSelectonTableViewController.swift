@@ -38,10 +38,6 @@ class MusicSelectonTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
-        
-
-        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -57,7 +53,7 @@ class MusicSelectonTableViewController: UITableViewController {
     
         super.viewDidDisappear(animated)
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        self.Playlist = appDelegate.Playlists     
+        self.Playlist = appDelegate.Playlists
                     let songs = self.Playlist.items
                     self.SongNum = songs.count
                     print(self.SongNum)
