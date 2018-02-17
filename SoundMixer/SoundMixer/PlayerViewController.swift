@@ -11,54 +11,55 @@ import MediaPlayer
 class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   var audioPlayer:AVAudioPlayer?
   var PlayingSong:MPMediaItem!
-
   var player = MPMusicPlayerController()
   var user:User = User()
 
   @IBAction func Play(_ sender: Any) {
+    self.playMusic()
+  }
+  func playMusic(){
     // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
     print("play")
-
     switch self.user.SelectionFlag {
     case 1:
-      self.PlayingSong = self.user.Playing_1
+        self.PlayingSong = self.user.Playing_1
     case 2:
-      self.PlayingSong = self.user.Playing_2
+        self.PlayingSong = self.user.Playing_2
     default:
-      print("フラグが立っていませんmusicselection")
-      print(self.user.SelectionFlag)
+        print("フラグが立っていませんmusicselection")
+        print(self.user.SelectionFlag)
     }
-
+    
     print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)!)
     if(PlayingSong != nil){
-      let url: URL  = PlayingSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-      //  let url: NSURL = PlayingSong.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
-      //  if  url != nil {
-      do {
-        // itemのassetURLからプレイヤーを作成する
-        audioPlayer = try AVAudioPlayer(contentsOf: url , fileTypeHint: nil)
-      } catch  {
-        // エラー発生してプレイヤー作成失敗
-        // messageLabelに失敗したことを表示
-        print( "この音楽は再生できません")
-        audioPlayer = nil
-        // 戻る
-        return
-      }
-      // 再生開始
-      if let player = audioPlayer {
-        player.play()
-        // メッセージラベルに曲タイトルを表示
-        // (MPMediaItemが曲情報を持っているのでそこから取得)
-        //   let title = item.title ?? ""
-        // messageLabel.text = title
-      }
+        let url: URL  = PlayingSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        //  let url: NSURL = PlayingSong.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
+        //  if  url != nil {
+        do {
+            // itemのassetURLからプレイヤーを作成する
+            audioPlayer = try AVAudioPlayer(contentsOf: url , fileTypeHint: nil)
+        } catch  {
+            // エラー発生してプレイヤー作成失敗
+            // messageLabelに失敗したことを表示
+            print( "この音楽は再生できません")
+            audioPlayer = nil
+            // 戻る
+            return
+        }
+        // 再生開始
+        if let player = audioPlayer {
+            player.play()
+            // メッセージラベルに曲タイトルを表示
+            // (MPMediaItemが曲情報を持っているのでそこから取得)
+            //   let title = item.title ?? ""
+            // messageLabel.text = title
+        }
     }else{
-      print("URLがおかしい")
+        print("URLがおかしい")
     }
     self.user.SelectionFlag = 0
-
-  }
+    
+    }
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()

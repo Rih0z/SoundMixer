@@ -45,7 +45,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     if self.user.BeforeView != nil{
       print(self.user.BeforeView!)
     }
-
     if(self.user.Playing_1 != nil){
       let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
       print("maintabber music")
@@ -62,7 +61,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     appDelegate.user = self.user
   }
-
   override func viewWillAppear(_ animated: Bool) {
     self.receiveData()
     if (self.user.SelectionFlag != 0)
@@ -77,7 +75,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     }
   }
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-
   }
 
 }

@@ -12,18 +12,6 @@ class UserViewController: UITableViewController{
   var userNumber:Int = 1
   var users = [User]()
   var user:User?
-  @IBAction func AddUser(_ sender: Any) {
-    self.user = User()//Userクラスのインスタンス作成
-    self.user?.Id = self.userNumber
-    self.user?.Name = "User ID : "+(self.user!.Id).description//ここを任意に入力させて任意の名前をつけさせればいい
-    //https://joyplot.com/documents/2016/09/04/swift_textfield_uialertcontroller/ これ見たらできそう
-    self.users.append(self.user!)
-    self.userNumber += 1;
-    self.tableView.reloadData()
-
-  }
-
-
 
   // ボタンを用意
   var addBtn: UIBarButtonItem!
@@ -35,15 +23,15 @@ class UserViewController: UITableViewController{
     self.tableView.delegate   = self
     self.tableView.dataSource = self        // タイトルを付けておきましょう
     self.title = "ユーザー選択"
-
-    // NavigationBarの表示する.
-
-    self.navigationController?.setNavigationBarHidden(false, animated: false)
-    // addBtnを設置
-    addBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onClick))
-    self.navigationItem.rightBarButtonItem = addBtn
+    self.setupNavigationBar()
   }
-
+  func setupNavigationBar(){
+        // NavigationBarの表示する.
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        // addBtnを設置
+        addBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onClick))
+        self.navigationItem.rightBarButtonItem = addBtn
+  }
   @objc func onClick()
   {
     print("onClick clicked!!!")
@@ -96,7 +84,6 @@ class UserViewController: UITableViewController{
       appDelegate.user.Id = user.Id
       appDelegate.user.Name = user.Name
     }
-
   }
   /*
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
@@ -108,5 +95,4 @@ class UserViewController: UITableViewController{
   }
   }
   */
-
 }

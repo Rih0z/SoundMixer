@@ -9,10 +9,8 @@
 import UIKit
 import MediaPlayer
 class MusicStatementViewController: UIViewController {
-
   var user:User = User()
   @IBOutlet weak var infomationLabel: UILabel!
-
   @IBOutlet weak var music2Label: UILabel!
   @IBOutlet weak var music1Label: UILabel!
 
@@ -20,7 +18,6 @@ class MusicStatementViewController: UIViewController {
     //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
     self.user.SelectionFlag = 1
     self.CheckPlaylist()
-
   }
 
   @IBAction func pickPlaylist2(_ sender: Any) {
@@ -88,21 +85,26 @@ class MusicStatementViewController: UIViewController {
     super.viewDidDisappear(animated)
     self.receiveData()
     print("musicstatement recieve data finished")
-    print("musicstatement before view is...")
-    print(self.user.BeforeView)
-    if(self.user.Playing_1 != nil){
-      let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-      print("musicstatement music")
-      print(music1)
-      music1Label.text = music1
+    self.changeMusicLabels()
     }
-    if(self.user.Playing_2 != nil){
-      let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-      print("musicstatement music")
-      print(music2)
-      music2Label.text = music2
+    
+    func changeMusicLabels(){
+        print("musicstatement before view is...")
+        //print(self.user.BeforeView)
+        if(self.user.Playing_1 != nil){
+            let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+            print("musicstatement music")
+            print(music1)
+            music1Label.text = music1
+        }
+        if(self.user.Playing_2 != nil){
+            let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+            print("musicstatement music")
+            print(music2)
+            music2Label.text = music2
+        }
+        
     }
-  }
   func receiveData(){
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
