@@ -88,10 +88,11 @@ class UserViewController: UITableViewController{
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let user = users[indexPath.row]
-            appDelegate.userID = user.Id
-            appDelegate.title = user.Name
+            appDelegate.user.Id = user.Id
+            appDelegate.user.Name = user.Name
         }
     }
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let user = users[indexPath.row]
@@ -100,5 +101,6 @@ class UserViewController: UITableViewController{
             controller.Id = user.Id
         }
     }
+ */
 
 }

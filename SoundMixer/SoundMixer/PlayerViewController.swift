@@ -11,11 +11,14 @@ import MediaPlayer
 class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var audioPlayer:AVAudioPlayer?
     var PlayingSong:MPMediaItem!
+    
     var player = MPMusicPlayerController()
+    var user:User = User()
     
     @IBAction func Play(_ sender: Any) {
         // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
         print("play")
+        self.PlayingSong = self.user.Playing_1
         print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)!)
         if(PlayingSong != nil){
             let url: URL  = PlayingSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
@@ -51,7 +54,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         super.viewDidDisappear(animated)
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
         {
-            self.PlayingSong = appDelegate.playingSong
+            self.user = appDelegate.user
+            
         }
     }
     override func viewDidLoad() {

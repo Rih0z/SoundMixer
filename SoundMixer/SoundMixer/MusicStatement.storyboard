@@ -59,6 +59,9 @@
                                     <constraint firstAttribute="height" constant="39" id="IEM-e6-FcU"/>
                                 </constraints>
                                 <state key="normal" title="この曲を変える"/>
+                                <connections>
+                                    <action selector="pickPlaylist2:" destination="En8-cZ-hqc" eventType="touchUpInside" id="ePU-8e-tZ6"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="プレイリストから音楽を選択してください" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yzj-RR-hya">
                                 <rect key="frame" x="166" y="20" width="233" height="94"/>

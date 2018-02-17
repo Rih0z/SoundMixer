@@ -12,41 +12,23 @@ import MediaPlayer
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     var Id:Int!
     var PlayingSong:MPMediaItem!
-    /*
+    var user:User = User()
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        var viewControllers: [UIViewController] = []
-        
-        let musicStatementSelectionViewController = MusicStatementViewController()
-        musicStatementSelectionViewController.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.mostRecent, tag: 1)
-        viewControllers.append(musicStatementSelectionViewController)
-        
-        
-        let playerViewController = PlayerViewController()
-        playerViewController.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.mostViewed, tag: 2)
-        viewControllers.append(playerViewController)
-        
-        let metronomeViewController = MetronomeViewController()
-        metronomeViewController.tabBarItem = UITabBarItem(tabBarSystemItem: UITabBarSystemItem.contacts, tag: 3)
-        viewControllers.append(metronomeViewController)
-        
-        self.setViewControllers(viewControllers, animated: false)
-        
-        
-        // なぜか0だけだと選択されないので1にしてから0に
-        self.selectedIndex = 1
-        self.selectedIndex = 0
+        //self.selectedIndex = 1
+        //self.selectedIndex = 0
 
-    }*/
+    }
  
  
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-
+        self.receiveData()
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -58,16 +40,22 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
             v.didSelectTab(mainTabBarController:  self)
         }
     }
+    func receiveData(){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.user = appDelegate.user
+
+    }
     
+    override func viewWillAppear(_ animated: Bool) {
+        if (self.user.SelectionFlag != 0)
+        {
+            self.user.SelectionFlag = 0
+            self.selectedIndex = 1
+            
+        }
+    }
  override func prepare(for segue: UIStoryboardSegue, sender: Any?){
-    /*
-     let controller = segue.destination as! MusicStatementViewController
-            controller.title = self.title
-    let controller2 = segue.destination as! PlayerViewController
     
-    let controller3 = segue.destination as! MetronomeViewController
-    // controller.Id = user.Id 
-    */
     }
  
 }

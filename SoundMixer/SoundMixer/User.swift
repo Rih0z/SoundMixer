@@ -7,11 +7,12 @@
 //
 
 import Foundation
-
+import MediaPlayer
 class User {
-    var Name:String = ""
-    var Id:Int = 0
-    var Playing_1:String! = nil
-    var Playing_2:String! = nil
+    var Name:String!
+    var Id:Int!
+    var Playing_1:MPMediaItem! 
+    var Playing_2:MPMediaItem!
+    var SelectionFlag:Int = 0 
     
 }

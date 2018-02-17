@@ -14,7 +14,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     var PlaylistsName = [String]()
     var PlaylistName: String!
     var Playlists = [MPMediaItemCollection]()
-    var Id:Int!
+    var user:User = User()
     
     // Cell が選択された場合
     override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
@@ -52,7 +52,6 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
                     self.PlaylistsName.append(self.PlaylistName)
 
                 }
-            
         }
     }
 
@@ -60,24 +59,31 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        self.setSendData()
+    }
+    func setSendData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let indexPath = self.tableView.indexPathForSelectedRow {
+            appDelegate.user = self.user
             appDelegate.Playlists = self.Playlists[indexPath.row]
         }
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         
         super.viewDidDisappear(animated)
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
         {
-            self.Id = appDelegate.userID
-            self.title = appDelegate.title
+            self.user = appDelegate.user
+            self.title = appDelegate.user.Name
+            
         }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let playlistname = self.PlaylistsName[indexPath.row]
@@ -86,7 +92,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
           ///  controller.PlaylistHash = self.PlaylistsHash[indexPath.row]
         }
     }
-    
+    */
     func didSelectTab(mainTabBarController: MainTabBarController) {
         print("PlaylistControllerView")
     }
