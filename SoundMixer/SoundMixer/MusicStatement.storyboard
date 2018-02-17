@@ -69,20 +69,37 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音楽が選択されていません" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnG-dr-y4P">
+                                <rect key="frame" x="166" y="131" width="209" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音楽が選択されていません" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpZ-xO-zkz">
+                                <rect key="frame" x="166" y="224" width="209" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="yzj-RR-hya" firstAttribute="top" secondItem="8nf-CG-4MB" secondAttribute="top" id="8cv-Jj-O8q"/>
                             <constraint firstItem="5xS-Zn-SGu" firstAttribute="trailing" secondItem="8nf-CG-4MB" secondAttribute="trailing" constant="215" id="8ep-pf-0og"/>
                             <constraint firstItem="OmY-jf-brX" firstAttribute="top" secondItem="YFq-la-YDR" secondAttribute="bottom" constant="8" symbolic="YES" id="9pC-g0-rUq"/>
+                            <constraint firstItem="NnG-dr-y4P" firstAttribute="leading" secondItem="cpZ-xO-zkz" secondAttribute="leading" id="Ap3-3Z-st1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yzj-RR-hya" secondAttribute="trailing" constant="-40" id="Dj1-8g-TmG"/>
+                            <constraint firstItem="NnG-dr-y4P" firstAttribute="trailing" secondItem="YFq-la-YDR" secondAttribute="trailing" id="EAS-GA-E5I"/>
                             <constraint firstItem="W8g-81-ipA" firstAttribute="leading" secondItem="YFq-la-YDR" secondAttribute="leading" id="GoY-7i-kF0"/>
                             <constraint firstItem="qmZ-Z2-3kO" firstAttribute="top" secondItem="OmY-jf-brX" secondAttribute="bottom" constant="8" symbolic="YES" id="Iwv-1C-ppN"/>
                             <constraint firstItem="YFq-la-YDR" firstAttribute="trailing" secondItem="qmZ-Z2-3kO" secondAttribute="trailing" id="JYn-6J-nND"/>
                             <constraint firstItem="5xS-Zn-SGu" firstAttribute="bottom" secondItem="qmZ-Z2-3kO" secondAttribute="bottom" constant="366" id="Kf5-H2-ysa"/>
+                            <constraint firstItem="cpZ-xO-zkz" firstAttribute="centerY" secondItem="OmY-jf-brX" secondAttribute="centerY" id="LMN-p9-PO9"/>
                             <constraint firstAttribute="trailing" secondItem="YFq-la-YDR" secondAttribute="trailing" id="SIb-t1-cfY"/>
                             <constraint firstItem="OmY-jf-brX" firstAttribute="leading" secondItem="qmZ-Z2-3kO" secondAttribute="leading" id="akS-bk-5xY"/>
                             <constraint firstItem="yzj-RR-hya" firstAttribute="leading" secondItem="8nf-CG-4MB" secondAttribute="trailing" constant="6" id="b9D-6O-h1V"/>
+                            <constraint firstItem="cpZ-xO-zkz" firstAttribute="trailing" secondItem="YFq-la-YDR" secondAttribute="trailing" id="cp1-TR-ykf"/>
+                            <constraint firstItem="NnG-dr-y4P" firstAttribute="leading" secondItem="yzj-RR-hya" secondAttribute="leading" id="cpY-Bw-M7d"/>
                             <constraint firstItem="5xS-Zn-SGu" firstAttribute="trailing" secondItem="W8g-81-ipA" secondAttribute="trailing" constant="250" id="dEg-Ln-lrA"/>
                             <constraint firstItem="W8g-81-ipA" firstAttribute="top" secondItem="8nf-CG-4MB" secondAttribute="bottom" constant="8" symbolic="YES" id="dLf-pz-Dfu"/>
                             <constraint firstItem="8nf-CG-4MB" firstAttribute="top" secondItem="5xS-Zn-SGu" secondAttribute="top" id="eAE-Lr-NnN"/>
@@ -91,6 +108,7 @@
                             <constraint firstItem="YFq-la-YDR" firstAttribute="leading" secondItem="OmY-jf-brX" secondAttribute="leading" id="oiF-iY-HWA"/>
                             <constraint firstItem="8nf-CG-4MB" firstAttribute="leading" secondItem="W8g-81-ipA" secondAttribute="leading" id="qcT-J8-cxA"/>
                             <constraint firstItem="YFq-la-YDR" firstAttribute="top" secondItem="W8g-81-ipA" secondAttribute="bottom" constant="8" symbolic="YES" id="wTN-nw-bds"/>
+                            <constraint firstItem="NnG-dr-y4P" firstAttribute="centerY" secondItem="W8g-81-ipA" secondAttribute="centerY" id="zA1-Jt-AiW"/>
                             <constraint firstItem="W8g-81-ipA" firstAttribute="trailing" secondItem="OmY-jf-brX" secondAttribute="trailing" id="zDy-NW-hO0"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="5xS-Zn-SGu"/>
@@ -98,6 +116,8 @@
                     <navigationItem key="navigationItem" id="CnG-7S-EOp"/>
                     <connections>
                         <outlet property="infomationLabel" destination="yzj-RR-hya" id="1Yw-Hz-5gX"/>
+                        <outlet property="music1Label" destination="NnG-dr-y4P" id="K9i-uF-kYK"/>
+                        <outlet property="music2Label" destination="cpZ-xO-zkz" id="mCb-Mg-lZa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MUQ-8W-dbU" userLabel="First Responder" sceneMemberID="firstResponder"/>

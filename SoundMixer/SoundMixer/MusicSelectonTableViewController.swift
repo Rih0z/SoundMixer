@@ -81,23 +81,27 @@ class MusicSelectonTableViewController: UITableViewController {
         print(self.user.SelectionFlag)
         
     }
+    
+    func setSendData()
+    {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        if let indexPath = self.tableView.indexPathForSelectedRow {
+            switch self.user.SelectionFlag {
+            case 1:
+                self.user.Playing_1 = self.Songs[indexPath.row]
+            case 2:
+                self.user.Playing_2 = self.Songs[indexPath.row]
+            default:
+                print("フラグが立っていませんmusicselection")
+                print(self.user.SelectionFlag)
+            }
+            appDelegate.user = self.user
+        }
+        
+    }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    if let indexPath = self.tableView.indexPathForSelectedRow {
-      switch self.user.SelectionFlag {
-      case 1:
-        self.user.Playing_1 = self.Songs[indexPath.row]
-      case 2:
-        self.user.Playing_2 = self.Songs[indexPath.row]
-      default:
-        print("フラグが立っていませんmusicselection")
-        print(self.user.SelectionFlag)
-      }
-        self.user.SelectionFlag = 10
-        appDelegate.user = self.user
-    }
+    setSendData()
   }
 
   override func didReceiveMemoryWarning() {

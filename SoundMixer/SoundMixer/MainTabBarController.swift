@@ -20,15 +20,12 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         //self.selectedIndex = 0
 
     }
- 
- 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
         self.receiveData()
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -43,7 +40,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     func receiveData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user
-
     }
     
     override func viewWillAppear(_ animated: Bool) {

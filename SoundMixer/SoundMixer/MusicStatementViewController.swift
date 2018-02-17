@@ -13,7 +13,10 @@ class MusicStatementViewController: UIViewController {
   var user:User = User()
   @IBOutlet weak var infomationLabel: UILabel!
 
-  @IBAction func pickPlaylist1(_ sender: Any) {
+    @IBOutlet weak var music2Label: UILabel!
+    @IBOutlet weak var music1Label: UILabel!
+    
+    @IBAction func pickPlaylist1(_ sender: Any) {
     //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
     self.user.SelectionFlag = 1
     self.CheckPlaylist()
@@ -56,7 +59,14 @@ class MusicStatementViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.navigationController?.setNavigationBarHidden(false, animated: false)
-
+    if (self.user.Playing_1 != nil) {
+        music1Label.text = self.user.Playing_1.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        
+    }
+    if (self.user.Playing_2 != nil) {
+        music2Label.text = self.user.Playing_2.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        
+    }
     //ViewTitle.text = self.title
 
     // Do any additional setup after loading the view.
@@ -70,14 +80,17 @@ class MusicStatementViewController: UIViewController {
   }
 
   override func viewWillAppear(_ animated: Bool) {
-
     super.viewDidDisappear(animated)
-    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
-    {
-      self.user = appDelegate.user
-      self.title = appDelegate.user.Name
-    }
+    self.receiveData()
   }
+    func receiveData(){
+        if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+        {
+            self.user = appDelegate.user
+            self.title = appDelegate.user.Name
+        }
+        
+    }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
 
