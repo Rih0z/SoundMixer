@@ -18,6 +18,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     @IBAction func Play(_ sender: Any) {
         // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
         print("play")
+        
         self.PlayingSong = self.user.Playing_1
         print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)!)
         if(PlayingSong != nil){
@@ -50,13 +51,30 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
     }
     override func viewWillAppear(_ animated: Bool) {
-        
         super.viewDidDisappear(animated)
+        self.receiveData()
+    }
+    func receiveData(){
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
         {
             self.user = appDelegate.user
-            
         }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.user.BeforeView = "player"
+        self.setSendData()
+        print("player sendData finished")
+    }
+    func setSendData(){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.user = self.user
+        if(self.user.Playing_1 != nil){
+            let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+            print("player music")
+            print(music1)
+        }
+        
     }
     override func viewDidLoad() {
         super.viewDidLoad()

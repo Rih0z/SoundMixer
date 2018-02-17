@@ -101,7 +101,14 @@ class MusicSelectonTableViewController: UITableViewController {
     }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+     self.user.BeforeView = "music selection"
     setSendData()
+    if(self.user.Playing_1 != nil)
+    {
+        let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        print("musicsselection music...")
+        print(music1)
+    }
   }
 
   override func didReceiveMemoryWarning() {

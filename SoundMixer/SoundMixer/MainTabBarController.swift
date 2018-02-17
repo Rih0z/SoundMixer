@@ -13,6 +13,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     var Id:Int!
     var PlayingSong:MPMediaItem!
     var user:User = User()
+    var musiclabel1 :String?
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -24,7 +25,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-        self.receiveData()
+      
     }
     
     override func didReceiveMemoryWarning() {
@@ -40,14 +41,40 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     func receiveData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user
+        print("maintabbar now! beforedata is ...")
+        if self.user.BeforeView != nil{
+              print(self.user.BeforeView!)
+        }
+      
+        if(self.user.Playing_1 != nil){
+            let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+            print("maintabber music")
+            print(music1)
+            self.musiclabel1? = music1
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.user.BeforeView = "maintabber"
+        self.setSendData()
+    }
+    func setSendData(){
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.user = self.user
     }
     
     override func viewWillAppear(_ animated: Bool) {
+          self.receiveData()
+        
         if (self.user.SelectionFlag != 0)
         {
             self.user.SelectionFlag = 0
             self.selectedIndex = 1
-            
+        }
+        if(self.user.Playing_1 != nil){
+            let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+            print("maintabber willappear music")
+            print(music1)
         }
     }
  override func prepare(for segue: UIStoryboardSegue, sender: Any?){

@@ -59,6 +59,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        user.BeforeView = "playliistselection"
         self.setSendData()
     }
     func setSendData(){
@@ -67,7 +68,6 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
             appDelegate.user = self.user
             appDelegate.Playlists = self.Playlists[indexPath.row]
         }
-        
     }
     override func viewWillAppear(_ animated: Bool) {
         

@@ -85,12 +85,18 @@ class UserViewController: UITableViewController{
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        setSendData()
+
+    }
+    func setSendData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         if let indexPath = self.tableView.indexPathForSelectedRow {
             let user = users[indexPath.row]
+            user.BeforeView = "user view"
             appDelegate.user.Id = user.Id
             appDelegate.user.Name = user.Name
         }
+        
     }
     /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?){

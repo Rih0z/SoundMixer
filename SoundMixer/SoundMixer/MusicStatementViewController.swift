@@ -35,6 +35,7 @@ class MusicStatementViewController: UIViewController {
         if let playlists = myPlaylistQuery.collections {
             
             print(playlists.count)
+            self.user.BeforeView = "music statement"
             self.sendDataSet()
             self.goNextPage(page: "PlaylistSelection")
             
@@ -59,14 +60,18 @@ class MusicStatementViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.navigationController?.setNavigationBarHidden(false, animated: false)
+/*
     if (self.user.Playing_1 != nil) {
-        music1Label.text = self.user.Playing_1.value(forProperty: MPMediaItemPropertyTitle)! as! String
-        
+        let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        print(music1)
+        music1Label.text = music1
     }
     if (self.user.Playing_2 != nil) {
-        music2Label.text = self.user.Playing_2.value(forProperty: MPMediaItemPropertyTitle)! as! String
-        
+        let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        print(music2)
+        music2Label.text = music2
     }
+ */
     //ViewTitle.text = self.title
 
     // Do any additional setup after loading the view.
@@ -82,6 +87,21 @@ class MusicStatementViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
+    print("musicstatement recieve data finished")
+    print("musicstatement before view is...")
+    print(self.user.BeforeView)
+    if(self.user.Playing_1 != nil){
+        let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        print("musicstatement music")
+        print(music1)
+        music1Label.text = music1
+    }
+    if(self.user.Playing_2 != nil){
+        let music2 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        print("musicstatement music")
+        print(music2)
+        music2Label.text = music2
+    }
   }
     func receiveData(){
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
@@ -89,7 +109,11 @@ class MusicStatementViewController: UIViewController {
             self.user = appDelegate.user
             self.title = appDelegate.user.Name
         }
-        
+        if(self.user.Playing_1 != nil){
+            let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+            print("musicstatement player music")
+            print(music1)
+        }
     }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
