@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SoundMixer/MusicSelectonTableViewController.swift"
+            timestampString = "540575014.352337"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "MusicSelectonTableViewController"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SoundMixer.MusicSelectonTableViewController.SongNum.getter : Swift.ImplicitlyUnwrappedOptional&lt;Swift.Int&gt;"
+                  moduleName = "SoundMixer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Rih0z/work/npo/SoundMixer/SoundMixer/SoundMixer/MusicSelectonTableViewController.swift"
+                  timestampString = "540575015.750757"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "84">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SoundMixer.MusicSelectonTableViewController.SongNum.setter : Swift.ImplicitlyUnwrappedOptional&lt;Swift.Int&gt;"
+                  moduleName = "SoundMixer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Rih0z/work/npo/SoundMixer/SoundMixer/SoundMixer/MusicSelectonTableViewController.swift"
+                  timestampString = "540575015.759792"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "122">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SoundMixer.MusicSelectonTableViewController.init(style: __C.UITableViewStyle) -&gt; SoundMixer.MusicSelectonTableViewController"
+                  moduleName = "SoundMixer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Rih0z/work/npo/SoundMixer/SoundMixer/SoundMixer/MusicSelectonTableViewController.swift"
+                  timestampString = "540575015.764356"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "186">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SoundMixer.MusicSelectonTableViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__ObjC.Bundle&gt;) -&gt; SoundMixer.MusicSelectonTableViewController"
+                  moduleName = "SoundMixer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Rih0z/work/npo/SoundMixer/SoundMixer/SoundMixer/MusicSelectonTableViewController.swift"
+                  timestampString = "540575015.768546"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "242">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SoundMixer.MusicSelectonTableViewController.init(coder: __ObjC.NSCoder) -&gt; Swift.Optional&lt;SoundMixer.MusicSelectonTableViewController&gt;"
+                  moduleName = "SoundMixer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/Rih0z/work/npo/SoundMixer/SoundMixer/SoundMixer/MusicSelectonTableViewController.swift"
+                  timestampString = "540575015.772953"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "167">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

@@ -50,13 +50,9 @@ class MusicSelectonTableViewController: UITableViewController {
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem
     //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
-
-
-
   }
 
   override func viewWillAppear(_ animated: Bool) {
-
     super.viewDidDisappear(animated)
     self.receiveData()
     let songs = self.Playlist.items
@@ -69,9 +65,7 @@ class MusicSelectonTableViewController: UITableViewController {
       self.SongName = songTitle! as! String
       self.SongNames.append(self.SongName)
       self.Songs.append(song)
-
     }
-
   }
     func receiveData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -79,7 +73,6 @@ class MusicSelectonTableViewController: UITableViewController {
         self.Playlist = appDelegate.Playlists
         print("Selectionflag musicselection")
         print(self.user.SelectionFlag)
-        
     }
     
     func setSendData()
@@ -97,7 +90,6 @@ class MusicSelectonTableViewController: UITableViewController {
             }
             appDelegate.user = self.user
         }
-        
     }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
@@ -185,5 +177,4 @@ class MusicSelectonTableViewController: UITableViewController {
   // Pass the selected object to the new view controller.
   }
   */
-
 }
