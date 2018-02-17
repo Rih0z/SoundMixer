@@ -65,9 +65,17 @@ class UserViewController: UITableViewController{
     // Cell が選択された場合
     override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
         let storyboard: UIStoryboard = UIStoryboard(name: "MainTabBar", bundle: nil)
+        let secondViewController = storyboard.instantiateInitialViewController()
+        
+        self.navigationController?.pushViewController(secondViewController!, animated: true)
+
+        
+        /*
+        let storyboard: UIStoryboard = UIStoryboard(name: "MainTabBar", bundle: nil)
         let nextView = storyboard.instantiateInitialViewController()
         present(nextView!, animated: true, completion: nil)
-        //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
+ */
+ //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
     }
     
     

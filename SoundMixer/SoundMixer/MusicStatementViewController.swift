@@ -48,6 +48,8 @@ class MusicStatementViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+
         //ViewTitle.text = self.title
 
         // Do any additional setup after loading the view.
