@@ -9,5 +9,5 @@
 import Foundation
 
 @objc protocol MainTabBarDelegate {
-    func didSelectTab(mainTabBarController: MainTabBarController)
+  func didSelectTab(mainTabBarController: MainTabBarController)
 }

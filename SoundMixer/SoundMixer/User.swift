@@ -9,10 +9,10 @@
 import Foundation
 import MediaPlayer
 class User {
-    var Name:String!
-    var Id:Int!
-    var Playing_1:MPMediaItem?
-    var Playing_2:MPMediaItem?
-    var SelectionFlag:Int = 0 
-    var BeforeView:String?
+  var Name:String!
+  var Id:Int!
+  var Playing_1:MPMediaItem?
+  var Playing_2:MPMediaItem?
+  var SelectionFlag:Int = 0 
+  var BeforeView:String?
 }
