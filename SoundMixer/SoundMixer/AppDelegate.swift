@@ -34,6 +34,7 @@ import MediaPlayer
   }
   func setNabivigationBar()
   {
+    //デバッグの時ここで始めたいビューを指定できる
     let FirstViewController = UserViewController()
     nc = UINavigationController(rootViewController: FirstViewController)
     self.window = UIWindow(frame: UIScreen.main.bounds)

@@ -44,6 +44,17 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rectBtn.backgroundColor = UIColor.red
     self.view.addSubview(rectBtn)
     
+    //初期の左側ボタン
+    let oval = MyShapeLayer()
+    oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
+    oval.drawOval(lineWidth:1)
+    self.view.layer.addSublayer(oval)
+    
+    let oval2 = MyShapeLayer()
+    oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
+    oval2.drawOval(lineWidth:1)
+    self.view.layer.addSublayer(oval2)
+    
     //ピンチ
     let pinch = UIPinchGestureRecognizer()
     pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
