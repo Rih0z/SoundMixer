@@ -20,6 +20,8 @@
 		90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2A20330E9300D46AF9 /* UserViewController.swift */; };
 		905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */; };
 		905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B820357C73004BE779 /* MainTabBarDelegate.swift */; };
+		906A7CD72039A53D008CF890 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906A7CD62039A53D008CF890 /* QuartzCore.framework */; };
+		906A7CD92039A7DC008CF890 /* MyShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */; };
 		9081D44B203677B40085A8EA /* PlaylistSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */; };
 		9081D44D203678530085A8EA /* MusicSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D44C203678530085A8EA /* MusicSelection.storyboard */; };
 		9081D45120367A040085A8EA /* Player.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D45020367A040085A8EA /* Player.storyboard */; };
@@ -45,6 +47,8 @@
 		90577E2A20330E9300D46AF9 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSelectonTableViewController.swift; sourceTree = "<group>"; };
 		905E86B820357C73004BE779 /* MainTabBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarDelegate.swift; sourceTree = "<group>"; };
+		906A7CD62039A53D008CF890 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShapeLayer.swift; sourceTree = "<group>"; };
 		9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaylistSelection.storyboard; sourceTree = "<group>"; };
 		9081D44C203678530085A8EA /* MusicSelection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MusicSelection.storyboard; sourceTree = "<group>"; };
 		9081D45020367A040085A8EA /* Player.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Player.storyboard; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				906A7CD72039A53D008CF890 /* QuartzCore.framework in Frameworks */,
 				903661D020342701008D2B39 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,6 +74,7 @@
 		903661CE20342700008D2B39 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				906A7CD62039A53D008CF890 /* QuartzCore.framework */,
 				903661CF20342701008D2B39 /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
@@ -97,6 +103,7 @@
 				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				905E86B820357C73004BE779 /* MainTabBarDelegate.swift */,
 				90577E2820330C4100D46AF9 /* MetronomeViewController.swift */,
+				906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */,
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
 				90577E142032E0ED00D46AF9 /* PlayerViewController.swift */,
 				90577E162032E0ED00D46AF9 /* Main.storyboard */,
@@ -206,6 +213,7 @@
 				90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */,
 				905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */,
 				903661C920340B63008D2B39 /* PlaylistSelectionViewController.swift in Sources */,
+				906A7CD92039A7DC008CF890 /* MyShapeLayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
