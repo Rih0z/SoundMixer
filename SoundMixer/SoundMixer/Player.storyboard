@@ -19,12 +19,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NNb-WI-KvC">
-                                <rect key="frame" x="156" y="366" width="62" height="30"/>
-                                <state key="normal" title="一時停止"/>
+                                <rect key="frame" x="168" y="366" width="38" height="30"/>
+                                <state key="normal" title="Play2"/>
+                                <connections>
+                                    <action selector="Play2:" destination="r8q-XZ-Qfp" eventType="touchUpInside" id="Prb-JA-Rrz"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-eX-w03">
-                                <rect key="frame" x="173" y="318" width="30" height="30"/>
-                                <state key="normal" title="Play"/>
+                                <rect key="frame" x="167" y="318" width="36" height="30"/>
+                                <state key="normal" title="Play1"/>
                                 <connections>
                                     <action selector="Play:" destination="r8q-XZ-Qfp" eventType="touchUpInside" id="2yp-P5-qg7"/>
                                 </connections>
