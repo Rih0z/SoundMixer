@@ -10,8 +10,18 @@
 import UIKit
 
 class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
+ // let dateLabel = UILabel()  // 日時表示ラベル
+  var timer: Timer!
+  var leftoval: CALayer!
+  var rightoval: CALayer!
+  var flag = 0
+  // 日時フォーマット
+  var dateFormatter: DateFormatter{
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+    return formatter
+  }
 
-  
   private var selectLayer:CALayer!
   private var touchLastPoint:CGPoint!
   
@@ -20,12 +30,16 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    /*
+     dateLabel.frame = view.bounds
+     dateLabel.textAlignment = .center
+     view.addSubview(dateLabel)
+    */
     effectiveScale = 1.0
     
     let width = self.view.bounds.width
     let height = self.view.bounds.height
-    
+    /*
     //丸を生成するボタン
     let ovalBtn = UIButton()
     ovalBtn.frame = CGRect(x:0,y:0,width:100,height:50)
@@ -43,27 +57,56 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rectBtn.setTitle("四角",for:.normal)
     rectBtn.backgroundColor = UIColor.red
     self.view.addSubview(rectBtn)
-    
+    */
     //初期の左側ボタン
     let oval = MyShapeLayer()
     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
     oval.drawOval(lineWidth:1)
     self.view.layer.addSublayer(oval)
-    
+    self.leftoval = oval
+    //初期の右側ボタン
     let oval2 = MyShapeLayer()
     oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
     oval2.drawOval(lineWidth:1)
     self.view.layer.addSublayer(oval2)
+    self.rightoval = oval2
     
     //ピンチ
     let pinch = UIPinchGestureRecognizer()
     pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
     pinch.delegate = self
     self.view.addGestureRecognizer(pinch)
+
+    // 初回
+    //updateDateLabel()
     
+    // 一定間隔で実行
+   // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
+    timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    timer.fire()
   }
   
-  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
+  @objc func update(tm: Timer) {
+    // do something
+    
+    if self.flag == 0 {
+    self.blueBorder(layer: self.leftoval)
+      self.flag = 1
+    }else {
+      self.blueBorder(layer: self.rightoval)
+      self.flag = 0
+    }
+    
+  }
+  /* 日時表示ラベル更新メソッド
+  @objc func updateDateLabel(){
+    let now = Date()
+    dateLabel.text = dateFormatter.string(from:now)
+  }*/
   /************* pinch ***************/
   @objc func pinchGesture(sender:UIPinchGestureRecognizer){
     effectiveScale = beginGestureScale * sender.scale
@@ -111,6 +154,15 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     selectLayer = layer
   }
   
+  @objc func blueBorder(layer : CALayer?) {
+    if((layer == self.view.layer) || (layer == nil)){
+      return
+    }
+    layer?.borderWidth = 4.0
+    layer?.borderColor = UIColor.blue.cgColor
+    
+  }
+  
   //タッチをした時
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     //すでに選択されているレイヤーがあるかもしれないのでnilにしておく
@@ -125,28 +177,31 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     touchLastPoint = touchPoint
     //選択されたレイヤーをselectLayerにいれる
     self.selectLayerFunc(layer:layer)
+    if(selectLayer != nil){
+    selectLayer.borderWidth = 3.0
+    selectLayer.borderColor = UIColor.green.cgColor
+    }
   }
-  
   //タッチが動いた時
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     let touch:UITouch = touches.first!
     let touchPoint:CGPoint = touch.location(in:self.view)
     //直前の座標との差を取得
-    let touchOffsetPoint:CGPoint = CGPoint(x:touchPoint.x - touchLastPoint.x,
-                                           y:touchPoint.y - touchLastPoint.y)
+   // let touchOffsetPoint:CGPoint = CGPoint(x:touchPoint.x - touchLastPoint.x,
+ //                                          y:touchPoint.y - touchLastPoint.y)
     touchLastPoint = touchPoint
     
     if (selectLayer != nil){
       //hitしたレイヤーがあった場合
-      let px:CGFloat = selectLayer.position.x
-      let py:CGFloat = selectLayer.position.y
+    //  let px:CGFloat = selectLayer.position.x
+    //  let py:CGFloat = selectLayer.position.y
       //レイヤーを移動させる
-      CATransaction.begin()
+    //  CATransaction.begin()
       CATransaction.setDisableActions(true)
-      selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
+     // selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
       selectLayer.borderWidth = 3.0
       selectLayer.borderColor = UIColor.green.cgColor
-      CATransaction.commit()
+   //   CATransaction.commit()
     }
   }
   //タッチを終えた時
@@ -162,9 +217,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       selectLayer.borderWidth = 0
     }
   }
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
+
 
 }
