@@ -15,6 +15,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   var leftoval: CALayer!
   var rightoval: CALayer!
   var flag = 0
+  var tmpspeed:Double = 3.0
   // 日時フォーマット
   var dateFormatter: DateFormatter{
     let formatter = DateFormatter()
@@ -39,13 +40,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     
     let width = self.view.bounds.width
     let height = self.view.bounds.height
-    /*
+    
     //丸を生成するボタン
     let ovalBtn = UIButton()
     ovalBtn.frame = CGRect(x:0,y:0,width:100,height:50)
     ovalBtn.center = CGPoint(x:width / 3,y:height - 100)
     ovalBtn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
-    ovalBtn.setTitle("丸",for:.normal)
+    ovalBtn.setTitle("速くする",for:.normal)
     ovalBtn.backgroundColor = UIColor.green
     self.view.addSubview(ovalBtn)
     
@@ -54,10 +55,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rectBtn.frame = CGRect(x:0,y:0,width:100,height:50)
     rectBtn.center = CGPoint(x:width * 2 / 3,y:height - 100)
     rectBtn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
-    rectBtn.setTitle("四角",for:.normal)
+    rectBtn.setTitle("遅くする",for:.normal)
     rectBtn.backgroundColor = UIColor.red
     self.view.addSubview(rectBtn)
-    */
+    
     //初期の左側ボタン
     let oval = MyShapeLayer()
     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
@@ -82,10 +83,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     
     // 一定間隔で実行
    // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
-    timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-    timer.fire()
+    self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer.fire()
   }
-  
+  func timerReset(){
+    self.timer.invalidate()
+    self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer.fire()
+  }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
@@ -125,18 +130,30 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   /************** Button Tapped ***********/
   @objc func ovalBtnTapped(sender:UIButton){
-    //丸を描く
-    let oval = MyShapeLayer()
+    //丸を描く  速くするボタンをタップされたら
+    /*let oval = MyShapeLayer()
     oval.frame = CGRect(x:30,y:30,width:80,height:80)
     oval.drawOval(lineWidth:1)
     self.view.layer.addSublayer(oval)
+     */
+    if(self.tmpspeed >= 0.1){
+    self.tmpspeed -= 0.1
+    }
+    self.timerReset()
+    
   }
   @objc func rectBtnTapped(sender:UIButton){
-    //四角を描く
+    //四角を描く 遅くするボタンをタップされたら
+    /*
     let rect = MyShapeLayer()
     rect.frame = CGRect(x:40,y:40,width:50,height:50)
     rect.drawRect(lineWidth:1)
     self.view.layer.addSublayer(rect)
+    */
+    if(self.tmpspeed <= 5.0){
+      self.tmpspeed += 0.1
+    }
+    self.timerReset()
   }
   
   
