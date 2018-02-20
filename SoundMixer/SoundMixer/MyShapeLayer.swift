@@ -29,4 +29,13 @@ class MyShapeLayer: CALayer {
     self.addSublayer(ovalShapeLayer)
   }
   
+  @objc func clearAll(lineWidth:CGFloat){
+    let rect = CAShapeLayer()
+    rect.strokeColor = UIColor.white.cgColor
+    rect.fillColor = UIColor.white.cgColor
+    rect.lineWidth = lineWidth
+    rect.path = UIBezierPath(rect:CGRect(x:0,y:0,width:self.frame.width,height:self.frame.height)).cgPath
+    self.addSublayer(rect)
+  }
+
 }

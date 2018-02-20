@@ -16,6 +16,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   var rightoval: CALayer!
   var flag = 0
   var tmpspeed:Double = 3.0
+  var tmpmax:Double = 5.05
+  var tmpmin:Double = 0.15
   // 日時フォーマット
   var dateFormatter: DateFormatter{
     let formatter = DateFormatter()
@@ -36,8 +38,21 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
      dateLabel.textAlignment = .center
      view.addSubview(dateLabel)
     */
-    effectiveScale = 1.0
     
+    self.drawSetUp()
+    // 初回
+    //updateDateLabel()
+    
+    // 一定間隔で実行
+   // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
+    self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer.fire()
+    
+  }
+  func drawSetUp(){
+    self.flag = 0 
+    effectiveScale = 1.0
+    self.drawTimer()
     let width = self.view.bounds.width
     let height = self.view.bounds.height
     
@@ -77,16 +92,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
     pinch.delegate = self
     self.view.addGestureRecognizer(pinch)
-
-    // 初回
-    //updateDateLabel()
     
-    // 一定間隔で実行
-   // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
-    self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-    self.timer.fire()
   }
   func timerReset(){
+    self.reset()
+    self.drawSetUp()
     self.timer.invalidate()
     self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
@@ -136,11 +146,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     oval.drawOval(lineWidth:1)
     self.view.layer.addSublayer(oval)
      */
-    if(self.tmpspeed >= 0.1){
-    self.tmpspeed -= 0.1
+    if(self.tmpspeed > self.tmpmin){
+      self.tmpspeed -= 0.1
+
+      self.timerReset()
     }
-    self.timerReset()
-    
   }
   @objc func rectBtnTapped(sender:UIButton){
     //四角を描く 遅くするボタンをタップされたら
@@ -150,13 +160,28 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rect.drawRect(lineWidth:1)
     self.view.layer.addSublayer(rect)
     */
-    if(self.tmpspeed <= 5.0){
+    if(self.tmpspeed <= self.tmpmax){
       self.tmpspeed += 0.1
+      self.timerReset()
+      
     }
-    self.timerReset()
+    
   }
-  
-  
+  func reset(){
+    let rect = MyShapeLayer()
+    rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
+    rect.clearAll(lineWidth:1)
+    self.view.layer.addSublayer(rect)
+  }
+  func drawTimer(){
+    let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
+    var speed = self.map(x:self.tmpspeed,in_min:self.tmpmax,in_max:self.tmpmin,out_min:self.tmpmin,out_max:self.tmpmax)
+    if(speed > 5.0){
+      speed = 5.0
+    }
+    drawText(lineWidth: flame, text: "SPEED : " + String( floor(speed*10)/10 ))
+  }
+
   /************** Touch Action ****************/
   func hitLayer(touch:UITouch) -> CALayer{
     var touchPoint:CGPoint = touch.location(in:self.view)
@@ -221,6 +246,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
    //   CATransaction.commit()
     }
   }
+  @objc func drawText(lineWidth:CGPoint, text:String){
+    let label = UILabel()
+    label.text = text
+    label.font = UIFont(name: "HiraMinProN-W3", size: 20)
+    label.sizeToFit()
+    label.center = lineWidth
+    self.view.addSubview(label)
+  }
   //タッチを終えた時
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if(selectLayer != nil){
@@ -233,6 +266,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if(selectLayer != nil){
       selectLayer.borderWidth = 0
     }
+  }
+  func map(x:Double , in_min:Double , in_max:Double,out_min:Double,out_max:Double )-> Double{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
   }
 
 
