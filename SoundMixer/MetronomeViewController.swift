@@ -68,7 +68,50 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rectBtn.setTitle("遅くする",for:.normal)
     rectBtn.backgroundColor = UIColor.red
     self.view.addSubview(rectBtn)
+
+    drawRects()
+    //ピンチ
+    let pinch = UIPinchGestureRecognizer()
+    pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
+    pinch.delegate = self
+    self.view.addGestureRecognizer(pinch)
     
+  }
+  func timerReset(){
+    self.setupflag = true
+   // self.reset()
+   // self.drawSetUp()
+    self.borderClear()
+    self.timer.invalidate()
+    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer.fire()
+  }
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
+  @objc func update(tm: Timer) {
+    // do something
+    //self.clearRects()
+    //self.drawRects()
+    //self.drawSetUp()
+    if self.flag {
+    self.blueBorder(layer: self.leftoval)
+      self.whiteBorder(layer: self.rightoval)
+      self.flag = false
+    }else {
+      self.blueBorder(layer: self.rightoval)
+      self.whiteBorder(layer: self.leftoval)
+      self.flag = true
+    }
+  }
+  @objc func borderClear(){
+    self.whiteBorder(layer: self.rightoval)
+    self.whiteBorder(layer: self.leftoval)
+  }
+  @objc func drawRects(){
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
     //初期の左側ボタン
     let oval = MyShapeLayer()
     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
@@ -82,42 +125,12 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.view.layer.addSublayer(oval2)
     self.rightoval = oval2
     
-    //ピンチ
-    let pinch = UIPinchGestureRecognizer()
-    pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
-    pinch.delegate = self
-    self.view.addGestureRecognizer(pinch)
-    
-  }
-  func timerReset(){
-    self.setupflag = true
-    self.reset()
-    self.drawSetUp()
-    self.timer.invalidate()
-    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-    self.timer.fire()
-  }
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
-  @objc func update(tm: Timer) {
-    // do something
-    self.reset()
-    self.drawSetUp()
-    if self.flag {
-    self.blueBorder(layer: self.leftoval)
-      self.flag = false
-    }else {
-      self.blueBorder(layer: self.rightoval)
-      self.flag = true
-    }
   }
   @objc func onChange(_ sender: UISlider) {
     // スライダーの値が変更された時の処理
 //    print(sender.value)
  //   slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
-    self.tmpspeed = self.map(x: sender.value, in_min: sender.minimumValue, in_max: sender.maximumValue , out_min: self.tmpmin , out_max: self.tmpmax )
+    self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
     self.timerReset()
   }
   /************* pinch ***************/
@@ -171,6 +184,21 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rect.clearAll(lineWidth:1)
     self.view.layer.addSublayer(rect)
   }
+  func clearRects(){
+    let rect = MyShapeLayer()
+    rect.frame = CGRect(x:0,y:self.view.bounds.height/2 ,width:self.view.bounds.width,height:100)
+    rect.clearAll(lineWidth:1)
+    self.view.layer.addSublayer(rect)
+    /*
+     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
+     oval.drawOval(lineWidth:1)
+     self.view.layer.addSublayer(oval)
+     self.leftoval = oval
+     //初期の右側ボタン
+     let oval2 = MyShapeLayer()
+     oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
+     */
+  }
   func drawTimer(){
     let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
     var speed = self.map(x:self.tmpspeed,in_min:self.tmpmax,in_max:self.tmpmin,out_min:self.tmpmin,out_max:self.tmpmax)
@@ -202,9 +230,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     }
     layer?.borderWidth = 4.0
     layer?.borderColor = UIColor.blue.cgColor
-    
   }
-  
+  @objc func whiteBorder(layer : CALayer?) {
+    if((layer == self.view.layer) || (layer == nil)){
+      return
+    }
+    layer?.borderWidth = 4.0
+    layer?.borderColor = UIColor.white.cgColor
+  }
   //タッチをした時
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     //すでに選択されているレイヤーがあるかもしれないのでnilにしておく
