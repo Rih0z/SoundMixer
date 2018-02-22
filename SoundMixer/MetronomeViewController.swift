@@ -29,54 +29,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    
     self.drawSetUp()
-    
-    
     // 一定間隔で実行
    // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
     self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
     
   }
-  func drawSetUp(){
-    if(self.setupflag){
-      self.flag = true
-      self.setupflag = false
-    }
-    effectiveScale = 1.0
-    self.drawTimer()
-    
-    let width = self.view.bounds.width
-    let height = self.view.bounds.height
-    
-    //丸を生成するボタン
-    let ovalBtn = UIButton()
-    ovalBtn.frame = CGRect(x:0,y:0,width:100,height:50)
-    ovalBtn.center = CGPoint(x:width / 3,y:height - 100)
-    ovalBtn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
-    ovalBtn.setTitle("速くする",for:.normal)
-    ovalBtn.backgroundColor = UIColor.green
-    self.view.addSubview(ovalBtn)
-    
-    //四角を生成するボタン
-    let rectBtn = UIButton()
-    rectBtn.frame = CGRect(x:0,y:0,width:100,height:50)
-    rectBtn.center = CGPoint(x:width * 2 / 3,y:height - 100)
-    rectBtn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
-    rectBtn.setTitle("遅くする",for:.normal)
-    rectBtn.backgroundColor = UIColor.red
-    self.view.addSubview(rectBtn)
 
-    drawRects()
-    //ピンチ
-    let pinch = UIPinchGestureRecognizer()
-    pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
-    pinch.delegate = self
-    self.view.addGestureRecognizer(pinch)
-    
-  }
   func timerReset(){
     self.setupflag = true
    // self.reset()
@@ -85,6 +45,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.timer.invalidate()
     self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
+    self.drawSpeed()
   }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -92,39 +53,17 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   }
   @objc func update(tm: Timer) {
     // do something
-    //self.clearRects()
-    //self.drawRects()
-    //self.drawSetUp()
     if self.flag {
     self.blueBorder(layer: self.leftoval)
       self.whiteBorder(layer: self.rightoval)
+      self.drawRight()
       self.flag = false
     }else {
       self.blueBorder(layer: self.rightoval)
       self.whiteBorder(layer: self.leftoval)
+      self.drawLeft()
       self.flag = true
     }
-  }
-  @objc func borderClear(){
-    self.whiteBorder(layer: self.rightoval)
-    self.whiteBorder(layer: self.leftoval)
-  }
-  @objc func drawRects(){
-    let width = self.view.bounds.width
-    let height = self.view.bounds.height
-    //初期の左側ボタン
-    let oval = MyShapeLayer()
-    oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
-    oval.drawOval(lineWidth:1)
-    self.view.layer.addSublayer(oval)
-    self.leftoval = oval
-    //初期の右側ボタン
-    let oval2 = MyShapeLayer()
-    oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
-    oval2.drawOval(lineWidth:1)
-    self.view.layer.addSublayer(oval2)
-    self.rightoval = oval2
-    
   }
   @objc func onChange(_ sender: UISlider) {
     // スライダーの値が変更された時の処理
@@ -151,26 +90,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   /************** Button Tapped ***********/
   @objc func ovalBtnTapped(sender:UIButton){
-    //丸を描く  速くするボタンをタップされたら
-    /*let oval = MyShapeLayer()
-    oval.frame = CGRect(x:30,y:30,width:80,height:80)
-    oval.drawOval(lineWidth:1)
-    self.view.layer.addSublayer(oval)
-     */
     if(self.tmpspeed > self.tmpmin){
       self.tmpspeed -= 0.1
-
       self.timerReset()
     }
   }
   @objc func rectBtnTapped(sender:UIButton){
     //四角を描く 遅くするボタンをタップされたら
-    /*
-    let rect = MyShapeLayer()
-    rect.frame = CGRect(x:40,y:40,width:50,height:50)
-    rect.drawRect(lineWidth:1)
-    self.view.layer.addSublayer(rect)
-    */
     if(self.tmpspeed <= self.tmpmax){
       self.tmpspeed += 0.1
       self.timerReset()
@@ -178,52 +104,86 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     }
     
   }
-  func reset(){
-    let rect = MyShapeLayer()
-    rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
-    rect.clearAll(lineWidth:1)
-    self.view.layer.addSublayer(rect)
-  }
-  func clearRects(){
-    let rect = MyShapeLayer()
-    rect.frame = CGRect(x:0,y:self.view.bounds.height/2 ,width:self.view.bounds.width,height:100)
-    rect.clearAll(lineWidth:1)
-    self.view.layer.addSublayer(rect)
-    /*
-     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
-     oval.drawOval(lineWidth:1)
-     self.view.layer.addSublayer(oval)
-     self.leftoval = oval
-     //初期の右側ボタン
-     let oval2 = MyShapeLayer()
-     oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
-     */
-  }
+
+  //**********draw***************
   func drawTimer(){
-    let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
+    let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
+    drawSlider(linewidth: sliderFlame)
+  }
+  func drawSpeed(){
     var speed = self.map(x:self.tmpspeed,in_min:self.tmpmax,in_max:self.tmpmin,out_min:self.tmpmin,out_max:self.tmpmax)
     if(speed > 5.0){
       speed = 5.0
     }
+    let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
     drawText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
-    let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
-    drawSlider(linewidth: sliderFlame)
   }
-
-  /************** Touch Action ****************/
-  func hitLayer(touch:UITouch) -> CALayer{
-    var touchPoint:CGPoint = touch.location(in:self.view)
-    touchPoint = self.view.layer.convert(touchPoint, to: self.view.layer.superlayer)
-    return self.view.layer.hitTest(touchPoint)!
-  }
-  func selectLayerFunc(layer:CALayer?) {
-    if((layer == self.view.layer) || (layer == nil)){
-      selectLayer = nil
-      return
+  func drawSetUp(){
+    if(self.setupflag){
+      self.flag = true
+      self.setupflag = false
     }
-    selectLayer = layer
+    effectiveScale = 1.0
+    self.drawTimer()
+    self.drawSpeed()
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    
+    //丸を生成するボタン
+    let ovalBtn = UIButton()
+    ovalBtn.frame = CGRect(x:0,y:0,width:100,height:50)
+    ovalBtn.center = CGPoint(x:width / 3,y:height - 100)
+    ovalBtn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
+    ovalBtn.setTitle("速くする",for:.normal)
+    ovalBtn.backgroundColor = UIColor.green
+    self.view.addSubview(ovalBtn)
+    
+    //四角を生成するボタン
+    let rectBtn = UIButton()
+    rectBtn.frame = CGRect(x:0,y:0,width:100,height:50)
+    rectBtn.center = CGPoint(x:width * 2 / 3,y:height - 100)
+    rectBtn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
+    rectBtn.setTitle("遅くする",for:.normal)
+    rectBtn.backgroundColor = UIColor.red
+    self.view.addSubview(rectBtn)
+    
+    drawRects()
+    //ピンチ
+    let pinch = UIPinchGestureRecognizer()
+    pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
+    pinch.delegate = self
+    self.view.addGestureRecognizer(pinch)
+    
   }
-  
+  @objc func borderClear(){
+    self.whiteBorder(layer: self.rightoval)
+    self.whiteBorder(layer: self.leftoval)
+  }
+  @objc func drawRects(){
+    drawRight()
+    drawLeft()
+  }
+  @objc func drawLeft(){
+   // let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    //初期の左側ボタン
+    let oval = MyShapeLayer()
+    oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
+    oval.drawOval(lineWidth:1)
+    self.view.layer.addSublayer(oval)
+    self.leftoval = oval
+  }
+  @objc func drawRight(){
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    //初期の右側ボタン
+    let oval2 = MyShapeLayer()
+    oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
+    oval2.drawOval(lineWidth:1)
+    self.view.layer.addSublayer(oval2)
+    self.rightoval = oval2
+    
+  }
   @objc func blueBorder(layer : CALayer?) {
     if((layer == self.view.layer) || (layer == nil)){
       return
@@ -238,51 +198,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     layer?.borderWidth = 4.0
     layer?.borderColor = UIColor.white.cgColor
   }
-  //タッチをした時
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    //すでに選択されているレイヤーがあるかもしれないのでnilにしておく
-    selectLayer = nil
-    //タッチを取得
-    let touch:UITouch = touches.first!
-    //タッチした場所にあるレイヤーを取得
-    let layer:CALayer = hitLayer(touch: touch)
-    //タッチされた座標を取得
-    let touchPoint:CGPoint = touch.location(in: self.view)
-    //最後にタッチされた場所に座標を入れて置く
-    touchLastPoint = touchPoint
-    //選択されたレイヤーをselectLayerにいれる
-    self.selectLayerFunc(layer:layer)
-    if(selectLayer != nil){
-    selectLayer.borderWidth = 3.0
-    selectLayer.borderColor = UIColor.green.cgColor
-    }
-  }
-  //タッチが動いた時
-  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    let touch:UITouch = touches.first!
-    let touchPoint:CGPoint = touch.location(in:self.view)
-    //直前の座標との差を取得
-   // let touchOffsetPoint:CGPoint = CGPoint(x:touchPoint.x - touchLastPoint.x,
- //                                          y:touchPoint.y - touchLastPoint.y)
-    touchLastPoint = touchPoint
-    
-    if (selectLayer != nil){
-      //hitしたレイヤーがあった場合
-    //  let px:CGFloat = selectLayer.position.x
-    //  let py:CGFloat = selectLayer.position.y
-      //レイヤーを移動させる
-    //  CATransaction.begin()
-      CATransaction.setDisableActions(true)
-     // selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
-      selectLayer.borderWidth = 3.0
-      selectLayer.borderColor = UIColor.green.cgColor
-   //   CATransaction.commit()
-    }
-  }
   //スライダーを表示
   @objc func drawSlider(linewidth: CGPoint){
     // スライダーの作成
-
     let slider = UISlider()
     // 幅を いい感じ に変更する
     slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
@@ -308,6 +226,85 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     
     self.view.addSubview(label)
   }
+  //**********clear***************
+  func reset(){
+    let rect = MyShapeLayer()
+    rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
+    rect.clearAll(lineWidth:1)
+    self.view.layer.addSublayer(rect)
+  }
+  func clearRects(){
+    let rect = MyShapeLayer()
+    rect.frame = CGRect(x:0,y:self.view.bounds.height/2 ,width:self.view.bounds.width,height:100)
+    rect.clearAll(lineWidth:1)
+    self.view.layer.addSublayer(rect)
+    /*
+     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
+     oval.drawOval(lineWidth:1)
+     self.view.layer.addSublayer(oval)
+     self.leftoval = oval
+     //初期の右側ボタン
+     let oval2 = MyShapeLayer()
+     oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
+     */
+  }
+  /************** Touch Action ****************/
+  func hitLayer(touch:UITouch) -> CALayer{
+    var touchPoint:CGPoint = touch.location(in:self.view)
+    touchPoint = self.view.layer.convert(touchPoint, to: self.view.layer.superlayer)
+    return self.view.layer.hitTest(touchPoint)!
+  }
+  func selectLayerFunc(layer:CALayer?) {
+    if((layer == self.view.layer) || (layer == nil)){
+      selectLayer = nil
+      return
+    }
+    selectLayer = layer
+  }
+  
+  
+  //タッチをした時
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //すでに選択されているレイヤーがあるかもしれないのでnilにしておく
+    selectLayer = nil
+    //タッチを取得
+    let touch:UITouch = touches.first!
+    //タッチした場所にあるレイヤーを取得
+    let layer:CALayer = hitLayer(touch: touch)
+    //タッチされた座標を取得
+    let touchPoint:CGPoint = touch.location(in: self.view)
+    //最後にタッチされた場所に座標を入れて置く
+    touchLastPoint = touchPoint
+    //選択されたレイヤーをselectLayerにいれる
+    self.selectLayerFunc(layer:layer)
+    if(selectLayer != nil){
+      selectLayer.borderWidth = 3.0
+      selectLayer.borderColor = UIColor.green.cgColor
+    }
+  }
+  //タッチが動いた時
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    let touch:UITouch = touches.first!
+    let touchPoint:CGPoint = touch.location(in:self.view)
+    //直前の座標との差を取得
+    // let touchOffsetPoint:CGPoint = CGPoint(x:touchPoint.x - touchLastPoint.x,
+    //                                          y:touchPoint.y - touchLastPoint.y)
+    touchLastPoint = touchPoint
+    
+    if (selectLayer != nil){
+      //hitしたレイヤーがあった場合
+      //  let px:CGFloat = selectLayer.position.x
+      //  let py:CGFloat = selectLayer.position.y
+      //レイヤーを移動させる
+      //  CATransaction.begin()
+      CATransaction.setDisableActions(true)
+      // selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
+      selectLayer.borderWidth = 3.0
+      selectLayer.borderColor = UIColor.green.cgColor
+      //   CATransaction.commit()
+    }
+  }
+  
   //タッチを終えた時
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if(selectLayer != nil){
@@ -324,6 +321,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   func map(x:Float , in_min:Float , in_max:Float,out_min:Float,out_max:Float )-> Float{
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
   }
-
-
+  
 }
+
