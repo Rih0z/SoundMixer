@@ -63,7 +63,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.timerReset()
   }
   @objc func updateSliderValue(){
-    //self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
     self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax, out_min: slider.minimumValue, out_max: slider.maximumValue)
   }
   /************* pinch ***************/
@@ -94,14 +93,18 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     //四角を描く 遅くするボタンをタップされたら
     if(self.tmpspeed <= self.tmpmax){
       self.tmpspeed += 0.1
+      if(self.tmpspeed > 5.00){
+        self.tmpspeed = 5.00
+      }
       self.timerReset()
       self.updateSliderValue()
     }
   }
   //**********draw***************
-  func drawTimer(){
+  func setupSlider(){
     let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
-    drawSlider(linewidth: sliderFlame)
+    self.slider = drawSlider(linewidth: sliderFlame)
+    self.view.addSubview(self.slider)
   }
   func drawSpeed() -> UILabel{
     var speed = self.map(x:self.tmpspeed,in_min:self.tmpmax,in_max:self.tmpmin,out_min:self.tmpmin,out_max:self.tmpmax)
@@ -119,7 +122,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       self.setupflag = false
     }
     effectiveScale = 1.0
-    self.drawTimer()
+    self.setupSlider()
     self.speedLabel = self.drawSpeed()
     let width = self.view.bounds.width
     let height = self.view.bounds.height
@@ -191,22 +194,22 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     layer?.borderColor = UIColor.white.cgColor
   }
   //スライダーを表示
-  @objc func drawSlider(linewidth: CGPoint){
+  @objc func drawSlider(linewidth: CGPoint) -> UISlider{
     // スライダーの作成
-    self.slider = UISlider()
+    let slider = UISlider()
     // 幅を いい感じ に変更する
-    self.slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
-    self.slider.sizeToFit()
-    self.slider.center = linewidth
+    slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
+    slider.sizeToFit()
+    slider.center = linewidth
     
     // 最小値を tmpmin に変更する
-    self.slider.minimumValue = 0
+    slider.minimumValue = 0
     // 最大値を tmpmax に変更する
-    self.slider.maximumValue = 100
-    self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
-    self.slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
+    slider.maximumValue = 100
+    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
+    return slider
     // スライダーを画面に追加
-    self.view.addSubview(slider)
   }
   //テキストボックスを表示
   @objc func drawText(lineWidth:CGPoint, text:String) -> UILabel {
