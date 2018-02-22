@@ -212,7 +212,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   func drawLabel() {
     let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
-    let speedtext = setupText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
+    let speedtext = setupText(lineWidth: flame, text:String( floor(self.tmpspeed*10)/10 ) + "秒毎に□が移動します")
     self.speedLabel = speedtext
     self.view.addSubview(self.speedLabel)
   }
@@ -253,7 +253,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
     //self.drawSpeed()
-    self.speedLabel.text = "SPEED : " + String( floor(self.tmpspeed*10)/10 )
+    self.speedLabel.text = String( floor(self.tmpspeed*10)/10 ) + "秒毎に□が移動します"
   }
   func flagReset(){
     self.setupflag = true
