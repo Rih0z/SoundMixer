@@ -20,7 +20,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   var tmpmax:Float = 5.05
   var tmpmin:Float = 0.15
   var speedLabel:UILabel!
-
+  var slider:UISlider!
+  
   private var selectLayer:CALayer!
   private var touchLastPoint:CGPoint!
   
@@ -31,16 +32,15 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     super.viewDidLoad()
     self.drawSetUp()
     // 一定間隔で実行
-   // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
     self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
     
   }
-
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
+  //**************:update*******************
   @objc func update(tm: Timer) {
     // do something
     if self.flag {
@@ -61,6 +61,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
  //   slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
     self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
     self.timerReset()
+  }
+  @objc func updateSliderValue(){
+    //self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
+    self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax, out_min: slider.minimumValue, out_max: slider.maximumValue)
   }
   /************* pinch ***************/
   @objc func pinchGesture(sender:UIPinchGestureRecognizer){
@@ -83,6 +87,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if(self.tmpspeed > self.tmpmin){
       self.tmpspeed -= 0.1
       self.timerReset()
+      self.updateSliderValue()
     }
   }
   @objc func rectBtnTapped(sender:UIButton){
@@ -90,11 +95,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if(self.tmpspeed <= self.tmpmax){
       self.tmpspeed += 0.1
       self.timerReset()
-      
+      self.updateSliderValue()
     }
-    
   }
-
   //**********draw***************
   func drawTimer(){
     let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
@@ -190,18 +193,18 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   //スライダーを表示
   @objc func drawSlider(linewidth: CGPoint){
     // スライダーの作成
-    let slider = UISlider()
+    self.slider = UISlider()
     // 幅を いい感じ に変更する
-    slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
-    slider.sizeToFit()
-    slider.center = linewidth
+    self.slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
+    self.slider.sizeToFit()
+    self.slider.center = linewidth
     
     // 最小値を tmpmin に変更する
-    slider.minimumValue = 0
+    self.slider.minimumValue = 0
     // 最大値を tmpmax に変更する
-    slider.maximumValue = 100
-    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
-    slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
+    self.slider.maximumValue = 100
+    self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    self.slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
     // スライダーを画面に追加
     self.view.addSubview(slider)
   }
