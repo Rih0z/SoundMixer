@@ -10,20 +10,16 @@
 import UIKit
 
 class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
- // let dateLabel = UILabel()  // 日時表示ラベル
+
   var timer: Timer!
   var leftoval: CALayer!
   var rightoval: CALayer!
-  var flag = 0
-  var tmpspeed:Double = 3.0
-  var tmpmax:Double = 5.05
-  var tmpmin:Double = 0.15
-  // 日時フォーマット
-  var dateFormatter: DateFormatter{
-    let formatter = DateFormatter()
-    formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-    return formatter
-  }
+  var flag:Bool = true
+  var setupflag:Bool = true
+  var tmpspeed:Float = 3.0
+  var tmpmax:Float = 5.05
+  var tmpmin:Float = 0.15
+
 
   private var selectLayer:CALayer!
   private var touchLastPoint:CGPoint!
@@ -33,26 +29,25 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    /*
-     dateLabel.frame = view.bounds
-     dateLabel.textAlignment = .center
-     view.addSubview(dateLabel)
-    */
+
     
     self.drawSetUp()
-    // 初回
-    //updateDateLabel()
+    
     
     // 一定間隔で実行
    // Timer.scheduledTimer(timeInterval: 1.0, target: self, selecter: #selector(self.updateDateLabel), userInfo: nil, repeats: true)
-    self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
     
   }
   func drawSetUp(){
-    self.flag = 0 
+    if(self.setupflag){
+      self.flag = true
+      self.setupflag = false
+    }
     effectiveScale = 1.0
     self.drawTimer()
+    
     let width = self.view.bounds.width
     let height = self.view.bounds.height
     
@@ -95,10 +90,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     
   }
   func timerReset(){
+    self.setupflag = true
     self.reset()
     self.drawSetUp()
     self.timer.invalidate()
-    self.timer = Timer.scheduledTimer(timeInterval: self.tmpspeed, target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     self.timer.fire()
   }
   override func didReceiveMemoryWarning() {
@@ -107,21 +103,23 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   }
   @objc func update(tm: Timer) {
     // do something
-    
-    if self.flag == 0 {
+    self.reset()
+    self.drawSetUp()
+    if self.flag {
     self.blueBorder(layer: self.leftoval)
-      self.flag = 1
+      self.flag = false
     }else {
       self.blueBorder(layer: self.rightoval)
-      self.flag = 0
+      self.flag = true
     }
-    
   }
-  /* 日時表示ラベル更新メソッド
-  @objc func updateDateLabel(){
-    let now = Date()
-    dateLabel.text = dateFormatter.string(from:now)
-  }*/
+  @objc func onChange(_ sender: UISlider) {
+    // スライダーの値が変更された時の処理
+//    print(sender.value)
+ //   slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    self.tmpspeed = self.map(x: sender.value, in_min: sender.minimumValue, in_max: sender.maximumValue , out_min: self.tmpmin , out_max: self.tmpmax )
+    self.timerReset()
+  }
   /************* pinch ***************/
   @objc func pinchGesture(sender:UIPinchGestureRecognizer){
     effectiveScale = beginGestureScale * sender.scale
@@ -179,7 +177,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if(speed > 5.0){
       speed = 5.0
     }
-    drawText(lineWidth: flame, text: "SPEED : " + String( floor(speed*10)/10 ))
+    drawText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
+    let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
+    drawSlider(linewidth: sliderFlame)
   }
 
   /************** Touch Action ****************/
@@ -246,12 +246,33 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
    //   CATransaction.commit()
     }
   }
+  //スライダーを表示
+  @objc func drawSlider(linewidth: CGPoint){
+    // スライダーの作成
+
+    let slider = UISlider()
+    // 幅を いい感じ に変更する
+    slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
+    slider.sizeToFit()
+    slider.center = linewidth
+    
+    // 最小値を tmpmin に変更する
+    slider.minimumValue = 0
+    // 最大値を tmpmax に変更する
+    slider.maximumValue = 100
+    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
+    // スライダーを画面に追加
+    self.view.addSubview(slider)
+  }
+  //テキストボックスを表示
   @objc func drawText(lineWidth:CGPoint, text:String){
     let label = UILabel()
     label.text = text
     label.font = UIFont(name: "HiraMinProN-W3", size: 20)
     label.sizeToFit()
     label.center = lineWidth
+    
     self.view.addSubview(label)
   }
   //タッチを終えた時
@@ -267,7 +288,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       selectLayer.borderWidth = 0
     }
   }
-  func map(x:Double , in_min:Double , in_max:Double,out_min:Double,out_max:Double )-> Double{
+  func map(x:Float , in_min:Float , in_max:Float,out_min:Float,out_max:Float )-> Float{
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
   }
 
