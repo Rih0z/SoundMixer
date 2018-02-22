@@ -19,7 +19,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   var tmpspeed:Float = 3.0
   var tmpmax:Float = 5.05
   var tmpmin:Float = 0.15
-
+  var speedLabel:UILabel!
 
   private var selectLayer:CALayer!
   private var touchLastPoint:CGPoint!
@@ -37,16 +37,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     
   }
 
-  func timerReset(){
-    self.setupflag = true
-   // self.reset()
-   // self.drawSetUp()
-    self.borderClear()
-    self.timer.invalidate()
-    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-    self.timer.fire()
-    self.drawSpeed()
-  }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
@@ -110,13 +100,15 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
     drawSlider(linewidth: sliderFlame)
   }
-  func drawSpeed(){
+  func drawSpeed() -> UILabel{
     var speed = self.map(x:self.tmpspeed,in_min:self.tmpmax,in_max:self.tmpmin,out_min:self.tmpmin,out_max:self.tmpmax)
     if(speed > 5.0){
       speed = 5.0
     }
     let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
-    drawText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
+    let speedtext = drawText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
+    self.view.addSubview(speedtext)
+    return speedtext
   }
   func drawSetUp(){
     if(self.setupflag){
@@ -125,7 +117,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     }
     effectiveScale = 1.0
     self.drawTimer()
-    self.drawSpeed()
+    self.speedLabel = self.drawSpeed()
     let width = self.view.bounds.width
     let height = self.view.bounds.height
     
@@ -155,10 +147,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.view.addGestureRecognizer(pinch)
     
   }
-  @objc func borderClear(){
-    self.whiteBorder(layer: self.rightoval)
-    self.whiteBorder(layer: self.leftoval)
-  }
+
   @objc func drawRects(){
     drawRight()
     drawLeft()
@@ -217,14 +206,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.view.addSubview(slider)
   }
   //テキストボックスを表示
-  @objc func drawText(lineWidth:CGPoint, text:String){
+  @objc func drawText(lineWidth:CGPoint, text:String) -> UILabel {
     let label = UILabel()
     label.text = text
     label.font = UIFont(name: "HiraMinProN-W3", size: 20)
     label.sizeToFit()
     label.center = lineWidth
-    
-    self.view.addSubview(label)
+    return label
   }
   //**********clear***************
   func reset(){
@@ -248,6 +236,27 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
      oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
      */
   }
+  @objc func clearBorders(){
+    self.whiteBorder(layer: self.rightoval)
+    self.whiteBorder(layer: self.leftoval)
+  }
+  //*****************Reset**********************
+  func timerReset(){
+    self.flagReset()
+    // self.reset()
+    // self.drawSetUp()
+    self.clearBorders()
+    self.timer.invalidate()
+    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer.fire()
+    //self.drawSpeed()
+    self.speedLabel.text = "SPEED : " + String( floor(self.tmpspeed*10)/10 )
+  }
+  func flagReset(){
+    self.setupflag = true
+    self.flag = true
+  }
+  
   /************** Touch Action ****************/
   func hitLayer(touch:UITouch) -> CALayer{
     var touchPoint:CGPoint = touch.location(in:self.view)
