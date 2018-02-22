@@ -57,8 +57,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   }
   @objc func onChange(_ sender: UISlider) {
     // スライダーの値が変更された時の処理
-//    print(sender.value)
- //   slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
     self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
     self.timerReset()
   }
@@ -100,37 +98,51 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       self.updateSliderValue()
     }
   }
+  //************ setup UI PARTS *****************
+  //スライダーを表示
+  @objc func setupSlider(linewidth: CGPoint) -> UISlider{
+    // スライダーの作成
+    let slider = UISlider()
+    // 幅を いい感じ に変更する
+    slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
+    slider.sizeToFit()
+    slider.center = linewidth
+    
+    // 最小値を tmpmin に変更する
+    slider.minimumValue = 0
+    // 最大値を tmpmax に変更する
+    slider.maximumValue = 100
+    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
+    return slider
+    // スライダーを画面に追加
+  }
+  //テキストボックスを表示
+  @objc func setupText(lineWidth:CGPoint, text:String) -> UILabel {
+    let label = UILabel()
+    label.text = text
+    label.font = UIFont(name: "HiraMinProN-W3", size: 20)
+    label.sizeToFit()
+    label.center = lineWidth
+    return label
+  }
   //**********draw***************
-  func setupSlider(){
-    let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
-    self.slider = drawSlider(linewidth: sliderFlame)
-    self.view.addSubview(self.slider)
-  }
-  func drawSpeed() -> UILabel{
-    var speed = self.map(x:self.tmpspeed,in_min:self.tmpmax,in_max:self.tmpmin,out_min:self.tmpmin,out_max:self.tmpmax)
-    if(speed > 5.0){
-      speed = 5.0
-    }
-    let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
-    let speedtext = drawText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
-    self.view.addSubview(speedtext)
-    return speedtext
-  }
+  
   func drawSetUp(){
     if(self.setupflag){
       self.flag = true
       self.setupflag = false
     }
     effectiveScale = 1.0
-    self.setupSlider()
-    self.speedLabel = self.drawSpeed()
+    self.drawSlider()
+    self.drawLabel()
     let width = self.view.bounds.width
     let height = self.view.bounds.height
     
     //丸を生成するボタン
     let ovalBtn = UIButton()
     ovalBtn.frame = CGRect(x:0,y:0,width:100,height:50)
-    ovalBtn.center = CGPoint(x:width / 3,y:height - 100)
+    ovalBtn.center = CGPoint(x:width / 5,y:height - 100)
     ovalBtn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
     ovalBtn.setTitle("速くする",for:.normal)
     ovalBtn.backgroundColor = UIColor.green
@@ -139,7 +151,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     //四角を生成するボタン
     let rectBtn = UIButton()
     rectBtn.frame = CGRect(x:0,y:0,width:100,height:50)
-    rectBtn.center = CGPoint(x:width * 2 / 3,y:height - 100)
+    rectBtn.center = CGPoint(x:width * 4 / 5,y:height - 100)
     rectBtn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
     rectBtn.setTitle("遅くする",for:.normal)
     rectBtn.backgroundColor = UIColor.red
@@ -177,7 +189,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     oval2.drawOval(lineWidth:1)
     self.view.layer.addSublayer(oval2)
     self.rightoval = oval2
-    
   }
   @objc func blueBorder(layer : CALayer?) {
     if((layer == self.view.layer) || (layer == nil)){
@@ -193,33 +204,19 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     layer?.borderWidth = 4.0
     layer?.borderColor = UIColor.white.cgColor
   }
-  //スライダーを表示
-  @objc func drawSlider(linewidth: CGPoint) -> UISlider{
-    // スライダーの作成
-    let slider = UISlider()
-    // 幅を いい感じ に変更する
-    slider.frame.size.width = self.view.bounds.width - (self.view.bounds.width/3)
-    slider.sizeToFit()
-    slider.center = linewidth
-    
-    // 最小値を tmpmin に変更する
-    slider.minimumValue = 0
-    // 最大値を tmpmax に変更する
-    slider.maximumValue = 100
-    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
-    slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
-    return slider
-    // スライダーを画面に追加
+  func drawSlider(){
+    let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
+    self.slider = setupSlider(linewidth: sliderFlame)
+    self.view.addSubview(self.slider)
   }
-  //テキストボックスを表示
-  @objc func drawText(lineWidth:CGPoint, text:String) -> UILabel {
-    let label = UILabel()
-    label.text = text
-    label.font = UIFont(name: "HiraMinProN-W3", size: 20)
-    label.sizeToFit()
-    label.center = lineWidth
-    return label
+  
+  func drawLabel() {
+    let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
+    let speedtext = setupText(lineWidth: flame, text: "SPEED : " + String( floor(self.tmpspeed*10)/10 ))
+    self.speedLabel = speedtext
+    self.view.addSubview(self.speedLabel)
   }
+
   //**********clear***************
   func reset(){
     let rect = MyShapeLayer()
