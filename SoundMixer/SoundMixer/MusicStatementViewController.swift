@@ -18,6 +18,8 @@ class MusicStatementViewController: UIViewController {
   var secretButten: CALayer!
   
   @IBOutlet weak var infomationLabel: UILabel!
+
+  @IBOutlet weak var music3Label: UILabel!
   @IBOutlet weak var music2Label: UILabel!
   @IBOutlet weak var music1Label: UILabel!
 
@@ -32,6 +34,11 @@ class MusicStatementViewController: UIViewController {
     self.CheckPlaylist()
   }
 
+  @IBAction func pickPlaylist3(_ sender: Any) {
+    self.user.SelectionFlag = 3
+    self.CheckPlaylist()
+  }
+  
   func CheckPlaylist(){
 
     let myPlaylistQuery = MPMediaQuery.playlists()
@@ -114,7 +121,12 @@ class MusicStatementViewController: UIViewController {
             print(music2)
             music2Label.text = music2
         }
-        
+      if(self.user.Playing_3 != nil){
+        let music3 = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+        print("musicstatement music")
+        print(music3)
+        music3Label.text = music3
+      }
     }
   func receiveData(){
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
@@ -122,6 +134,7 @@ class MusicStatementViewController: UIViewController {
       self.user = appDelegate.user
       self.title = appDelegate.user.Name
     }
+    //これいらないのでは
     if(self.user.Playing_1 != nil){
       let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
       print("musicstatement player music")

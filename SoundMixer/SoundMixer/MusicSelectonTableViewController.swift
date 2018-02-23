@@ -18,6 +18,7 @@ class MusicSelectonTableViewController: UITableViewController {
   // var SongHash:Int!
   var Song:MPMediaItem!
   var user:User = User()
+  var homeBtn: UIBarButtonItem!
   // Cell が選択された場合
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     self.goNextPage(page: "MainTabBar")
@@ -55,6 +56,7 @@ class MusicSelectonTableViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
+    self.setupHomeBtn()
     
 
     let songs = self.Playlist.items
@@ -88,6 +90,9 @@ class MusicSelectonTableViewController: UITableViewController {
             case 2:
                 self.user.musicSetFlag = true
                 self.user.Playing_2 = self.Songs[indexPath.row]
+            case 3:
+              self.user.musicSetFlag = true
+              self.user.Playing_3 = self.Songs[indexPath.row]
             default:
                 print("フラグが立っていませんmusicselection")
                 print(self.user.SelectionFlag)
@@ -110,6 +115,14 @@ class MusicSelectonTableViewController: UITableViewController {
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
+  }
+  func setupHomeBtn(){
+    self.homeBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.goHome))
+    self.navigationItem.rightBarButtonItem = self.homeBtn
+  }
+  @objc func goHome(){
+    self.user.homeflag = true
+    goNextPage(page: "MainTabBar")
   }
   /*
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){

@@ -36,6 +36,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     case 2:
       errorMes = "音楽2に"
       self.PlayingSong = self.user.Playing_2
+    case 3:
+      errorMes = "音楽3に"
+      self.PlayingSong = self.user.Playing_3
     default:
       print("フラグが立っていませんmusicselection")
       print(self.user.SelectionFlag)
