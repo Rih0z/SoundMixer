@@ -61,8 +61,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     appDelegate.user = self.user
   }
+
   override func viewWillAppear(_ animated: Bool) {
     self.receiveData()
+    self.navigationItem.hidesBackButton = true
     if (self.user.SelectionFlag != 0)
     {
       // self.user.SelectionFlag = 0

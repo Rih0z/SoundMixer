@@ -12,7 +12,7 @@ class UserViewController: UITableViewController{
   var userNumber:Int = 1
   var users = [User]()
   var user:User?
-
+  var setupFlag :Bool = true
   // ボタンを用意
   var addBtn: UIBarButtonItem!
 
@@ -23,7 +23,9 @@ class UserViewController: UITableViewController{
     self.tableView.delegate   = self
     self.tableView.dataSource = self        // タイトルを付けておきましょう
     self.title = "ユーザー選択"
+    if(setupFlag){
     self.setupNavigationBar()
+    }
   }
   func setupNavigationBar(){
         // NavigationBarの表示する.
@@ -45,10 +47,7 @@ class UserViewController: UITableViewController{
     //https://joyplot.com/documents/2016/09/04/swift_textfield_uialertcontroller/ これ見たらできそう
     self.users.append(self.user!)
     self.userNumber += 1;
-
     self.tableView.reloadData()
-
-
   }
   // Cell が選択された場合
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
@@ -73,8 +72,8 @@ class UserViewController: UITableViewController{
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    setSendData()
-
+    self.setSendData()
+    self.setupFlag = false
   }
   func setSendData(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate

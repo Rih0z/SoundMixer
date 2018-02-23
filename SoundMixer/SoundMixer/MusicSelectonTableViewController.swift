@@ -55,6 +55,8 @@ class MusicSelectonTableViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
+    
+
     let songs = self.Playlist.items
     self.SongNum = songs.count
     print(self.SongNum)

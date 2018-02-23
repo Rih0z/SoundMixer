@@ -112,7 +112,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     slider.minimumValue = 0
     // 最大値を tmpmax に変更する
     slider.maximumValue = 100
-    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue, out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue,out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
     slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
     return slider
     // スライダーを画面に追加
