@@ -106,9 +106,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     {
       self.reset()
       self.drawHiddenButton()
-
+      let text = "アニメ表示"
+      self.hiddenButton.setTitle(text,for:.normal)
     }else{
       self.setupAll()
+      let text = "アニメ非表示"
+      self.hiddenButton.setTitle(text,for:.normal)
+      
     }
   }
   //***********set up *************
