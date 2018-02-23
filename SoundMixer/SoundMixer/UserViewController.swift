@@ -15,7 +15,6 @@ class UserViewController: UITableViewController{
   var setupFlag :Bool = true
   // ボタンを用意
   var addBtn: UIBarButtonItem!
-
   override func viewDidLoad() {
     super.viewDidLoad()
     print("Loadaaaaaaaaaaaaaaaaasssssssssssssssssss")
@@ -38,7 +37,6 @@ class UserViewController: UITableViewController{
   {
     print("onClick clicked!!!")
     Clicked()
-
   }
   func Clicked(){
     self.user = User()//Userクラスのインスタンス作成

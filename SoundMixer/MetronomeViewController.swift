@@ -22,19 +22,20 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   var speedLabel:UILabel!
   var slider:UISlider!
   
+  private var hiddenFlag :Bool = false
+  
+  
   private var selectLayer:CALayer!
   private var touchLastPoint:CGPoint!
   
   private var beginGestureScale:CGFloat!
   private var effectiveScale:CGFloat!
   
+  private var hiddenButton:UIButton!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.drawSetUp()
-    // 一定間隔で実行
-    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-    self.timer.fire()
-    
+    self.setupAll()
   }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -98,6 +99,25 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       self.updateSliderValue()
     }
   }
+  @objc func hiddenBtnTapped(sender:UIButton){
+    //四角を描く 遅くするボタンをタップされたら
+    self.hiddenFlag = !self.hiddenFlag
+    if self.hiddenFlag
+    {
+      self.reset()
+      self.drawHiddenButton()
+
+    }else{
+      self.setupAll()
+    }
+  }
+  //***********set up *************
+  func setupAll(){
+    self.drawSetUp()
+    // 一定間隔で実行
+    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    self.timer.fire()
+  }
   //************ setup UI PARTS *****************
   //スライダーを表示
   @objc func setupSlider(linewidth: CGPoint) -> UISlider{
@@ -125,6 +145,16 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     label.sizeToFit()
     label.center = lineWidth
     return label
+  }
+  @objc func setupButton(rect: CGRect,lineWidth:CGPoint , text:String , color:UIColor) -> UIButton {
+    //非表示ボタン
+    let Btn = UIButton()
+    Btn.frame = rect
+    Btn.center = lineWidth
+    Btn.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
+    Btn.setTitle(text,for:.normal)
+    Btn.backgroundColor = color
+    return Btn
   }
   //**********draw***************
   
@@ -157,12 +187,25 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     rectBtn.backgroundColor = UIColor.red
     self.view.addSubview(rectBtn)
     
+
+    
     drawRects()
+    self.drawHiddenButton()
     //ピンチ
     let pinch = UIPinchGestureRecognizer()
     pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
     pinch.delegate = self
     self.view.addGestureRecognizer(pinch)
+    
+  }
+  func drawHiddenButton(){
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    let rect = CGRect(x:0,y:0,width:150,height:50)
+    let frame = CGPoint(x:width * 4 / 5,y:height / 6)
+    let text = "アニメ非表示"
+    self.hiddenButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
+    self.view.addSubview(self.hiddenButton)
     
   }
 
@@ -219,6 +262,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
 
   //**********clear***************
   func reset(){
+    self.timer.invalidate()
     let rect = MyShapeLayer()
     rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
     rect.clearAll(lineWidth:1)

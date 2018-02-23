@@ -21,14 +21,10 @@ import MediaPlayer
   var user = User()
   private var nc: UINavigationController?
 
-
-
-
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
     // Override point for customization after application launch.
     setNabivigationBar()
-
     return true
 
   }
