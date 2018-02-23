@@ -64,16 +64,21 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
 
   override func viewWillAppear(_ animated: Bool) {
     self.receiveData()
+    
     self.navigationItem.hidesBackButton = true
-    if (self.user.SelectionFlag != 0)
-    {
+    if self.user.musicSetFlag {
       // self.user.SelectionFlag = 0
+      self.user.musicSetFlag = false
       self.selectedIndex = 1
     }
     if(self.user.Playing_1 != nil){
       let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
       print("maintabber willappear music")
       print(music1)
+    }
+    if self.user.homeflag {
+      self.user.homeflag = false
+      self.selectedIndex = 2
     }
   }
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){

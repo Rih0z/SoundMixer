@@ -83,8 +83,10 @@ class MusicSelectonTableViewController: UITableViewController {
         if let indexPath = self.tableView.indexPathForSelectedRow {
             switch self.user.SelectionFlag {
             case 1:
+                self.user.musicSetFlag = true
                 self.user.Playing_1 = self.Songs[indexPath.row]
             case 2:
+                self.user.musicSetFlag = true
                 self.user.Playing_2 = self.Songs[indexPath.row]
             default:
                 print("フラグが立っていませんmusicselection")

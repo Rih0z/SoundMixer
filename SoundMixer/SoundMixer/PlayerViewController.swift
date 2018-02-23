@@ -14,13 +14,17 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   var player = MPMusicPlayerController()
   var user:User = User()
   //作り直したストーリーボードではこのボタン関数消して新しいボタン関数でこの中に書いてる関数動かせば大丈夫
+  /*
   @IBAction func Play(_ sender: Any) {
     self.playMusic(whitchmusic: 1)
   }
+ */
   //これも．こっちは音楽２上野が音楽1に対応してる
+  /*
   @IBAction func Play2(_ sender: Any) {
     self.playMusic(whitchmusic: 2)
   }
+ */
   func playMusic(whitchmusic: Int){
     var errorMes:String = "音楽１と音楽2に"
     // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。

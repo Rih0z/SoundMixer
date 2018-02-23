@@ -15,7 +15,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
   var PlaylistName: String!
   var Playlists = [MPMediaItemCollection]()
   var user:User = User()
-
+  var homeBtn: UIBarButtonItem!
   // Cell が選択された場合
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     self.goNextPage(page: "MusicSelection")
@@ -64,6 +64,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     super.viewDidDisappear(animated)
     user.BeforeView = "playliistselection"
     self.setSendData()
+    
   }
   func setSendData(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -75,6 +76,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
   override func viewWillAppear(_ animated: Bool) {
 
     super.viewDidDisappear(animated)
+    self.setupHomeBtn()
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.user = appDelegate.user
@@ -98,6 +100,14 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
   */
   func didSelectTab(mainTabBarController: MainTabBarController) {
     print("PlaylistControllerView")
+  }
+  func setupHomeBtn(){
+    self.homeBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.goHome))
+    self.navigationItem.rightBarButtonItem = self.homeBtn
+  }
+  @objc func goHome(){
+    self.user.homeflag = true
+    goNextPage(page: "MainTabBar")
   }
   /*
   // MARK: - Navigation

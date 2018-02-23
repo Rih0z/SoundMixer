@@ -15,4 +15,6 @@ class User {
   var Playing_2:MPMediaItem?
   var SelectionFlag:Int = 0 
   var BeforeView:String?
+  var homeflag:Bool = false
+  var musicSetFlag:Bool = false
 }

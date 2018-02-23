@@ -17,35 +17,7 @@
                     <view key="view" contentMode="scaleToFill" id="KPz-FK-krC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NNb-WI-KvC">
-                                <rect key="frame" x="168" y="366" width="38" height="30"/>
-                                <state key="normal" title="Play2"/>
-                                <connections>
-                                    <action selector="Play2:" destination="r8q-XZ-Qfp" eventType="touchUpInside" id="Prb-JA-Rrz"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wE-eX-w03">
-                                <rect key="frame" x="167" y="318" width="36" height="30"/>
-                                <state key="normal" title="Play1"/>
-                                <connections>
-                                    <action selector="Play:" destination="r8q-XZ-Qfp" eventType="touchUpInside" id="2yp-P5-qg7"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AzC-wR-2CZ">
-                                <rect key="frame" x="172" y="422" width="31" height="30"/>
-                                <state key="normal" title="停止"/>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="3wE-eX-w03" firstAttribute="centerY" secondItem="KPz-FK-krC" secondAttribute="centerY" id="FbE-oD-8WU"/>
-                            <constraint firstItem="NNb-WI-KvC" firstAttribute="top" secondItem="3wE-eX-w03" secondAttribute="bottom" constant="18" id="Fx2-fY-foy"/>
-                            <constraint firstItem="NNb-WI-KvC" firstAttribute="centerX" secondItem="KPz-FK-krC" secondAttribute="centerX" id="PSF-zP-sPD"/>
-                            <constraint firstItem="NNb-WI-KvC" firstAttribute="centerX" secondItem="AzC-wR-2CZ" secondAttribute="centerX" id="UGa-QY-omU"/>
-                            <constraint firstItem="AzC-wR-2CZ" firstAttribute="top" secondItem="NNb-WI-KvC" secondAttribute="bottom" constant="26" id="lyO-W1-8on"/>
-                            <constraint firstItem="3wE-eX-w03" firstAttribute="trailing" secondItem="AzC-wR-2CZ" secondAttribute="trailing" id="zmj-Zd-IV9"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="BQW-B6-E7V"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="音楽編集" id="amn-AI-11f"/>
