@@ -8,6 +8,7 @@
 //  The base of this program is http://uruly.xyz/%E3%80%90swift-3%E3%80%91calayer%E3%82%92%E7%94%A8%E3%81%84%E3%81%A6%E5%9B%B3%E5%BD%A2%E3%82%92%E7%A7%BB%E5%8B%95%E3%83%BB%E6%8B%A1%E5%A4%A7%E7%B8%AE%E5%B0%8F%E3%81%97%E3%81%A6%E3%81%BF%E3%81%9F/
 //  by Reo
 import UIKit
+import AudioToolbox
 
 class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
 
@@ -340,6 +341,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if(selectLayer != nil){
       selectLayer.borderWidth = 3.0
       selectLayer.borderColor = UIColor.green.cgColor
+      self.shortVibrate()
     }
   }
   //タッチが動いた時
@@ -380,6 +382,12 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   }
   func map(x:Float , in_min:Float , in_max:Float,out_min:Float,out_max:Float )-> Float{
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+  }
+
+ // ************ vibrate ********************
+  func shortVibrate() {
+    AudioServicesPlaySystemSound(1003);
+    AudioServicesDisposeSystemSoundID(1003);
   }
   
 }
