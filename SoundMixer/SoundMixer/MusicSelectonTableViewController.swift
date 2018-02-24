@@ -57,8 +57,11 @@ class MusicSelectonTableViewController: UITableViewController {
     super.viewDidDisappear(animated)
     self.receiveData()
     self.setupHomeBtn()
+    let playlistname = self.Playlist?.value(forProperty: MPMediaPlaylistPropertyName)! as! String
+    self.title = playlistname
+    //  print("musicsselection music...")
+  //  print(music1)
     
-
     let songs = self.Playlist.items
     self.SongNum = songs.count
     print(self.SongNum)

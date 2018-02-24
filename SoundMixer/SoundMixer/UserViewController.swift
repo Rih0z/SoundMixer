@@ -48,7 +48,7 @@ class UserViewController: UITableViewController {
     self.user = User()//Userクラスのインスタンス作成
     self.user?.Id = self.userNumber
     
-    var alert = UIAlertController(title: "あなたの名前を入力してください", message: "", preferredStyle: .alert)
+    let alert = UIAlertController(title: "あなたの名前を入力してください", message: "", preferredStyle: .alert)
     let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
         let textField = alert.textFields![0] as UITextField
         self.user?.Name = textField.text!

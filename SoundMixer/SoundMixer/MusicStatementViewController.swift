@@ -100,7 +100,6 @@ class MusicStatementViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
-
     
     print("musicstatement recieve data finished")
     self.changeMusicLabels()
@@ -132,7 +131,7 @@ class MusicStatementViewController: UIViewController {
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.user = appDelegate.user
-      self.title = appDelegate.user.Name
+     // self.title = appDelegate.user.Name
     }
     //これいらないのでは
     if(self.user.Playing_1 != nil){

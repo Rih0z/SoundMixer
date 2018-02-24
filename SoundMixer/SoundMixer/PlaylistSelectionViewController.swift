@@ -87,11 +87,11 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     let witchmusic = self.user.SelectionFlag
     switch (witchmusic) {
     case 1:
-        self.title = "音楽1選択中"
+        self.title = "音楽1選択"
     case 2:
-        self.title = "音楽2選択中"
+        self.title = "音楽2選択"
     case 3:
-        self.title = "音楽3選択中"
+        self.title = "音楽3選択"
     default:
       self.title = "音楽選択中"
     }

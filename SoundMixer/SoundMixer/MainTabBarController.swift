@@ -14,6 +14,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   var PlayingSong:MPMediaItem!
   var user:User = User()
   var musiclabel1 :String?
+
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
 
@@ -80,9 +81,24 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.user.homeflag = false
       self.selectedIndex = 2
     }
+
+    self.title = self.user.Name
   }
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
   }
-
+  func selectTabName(){
+    switch self.selectedIndex {
+    case 0:
+      self.title = self.user.Name
+    case 1:
+      self.title = "再生"
+    case 2:
+      self.title = "メトロノーム"
+    default:
+      self.title = self.user.Name
+      print("どのタブが開いているかあ")
+      print(self.selectedIndex)
+    }
+  }
 }
 
