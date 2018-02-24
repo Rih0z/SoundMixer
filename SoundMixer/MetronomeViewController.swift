@@ -45,16 +45,20 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   //**************:update*******************
   @objc func update(tm: Timer) {
     // do something
-    if self.flag {
-    self.blueBorder(layer: self.leftoval)
-      self.whiteBorder(layer: self.rightoval)
-      self.drawRight()
-      self.flag = false
-    }else {
-      self.blueBorder(layer: self.rightoval)
-      self.whiteBorder(layer: self.leftoval)
-      self.drawLeft()
-      self.flag = true
+    if(self.hiddenFlag){
+      
+    }else{
+      if self.flag {
+       self.blueBorder(layer: self.leftoval)
+       self.whiteBorder(layer: self.rightoval)
+       self.drawRight()
+       self.flag = false
+      }else {
+       self.blueBorder(layer: self.rightoval)
+       self.whiteBorder(layer: self.leftoval)
+       self.drawLeft()
+       self.flag = true
+     }
     }
   }
   @objc func onChange(_ sender: UISlider) {
@@ -266,13 +270,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   }
 
   //**********clear***************
-  func reset(){
-    self.timer.invalidate()
-    let rect = MyShapeLayer()
-    rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
-    rect.clearAll(lineWidth:1)
-    self.view.layer.addSublayer(rect)
-  }
+
   func clearRects(){
     let rect = MyShapeLayer()
     rect.frame = CGRect(x:0,y:self.view.bounds.height/2 ,width:self.view.bounds.width,height:100)
@@ -293,6 +291,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.whiteBorder(layer: self.leftoval)
   }
   //*****************Reset**********************
+  func reset(){
+    self.timer.invalidate()
+    let rect = MyShapeLayer()
+    rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
+    rect.clearAll(lineWidth:1)
+    self.view.layer.addSublayer(rect)
+  }
   func timerReset(){
     self.flagReset()
     // self.reset()
@@ -338,10 +343,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     touchLastPoint = touchPoint
     //選択されたレイヤーをselectLayerにいれる
     self.selectLayerFunc(layer:layer)
-    if(selectLayer != nil){
-      selectLayer.borderWidth = 3.0
-      selectLayer.borderColor = UIColor.green.cgColor
-      self.shortVibrate()
+    if(selectLayer != nil && selectLayer != self.view.layer){
+      if self.hiddenFlag {
+      }else{
+        selectLayer.borderWidth = 3.0
+        selectLayer.borderColor = UIColor.green.cgColor
+        self.shortVibrate()
+      }
     }
   }
   //タッチが動いた時
@@ -353,17 +361,21 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     //                                          y:touchPoint.y - touchLastPoint.y)
     touchLastPoint = touchPoint
     
-    if (selectLayer != nil){
+    if (selectLayer != nil && selectLayer != self.view.layer){
       //hitしたレイヤーがあった場合
       //  let px:CGFloat = selectLayer.position.x
       //  let py:CGFloat = selectLayer.position.y
       //レイヤーを移動させる
       //  CATransaction.begin()
       CATransaction.setDisableActions(true)
+      if self.hiddenFlag {
+        
+      }else{
       // selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
       selectLayer.borderWidth = 3.0
       selectLayer.borderColor = UIColor.green.cgColor
       //   CATransaction.commit()
+      }
     }
   }
   
