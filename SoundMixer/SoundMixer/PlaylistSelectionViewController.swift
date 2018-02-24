@@ -73,16 +73,29 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
       appDelegate.Playlists = self.Playlists[indexPath.row]
     }
   }
-  override func viewWillAppear(_ animated: Bool) {
-
-    super.viewDidDisappear(animated)
-    self.setupHomeBtn()
+  func receiveData(){
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.user = appDelegate.user
       self.title = appDelegate.user.Name
-
     }
+  }
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.receiveData()
+    self.setupHomeBtn()
+    let witchmusic = self.user.SelectionFlag
+    switch (witchmusic) {
+    case 1:
+        self.title = "音楽1選択中"
+    case 2:
+        self.title = "音楽2選択中"
+    case 3:
+        self.title = "音楽3選択中"
+    default:
+      self.title = "音楽選択中"
+    }
+
   }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
