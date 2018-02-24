@@ -8,6 +8,8 @@
 
 import UIKit
 import MediaPlayer
+let userDefaults = UserDefaults.standard
+
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?
@@ -19,15 +21,30 @@ import MediaPlayer
   var Playlists:MPMediaItemCollection?
   //var title:String?
   var user = User()
+  var init_users: [User] = []
+  var userNum: Int = 0
   private var nc: UINavigationController?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 
     // Override point for customization after application launch.
     setNabivigationBar()
+    
+    var user = User()
+    if userDefaults.object(forKey: "userNumber") != nil {
+        userNum = userDefaults.integer(forKey: "userNumber")
+        for i in 0..<userNum {
+            var dic = userDefaults.dictionary(forKey: String(i))
+            init_users.append(User())
+            user.Id = dic!["ID"] as! Int
+            user.Name = dic!["Name"] as! String
+            init_users[i].Id = user.Id
+            init_users[i].Name = user.Name
+        }
+    }
     return true
-
   }
+    
   func setNabivigationBar()
   {
     //デバッグの時ここで始めたいビューを指定できる

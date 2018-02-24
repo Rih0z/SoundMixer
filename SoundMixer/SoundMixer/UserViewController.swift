@@ -8,13 +8,15 @@
 
 import UIKit
 
-class UserViewController: UITableViewController{
+class UserViewController: UITableViewController {
+  var userNum: Int = 0
   var userNumber:Int = 1
   var users = [User]()
   var user:User?
   var setupFlag :Bool = true
   // ボタンを用意
   var addBtn: UIBarButtonItem!
+
   override func viewDidLoad() {
     super.viewDidLoad()
     print("Loadaaaaaaaaaaaaaaaaasssssssssssssssssss")
@@ -22,10 +24,13 @@ class UserViewController: UITableViewController{
     self.tableView.delegate   = self
     self.tableView.dataSource = self        // タイトルを付けておきましょう
     self.title = "ユーザー選択"
+    self.recUserInfo()
+    self.tableView.reloadData()
     if(setupFlag){
     self.setupNavigationBar()
     }
   }
+    
   func setupNavigationBar(){
         // NavigationBarの表示する.
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -33,6 +38,7 @@ class UserViewController: UITableViewController{
         addBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.onClick))
         self.navigationItem.rightBarButtonItem = addBtn
   }
+    
   @objc func onClick()
   {
     print("onClick clicked!!!")
@@ -41,17 +47,42 @@ class UserViewController: UITableViewController{
   func Clicked(){
     self.user = User()//Userクラスのインスタンス作成
     self.user?.Id = self.userNumber
-    self.user?.Name = "User ID : "+(self.user!.Id).description//ここを任意に入力させて任意の名前をつけさせればいい
-    //https://joyplot.com/documents/2016/09/04/swift_textfield_uialertcontroller/ これ見たらできそう
-    self.users.append(self.user!)
-    self.userNumber += 1;
-    self.tableView.reloadData()
+    
+    var alert = UIAlertController(title: "あなたの名前を入力してください", message: "", preferredStyle: .alert)
+    let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
+        let textField = alert.textFields![0] as UITextField
+        self.user?.Name = textField.text!
+        self.users.append(self.user!)
+        self.userNumber += 1;
+        self.tableView.reloadData()
+        
+        /* ID ごとにユーザを辞書形式で登録しユーザ数も保存（クラスでの保存ができない） */
+        userDefaults.set(["ID": self.user!.Id, "Name": self.user!.Name], forKey: String(self.user!.Id - 1))
+        userDefaults.set(self.userNumber - 1, forKey: "userNumber")
+    }
+    let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
+    
+    // UIAlertControllerにtextFieldを追加
+    alert.addTextField { (textField:UITextField!) -> Void in }
+    alert.addAction(saveAction)
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: true, completion: nil)
   }
   // Cell が選択された場合
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     self.goNextPage(page: "MainTabBar")
   }
 
+  func recUserInfo(){
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+      {
+        self.users = appDelegate.init_users
+        self.userNum = appDelegate.userNum
+        self.userNumber = self.userNum + 1
+      }
+  }
+    
   func goNextPage(page:String){
     let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
     let secondViewController = storyboard.instantiateInitialViewController()
