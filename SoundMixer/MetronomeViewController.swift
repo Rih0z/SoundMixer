@@ -9,17 +9,25 @@
 //  by Reo
 import UIKit
 import AudioToolbox
+import MediaPlayer
 
 class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
 
+  var user:User = User()
   var timer: Timer!
   var leftoval: CALayer!
   var rightoval: CALayer!
   var flag:Bool = true
   var setupflag:Bool = true
+  var bpmModeFlag:Bool = true
   var tmpspeed:Float = 3.0
   var tmpmax:Float = 5.05
   var tmpmin:Float = 0.15
+  var bpmmax:Float = 250
+  var bpmmin:Float = 1
+  var bpm:Float = 60
+  
+  
   var speedLabel:UILabel!
   var slider:UISlider!
   
@@ -33,6 +41,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   private var effectiveScale:CGFloat!
   
   private var hiddenButton:UIButton!
+  private var bpmButton:UIButton!
+  private var leftButton:UIButton!
+  private var rightButton:UIButton!
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -42,6 +53,20 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.receiveData()
+    if self.user.Playing_1 != nil {
+      self.bpm = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyBeatsPerMinute) as! Float
+      self.timerReset()
+    }
+  }
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    self.setSendData()
+  }
+  
   //**************:update*******************
   @objc func update(tm: Timer) {
     // do something
@@ -61,14 +86,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
      }
     }
   }
-  @objc func onChange(_ sender: UISlider) {
-    // スライダーの値が変更された時の処理
-    self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
-    self.timerReset()
-  }
-  @objc func updateSliderValue(){
-    self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax, out_min: slider.minimumValue, out_max: slider.maximumValue)
-  }
+
   /************* pinch ***************/
   @objc func pinchGesture(sender:UIPinchGestureRecognizer){
     effectiveScale = beginGestureScale * sender.scale
@@ -87,14 +105,32 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   /************** Button Tapped ***********/
   @objc func ovalBtnTapped(sender:UIButton){
-    if(self.tmpspeed > self.tmpmin){
+    if(self.bpmModeFlag)
+    {
+      if(self.bpm < self.bpmmax - 1){
+        self.bpm += 0.1
+        self.timerReset()
+        self.updateSliderValue()
+      }
+
+    }else{
+    if(self.tmpspeed > self.tmpmin ){
       self.tmpspeed -= 0.1
       self.timerReset()
       self.updateSliderValue()
     }
+    }
   }
   @objc func rectBtnTapped(sender:UIButton){
     //四角を描く 遅くするボタンをタップされたら
+    if(self.bpmModeFlag)
+    {
+      if(self.bpm > self.bpmmin + 1){
+        self.bpm -= 0.1
+        self.timerReset()
+        self.updateSliderValue()
+      }
+    }else{
     if(self.tmpspeed <= self.tmpmax){
       self.tmpspeed += 0.1
       if(self.tmpspeed > 5.00){
@@ -103,9 +139,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       self.timerReset()
       self.updateSliderValue()
     }
+    }
   }
   @objc func hiddenBtnTapped(sender:UIButton){
-    //四角を描く 遅くするボタンをタップされたら
+    //アニメ非表示ボタンが押されたら
     self.hiddenFlag = !self.hiddenFlag
     if self.hiddenFlag
     {
@@ -120,16 +157,49 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       
     }
   }
+  @objc func bpmBtnTapped(sender:UIButton){
+    //表示切り替えボタンが押されたら
+    self.bpmModeFlag = !self.bpmModeFlag
+    self.changeLRButten()
+    self.timerReset()
+    self.updateSliderValue()
+    
+  }
+  @objc func onChange(_ sender: UISlider) {
+    // スライダーの値が変更された時の処理
+    if self.bpmModeFlag {
+      self.bpm = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.bpmmax , out_max: self.bpmmin )
+    } else {
+      self.tmpspeed = self.map(x: sender.value, in_min: sender.maximumValue,in_max: sender.minimumValue , out_min: self.tmpmax , out_max: self.tmpmin )
+    }
+    self.timerReset()
+  }
+  @objc func updateSliderValue(){
+    if self.bpmModeFlag {
+      self.slider.value = self.map(x: self.bpm, in_min: self.bpmmin, in_max: self.bpmmax, out_min: slider.minimumValue, out_max: slider.maximumValue)
+    }else{
+      self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax, out_min: slider.minimumValue, out_max: slider.maximumValue)
+    }
+  }
   //***********set up *************
   func setupAll(){
     self.drawSetUp()
+    self.setupTimer()
+  }
+  func setupTimer(){
     // 一定間隔で実行
+    if self.bpmModeFlag
+    {
+      self.timer = Timer.scheduledTimer(timeInterval: Double(1 / (self.bpm/60) ), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+      
+    } else{
     self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+    }
     self.timer.fire()
   }
   //************ setup UI PARTS *****************
   //スライダーを表示
-  @objc func setupSlider(linewidth: CGPoint) -> UISlider{
+  @objc func setupSlider(linewidth: CGPoint, target_value: Float , target_min :Float , target_max : Float  ) -> UISlider{
     // スライダーの作成
     let slider = UISlider()
     // 幅を いい感じ に変更する
@@ -141,16 +211,17 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     slider.minimumValue = 0
     // 最大値を tmpmax に変更する
     slider.maximumValue = 100
-    slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax , out_min: slider.minimumValue,out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
+    
+    slider.value = self.map(x: target_value, in_min: target_min, in_max: target_max , out_min: slider.minimumValue,out_max: slider.maximumValue)    // スライダーの値が変更された時に呼び出されるメソッドを設定
     slider.addTarget(self, action: #selector(self.onChange), for: .valueChanged)
     return slider
     // スライダーを画面に追加
   }
   //テキストボックスを表示
-  @objc func setupText(lineWidth:CGPoint, text:String) -> UILabel {
-    let label = UILabel()
+  @objc func setupText(lineWidth:CGPoint, text:String,size:CGRect) -> UILabel {
+    let label = UILabel(frame: size)
     label.text = text
-    label.font = UIFont(name: "HiraMinProN-W3", size: 20)
+    label.font = UIFont(name: "HiraMinProN-W3", size: 30)
     label.sizeToFit()
     label.center = lineWidth
     return label
@@ -161,6 +232,16 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     Btn.frame = rect
     Btn.center = lineWidth
     Btn.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
+    Btn.setTitle(text,for:.normal)
+    Btn.backgroundColor = color
+    return Btn
+  }
+  @objc func setupBpmButton(rect: CGRect,lineWidth:CGPoint , text:String , color:UIColor) -> UIButton {
+    //非表示ボタン
+    let Btn = UIButton()
+    Btn.frame = rect
+    Btn.center = lineWidth
+    Btn.addTarget(self, action: #selector(MetronomeViewController.bpmBtnTapped(sender:)), for: .touchUpInside)
     Btn.setTitle(text,for:.normal)
     Btn.backgroundColor = color
     return Btn
@@ -179,26 +260,24 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     let height = self.view.bounds.height
     
     //丸を生成するボタン
-    let ovalBtn = UIButton()
-    ovalBtn.frame = CGRect(x:0,y:0,width:100,height:50)
-    ovalBtn.center = CGPoint(x:width / 5,y:height - 100)
-    ovalBtn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
-    ovalBtn.setTitle("速くする",for:.normal)
-    ovalBtn.backgroundColor = UIColor.green
-    self.view.addSubview(ovalBtn)
+    self.leftButton = UIButton()
+    self.leftButton.frame = CGRect(x:0,y:0,width:100,height:50)
+    self.leftButton.center = CGPoint(x:width / 5,y:height - 100)
     
     //四角を生成するボタン
-    let rectBtn = UIButton()
-    rectBtn.frame = CGRect(x:0,y:0,width:100,height:50)
-    rectBtn.center = CGPoint(x:width * 4 / 5,y:height - 100)
-    rectBtn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
-    rectBtn.setTitle("遅くする",for:.normal)
-    rectBtn.backgroundColor = UIColor.red
-    self.view.addSubview(rectBtn)
+    self.rightButton = UIButton()
+    self.rightButton.frame = CGRect(x:0,y:0,width:100,height:50)
+    self.rightButton.center = CGPoint(x:width * 4 / 5,y:height - 100)
+    
+    
+    changeLRButten()
+ self.view.addSubview(self.leftButton)
+    self.view.addSubview(self.rightButton)
     
 
     
     drawRects()
+    self.drawBpmButton()
     self.drawHiddenButton()
     //ピンチ
     let pinch = UIPinchGestureRecognizer()
@@ -206,6 +285,37 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     pinch.delegate = self
     self.view.addGestureRecognizer(pinch)
     
+  }
+  func changeLRButten(){
+    if self.bpmModeFlag {
+      self.leftButton = self.speedDownButton(Btn: self.leftButton)
+      self.rightButton  = self.speedUpButton(Btn: self.rightButton)
+    } else {
+      self.rightButton = self.speedDownButton(Btn: self.rightButton)
+       self.leftButton = self.speedUpButton(Btn: self.leftButton)
+    }
+    
+  }
+  func speedUpButton(Btn:UIButton) ->UIButton{
+    Btn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
+    Btn.setTitle("速くする",for:.normal)
+    Btn.backgroundColor = UIColor.green
+    return Btn
+  }
+  func speedDownButton(Btn: UIButton) -> UIButton{
+    Btn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
+    Btn.setTitle("遅くする",for:.normal)
+    Btn.backgroundColor = UIColor.red
+    return Btn
+  }
+  func drawBpmButton(){
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    let rect = CGRect(x:0,y:0,width:150,height:50)
+    let frame = CGPoint(x:width * 1 / 5,y:height / 6)
+    let text = "秒表記に"
+    self.bpmButton = setupBpmButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
+    self.view.addSubview(self.bpmButton)
   }
   func drawHiddenButton(){
     let width = self.view.bounds.width
@@ -258,14 +368,27 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   }
   func drawSlider(){
     let sliderFlame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height - (self.view.bounds.height/5))
-    self.slider = setupSlider(linewidth: sliderFlame)
+    if bpmModeFlag{
+      self.slider = setupSlider(linewidth: sliderFlame, target_value: self.bpm, target_min: self.bpmmin, target_max: self.bpmmax)
+    }else{
+       self.slider = setupSlider(linewidth: sliderFlame, target_value: self.tmpspeed, target_min: self.tmpmin, target_max: self.tmpmax)
+    }
     self.view.addSubview(self.slider)
   }
   
   func drawLabel() {
     let flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
-    let speedtext = setupText(lineWidth: flame, text:String( floor(self.tmpspeed*10)/10 ) + "秒毎に□が移動します")
+    var speedtext:UILabel!
+    let rect = CGRect(x:0,y:0,width:self.view.bounds.width,height:30)
+    if bpmModeFlag
+    {
+      speedtext = setupText(lineWidth: flame, text:String(floor(self.bpm*10)/10) + " BPM",size: rect)
+    }else
+    {
+      speedtext = setupText(lineWidth: flame, text:String( floor(self.tmpspeed*10)/10 ) + "秒毎",size: rect)
+    }
     self.speedLabel = speedtext
+    self.speedLabel.sizeToFit()
     self.view.addSubview(self.speedLabel)
   }
 
@@ -304,10 +427,16 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     // self.drawSetUp()
     self.clearBorders()
     self.timer.invalidate()
-    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
-    self.timer.fire()
+    self.setupTimer()
     //self.drawSpeed()
-    self.speedLabel.text = String( floor(self.tmpspeed*10)/10 ) + "秒毎に□が移動します"
+    if bpmModeFlag
+    {
+      self.speedLabel.text = String(floor(self.bpm*10)/10 ) + " BPM"
+    }else
+    {
+      self.speedLabel.text = String( floor(self.tmpspeed*10)/10 ) + "秒毎"
+    }
+    self.speedLabel.sizeToFit()
   }
   func flagReset(){
     self.setupflag = true
@@ -401,6 +530,17 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     AudioServicesPlaySystemSound(1003);
     AudioServicesDisposeSystemSoundID(1003);
   }
-  
+  //********* Data*****
+  func receiveData(){
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+    {
+      self.user = appDelegate.user
+    }
+
+  }
+  func setSendData(){
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    appDelegate.user = self.user
+  }
 }
 
