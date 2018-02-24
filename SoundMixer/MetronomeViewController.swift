@@ -160,6 +160,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   @objc func bpmBtnTapped(sender:UIButton){
     //表示切り替えボタンが押されたら
     self.bpmModeFlag = !self.bpmModeFlag
+    if bpmModeFlag {
+      let text = "秒表記に"
+      self.bpmButton.setTitle(text,for:.normal)
+    }else{
+      let text = "BPM表記に"
+      self.bpmButton.setTitle(text,for:.normal)
+    }
     self.changeLRButten()
     self.timerReset()
     self.updateSliderValue()
