@@ -238,17 +238,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     let Btn = UIButton()
     Btn.frame = rect
     Btn.center = lineWidth
-    Btn.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
-    Btn.setTitle(text,for:.normal)
-    Btn.backgroundColor = color
-    return Btn
-  }
-  @objc func setupBpmButton(rect: CGRect,lineWidth:CGPoint , text:String , color:UIColor) -> UIButton {
-    //非表示ボタン
-    let Btn = UIButton()
-    Btn.frame = rect
-    Btn.center = lineWidth
-    Btn.addTarget(self, action: #selector(MetronomeViewController.bpmBtnTapped(sender:)), for: .touchUpInside)
+
     Btn.setTitle(text,for:.normal)
     Btn.backgroundColor = color
     return Btn
@@ -321,7 +311,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     let rect = CGRect(x:0,y:0,width:150,height:50)
     let frame = CGPoint(x:width * 1 / 5,y:height / 6)
     let text = "秒表記に"
-    self.bpmButton = setupBpmButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
+    self.bpmButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
+    self.bpmButton.addTarget(self, action: #selector(MetronomeViewController.bpmBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.bpmButton)
   }
   func drawHiddenButton(){
@@ -331,6 +322,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     let frame = CGPoint(x:width * 4 / 5,y:height / 6)
     let text = "アニメ非表示"
     self.hiddenButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
+    self.hiddenButton.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.hiddenButton)
     
   }

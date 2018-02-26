@@ -6,8 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,147 +17,12 @@
                     <view key="view" contentMode="scaleToFill" id="alB-0D-N93">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="242" ambiguous="YES" text="再生中の音楽" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8nf-CG-4MB">
-                                <rect key="frame" x="0.0" y="20" width="160" height="57"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="音楽1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W8g-81-ipA">
-                                <rect key="frame" x="0.0" y="115" width="125" height="38"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="38" id="3aB-mS-H77"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YFq-la-YDR">
-                                <rect key="frame" x="0.0" y="144" width="375" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="mgz-JR-JXV"/>
-                                </constraints>
-                                <state key="normal" title="この曲を変える"/>
-                                <connections>
-                                    <action selector="pickPlaylist1:" destination="En8-cZ-hqc" eventType="touchUpInside" id="Pvx-Zf-Qmb"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="音楽2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OmY-jf-brX">
-                                <rect key="frame" x="0.0" y="191" width="125" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="ER1-HL-sTA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmZ-Z2-3kO">
-                                <rect key="frame" x="0.0" y="229" width="375" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="IEM-e6-FcU"/>
-                                </constraints>
-                                <state key="normal" title="この曲を変える"/>
-                                <connections>
-                                    <action selector="pickPlaylist2:" destination="En8-cZ-hqc" eventType="touchUpInside" id="ePU-8e-tZ6"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="247" ambiguous="YES" misplaced="YES" text="プレイリストから音楽を選択してください" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yzj-RR-hya">
-                                <rect key="frame" x="168" y="20" width="233" height="57"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="音楽が選択されていません" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cpZ-xO-zkz">
-                                <rect key="frame" x="166" y="200" width="209" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="音楽3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SEV-zt-moA">
-                                <rect key="frame" x="0.0" y="276" width="125" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="125" id="3Bs-ya-eVV"/>
-                                    <constraint firstAttribute="height" constant="39" id="Zhd-WJ-fAm"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="音楽が選択されていません" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uH6-IJ-2cj">
-                                <rect key="frame" x="166" y="285" width="209" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="JRJ-KU-HlA"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Teb-4u-RLe">
-                                <rect key="frame" x="0.0" y="314" width="375" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="39" id="ci6-Cw-kPi"/>
-                                </constraints>
-                                <state key="normal" title="この曲を変える"/>
-                                <connections>
-                                    <action selector="pickPlaylist3:" destination="En8-cZ-hqc" eventType="touchUpInside" id="KEA-Pu-6PZ"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="音楽が選択されていません" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NnG-dr-y4P">
-                                <rect key="frame" x="168" y="124" width="209" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="Teb-4u-RLe" firstAttribute="top" secondItem="SEV-zt-moA" secondAttribute="bottom" constant="8" symbolic="YES" id="1ap-Yl-uol"/>
-                            <constraint firstItem="yzj-RR-hya" firstAttribute="top" secondItem="8nf-CG-4MB" secondAttribute="top" id="8cv-Jj-O8q"/>
-                            <constraint firstItem="5xS-Zn-SGu" firstAttribute="trailing" secondItem="8nf-CG-4MB" secondAttribute="trailing" constant="215" id="8ep-pf-0og"/>
-                            <constraint firstItem="OmY-jf-brX" firstAttribute="top" secondItem="YFq-la-YDR" secondAttribute="bottom" constant="8" symbolic="YES" id="9pC-g0-rUq"/>
-                            <constraint firstItem="NnG-dr-y4P" firstAttribute="leading" secondItem="cpZ-xO-zkz" secondAttribute="leading" id="Ap3-3Z-st1"/>
-                            <constraint firstItem="NnG-dr-y4P" firstAttribute="top" secondItem="yzj-RR-hya" secondAttribute="bottom" id="Cuz-2y-YaQ"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="yzj-RR-hya" secondAttribute="trailing" constant="-40" id="Dj1-8g-TmG"/>
-                            <constraint firstItem="NnG-dr-y4P" firstAttribute="trailing" secondItem="YFq-la-YDR" secondAttribute="trailing" id="EAS-GA-E5I"/>
-                            <constraint firstItem="W8g-81-ipA" firstAttribute="leading" secondItem="YFq-la-YDR" secondAttribute="leading" id="GoY-7i-kF0"/>
-                            <constraint firstItem="qmZ-Z2-3kO" firstAttribute="top" secondItem="OmY-jf-brX" secondAttribute="bottom" constant="8" symbolic="YES" id="Iwv-1C-ppN"/>
-                            <constraint firstItem="YFq-la-YDR" firstAttribute="trailing" secondItem="qmZ-Z2-3kO" secondAttribute="trailing" id="JYn-6J-nND"/>
-                            <constraint firstItem="cpZ-xO-zkz" firstAttribute="centerY" secondItem="OmY-jf-brX" secondAttribute="centerY" id="LMN-p9-PO9"/>
-                            <constraint firstItem="uH6-IJ-2cj" firstAttribute="trailing" secondItem="Teb-4u-RLe" secondAttribute="trailing" id="NWR-K7-2oJ"/>
-                            <constraint firstItem="SEV-zt-moA" firstAttribute="leading" secondItem="qmZ-Z2-3kO" secondAttribute="leading" id="Q1V-fu-Ddo"/>
-                            <constraint firstItem="SEV-zt-moA" firstAttribute="leading" secondItem="Teb-4u-RLe" secondAttribute="leading" id="QhI-Kr-u3j"/>
-                            <constraint firstItem="5xS-Zn-SGu" firstAttribute="bottom" secondItem="uH6-IJ-2cj" secondAttribute="bottom" constant="392" id="SGA-Dx-m0b"/>
-                            <constraint firstAttribute="trailing" secondItem="YFq-la-YDR" secondAttribute="trailing" id="SIb-t1-cfY"/>
-                            <constraint firstItem="SEV-zt-moA" firstAttribute="top" secondItem="qmZ-Z2-3kO" secondAttribute="bottom" constant="8" symbolic="YES" id="a6I-Xv-tyY"/>
-                            <constraint firstItem="OmY-jf-brX" firstAttribute="leading" secondItem="qmZ-Z2-3kO" secondAttribute="leading" id="akS-bk-5xY"/>
-                            <constraint firstItem="yzj-RR-hya" firstAttribute="leading" secondItem="8nf-CG-4MB" secondAttribute="trailing" constant="6" id="b9D-6O-h1V"/>
-                            <constraint firstItem="cpZ-xO-zkz" firstAttribute="trailing" secondItem="YFq-la-YDR" secondAttribute="trailing" id="cp1-TR-ykf"/>
-                            <constraint firstItem="NnG-dr-y4P" firstAttribute="leading" secondItem="yzj-RR-hya" secondAttribute="leading" id="cpY-Bw-M7d"/>
-                            <constraint firstItem="5xS-Zn-SGu" firstAttribute="trailing" secondItem="W8g-81-ipA" secondAttribute="trailing" constant="250" id="dEg-Ln-lrA"/>
-                            <constraint firstItem="8nf-CG-4MB" firstAttribute="top" secondItem="5xS-Zn-SGu" secondAttribute="top" id="eAE-Lr-NnN"/>
-                            <constraint firstItem="8nf-CG-4MB" firstAttribute="leading" secondItem="alB-0D-N93" secondAttribute="leading" id="gPg-iw-S4N"/>
-                            <constraint firstItem="uH6-IJ-2cj" firstAttribute="firstBaseline" secondItem="SEV-zt-moA" secondAttribute="firstBaseline" id="i3U-rE-2tv"/>
-                            <constraint firstItem="yzj-RR-hya" firstAttribute="bottom" secondItem="8nf-CG-4MB" secondAttribute="bottom" id="jL0-a2-Aa6"/>
-                            <constraint firstItem="YFq-la-YDR" firstAttribute="leading" secondItem="OmY-jf-brX" secondAttribute="leading" id="oiF-iY-HWA"/>
-                            <constraint firstItem="8nf-CG-4MB" firstAttribute="leading" secondItem="W8g-81-ipA" secondAttribute="leading" id="qcT-J8-cxA"/>
-                            <constraint firstItem="uH6-IJ-2cj" firstAttribute="trailing" secondItem="qmZ-Z2-3kO" secondAttribute="trailing" id="t34-oW-jex"/>
-                            <constraint firstItem="uH6-IJ-2cj" firstAttribute="leading" secondItem="cpZ-xO-zkz" secondAttribute="leading" id="t4N-Ue-aHb"/>
-                            <constraint firstItem="YFq-la-YDR" firstAttribute="top" secondItem="W8g-81-ipA" secondAttribute="bottom" constant="8" symbolic="YES" id="wTN-nw-bds"/>
-                            <constraint firstItem="NnG-dr-y4P" firstAttribute="centerY" secondItem="W8g-81-ipA" secondAttribute="centerY" id="zA1-Jt-AiW"/>
-                            <constraint firstItem="W8g-81-ipA" firstAttribute="trailing" secondItem="OmY-jf-brX" secondAttribute="trailing" id="zDy-NW-hO0"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="5xS-Zn-SGu"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="音楽選択" id="Rjk-AH-A3k"/>
                     <navigationItem key="navigationItem" id="CnG-7S-EOp"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="infomationLabel" destination="yzj-RR-hya" id="1Yw-Hz-5gX"/>
-                        <outlet property="music1Label" destination="NnG-dr-y4P" id="K9i-uF-kYK"/>
-                        <outlet property="music2Label" destination="cpZ-xO-zkz" id="mCb-Mg-lZa"/>
-                        <outlet property="music3Label" destination="uH6-IJ-2cj" id="lRo-nj-8SS"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MUQ-8W-dbU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -29,6 +29,7 @@
 		9081D45520367AA20085A8EA /* MainTabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D45420367AA20085A8EA /* MainTabBar.storyboard */; };
 		9081D4572036A17A0085A8EA /* MusicStatement.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D4562036A17A0085A8EA /* MusicStatement.storyboard */; };
 		9081D4592036A2690085A8EA /* MusicStatementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9081D4582036A2690085A8EA /* MusicStatementViewController.swift */; };
+		909E6F542043C1BC00BDB10D /* setupParts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909E6F532043C1BC00BDB10D /* setupParts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		9081D45420367AA20085A8EA /* MainTabBar.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainTabBar.storyboard; sourceTree = "<group>"; };
 		9081D4562036A17A0085A8EA /* MusicStatement.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MusicStatement.storyboard; sourceTree = "<group>"; };
 		9081D4582036A2690085A8EA /* MusicStatementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicStatementViewController.swift; sourceTree = "<group>"; };
+		909E6F532043C1BC00BDB10D /* setupParts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = setupParts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				905E86B820357C73004BE779 /* MainTabBarDelegate.swift */,
 				90577E2820330C4100D46AF9 /* MetronomeViewController.swift */,
+				909E6F532043C1BC00BDB10D /* setupParts.swift */,
 				906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */,
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
 				90577E162032E0ED00D46AF9 /* Main.storyboard */,
@@ -205,6 +208,7 @@
 			files = (
 				90577E252033070900D46AF9 /* User.swift in Sources */,
 				905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */,
+				909E6F542043C1BC00BDB10D /* setupParts.swift in Sources */,
 				9081D4592036A2690085A8EA /* MusicStatementViewController.swift in Sources */,
 				90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */,
 				90577E152032E0ED00D46AF9 /* PlayerViewController.swift in Sources */,

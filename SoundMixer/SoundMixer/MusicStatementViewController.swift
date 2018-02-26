@@ -17,12 +17,36 @@ class MusicStatementViewController: UIViewController {
   var secret:Bool = false //ここがtrueの時上半分押すとユーザー選択に戻れる　音量0でtrueになる
   var secretButten: CALayer!
   
-  @IBOutlet weak var infomationLabel: UILabel!
+  var width:CGFloat!
+  var height:CGFloat!
+  
+  var infomationLabel: UILabel!
 
-  @IBOutlet weak var music3Label: UILabel!
-  @IBOutlet weak var music2Label: UILabel!
-  @IBOutlet weak var music1Label: UILabel!
+  
+  var music3Label: UILabel!
+  var music2Label: UILabel!
+  var music1Label: UILabel!
+  
+  var music1Button:UIButton!
+  var music2Button:UIButton!
+  var music3Button:UIButton!
+  
 
+  
+  let music1Title = "音楽1"
+  let mucic2Title = "音楽2"
+  let mucic3Title = "音楽3"
+  
+  var music1Text = "音楽1を下のボタンから選択してください"
+  var music2Text = "音楽2を下のボタンから選択してください"
+  var music3Text = "音楽3を下のボタンから選択してください"
+  var infomationText = "プレイリストから音楽を選択してください"
+  
+  let button1Text = "音楽1を変更する"
+  let button2Text = "音楽2を変更する"
+  let button3Text = "音楽3を変更する"
+
+  /*
   @IBAction func pickPlaylist1(_ sender: Any) {
     //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
     self.CheckPlaylist(whitchplaylist:  1)
@@ -33,6 +57,83 @@ class MusicStatementViewController: UIViewController {
   }
 
   @IBAction func pickPlaylist3(_ sender: Any) {
+    self.CheckPlaylist(whitchplaylist: 3)
+  }*/
+ /***********: set up ****************/
+  func setupAll(){
+    self.width = self.view.bounds.width
+    self.height = self.view.bounds.height
+    self.setupLabels()
+    self.setupButton()
+    
+  }
+  
+  func setupLabels(){
+    
+    let rect = CGRect(x:0,y:0,width:self.width/2,height:30)
+    let setup = setupParts()
+    let musicFontSize:CGFloat = 20
+    let dis = musicFontSize * 2 + 8
+    var flame = CGPoint(x:self.width/2 , y:self.height/3)
+    var titleFlame = flame
+    titleFlame.x = width/10
+    
+    let music1TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
+    music1Label = setup.setupText(lineWidth:flame, text: music1Text ,size: rect ,fontSize: musicFontSize)
+    
+    flame.y += dis
+    titleFlame.y = flame.y
+    let music2TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
+    music2Label = setup.setupText(lineWidth:flame, text: music2Text ,size: rect , fontSize: musicFontSize)
+    
+    flame.y += dis
+    titleFlame.y = flame.y
+    let music3TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
+    music3Label = setup.setupText(lineWidth:flame, text: music3Text ,size: rect, fontSize: musicFontSize)
+
+    
+    self.view.addSubview(music1TitleLabel)
+    self.view.addSubview(music2TitleLabel)
+    self.view.addSubview(music3TitleLabel)
+    self.view.addSubview(self.music1Label)
+    self.view.addSubview(self.music2Label)
+    self.view.addSubview(self.music3Label)
+    
+  }
+  
+  func setupButton(){
+    let rect = CGRect(x:0,y:0,width: self.width * 3/4 ,height:self.height/20)
+    var frame = CGPoint(x:self.width * 1 / 2,y:self.height * 7 / 10)
+    let setup = setupParts()
+    
+    self.music1Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button1Text, color: UIColor.blue)
+    self.music1Button.addTarget(self, action: #selector(self.btn1Tapped(sender:)), for: .touchUpInside)
+    
+    frame.y += rect.height * 2
+    self.music2Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button2Text, color: UIColor.blue)
+    self.music2Button.addTarget(self, action: #selector(self.btn2Tapped(sender:)), for: .touchUpInside)
+    
+    frame.y += rect.height * 2
+    self.music3Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button3Text, color: UIColor.blue)
+    self.music3Button.addTarget(self, action: #selector(self.btn3Tapped(sender:)), for: .touchUpInside)
+    
+    self.view.addSubview(self.music1Button)
+     self.view.addSubview(self.music2Button)
+     self.view.addSubview(self.music3Button)
+  }
+ /****************button funcs **********************/
+  @objc func btn1Tapped( sender:UIButton ){
+    print("Button1")
+    self.CheckPlaylist(whitchplaylist: 1)
+  }
+  
+  @objc func btn2Tapped( sender:UIButton ){
+    print("Button2")
+    self.CheckPlaylist(whitchplaylist: 2)
+  }
+  
+  @objc func btn3Tapped( sender:UIButton ){
+    print("Button3")
     self.CheckPlaylist(whitchplaylist: 3)
   }
   
@@ -95,6 +196,7 @@ class MusicStatementViewController: UIViewController {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
+  /***************** Appear ***************************/
 
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
@@ -102,6 +204,7 @@ class MusicStatementViewController: UIViewController {
     
     print("musicstatement recieve data finished")
     self.changeMusicLabels()
+    self.setupAll()
     }
     
     func changeMusicLabels(){
