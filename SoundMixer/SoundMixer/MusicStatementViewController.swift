@@ -32,7 +32,7 @@ class MusicStatementViewController: UIViewController {
   var music2Button:UIButton!
   var music3Button:UIButton!
   
-
+  let titleText = "音楽選択画面"
   
   let music1Title = "音楽1"
   let music2Title = "音楽2"
@@ -70,7 +70,11 @@ class MusicStatementViewController: UIViewController {
   }
   
   func setupLabels(){
-    
+    setupMusicLabel()
+    setupInfomationLabel()
+  }
+  
+  func setupMusicLabel(){
     let rect = CGRect(x:0,y:0,width:self.width/2,height:30)
     let setup = setupParts()
     let musicFontSize:CGFloat = 20
@@ -92,7 +96,7 @@ class MusicStatementViewController: UIViewController {
     titleFlame.y = flame.y - musicFontSize - 4
     let music3TitleLabel = setup.setupText(lineWidth:titleFlame, text: music3Title ,size: rect ,fontSize: musicFontSize)
     music3Label = setup.setupText(lineWidth:flame, text: music3Text ,size: rect, fontSize: musicFontSize)
-
+    
     
     self.view.addSubview(music1TitleLabel)
     self.view.addSubview(music2TitleLabel)
@@ -100,10 +104,22 @@ class MusicStatementViewController: UIViewController {
     self.view.addSubview(music1Label)
     self.view.addSubview(self.music2Label)
     self.view.addSubview(self.music3Label)
-    
-    
   }
-  
+  func setupInfomationLabel(){
+    let rect = CGRect(x:0,y:0,width:self.width,height:self.height/10)
+    let setup = setupParts()
+    let musicFontSize:CGFloat = 20
+
+    let titleFlame = CGPoint(x: self.width/2 , y:self.height/10 + musicFontSize)
+    var flame = titleFlame
+    flame.x = self.width/2
+    flame.y += musicFontSize * 2
+    let TitleLabel = setup.setupText(lineWidth:titleFlame, text: titleText ,size: rect ,fontSize: musicFontSize)
+    infomationLabel = setup.setupText(lineWidth:flame, text: infomationText ,size: rect ,fontSize: musicFontSize)
+    
+    self.view.addSubview(TitleLabel)
+    self.view.addSubview(infomationLabel)
+  }
   func setupButton(){
     let rect = CGRect(x:0,y:0,width: self.width * 3/4 ,height:self.height/20)
     var frame = CGPoint(x:self.width * 1 / 2,y:self.height * 7 / 10)
