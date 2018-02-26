@@ -25,22 +25,21 @@ class MusicStatementViewController: UIViewController {
 
   @IBAction func pickPlaylist1(_ sender: Any) {
     //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
-    self.user.SelectionFlag = 1
-    self.CheckPlaylist()
+    self.CheckPlaylist(whitchplaylist:  1)
   }
 
   @IBAction func pickPlaylist2(_ sender: Any) {
-    self.user.SelectionFlag = 2
-    self.CheckPlaylist()
+    self.CheckPlaylist(whitchplaylist: 2)
   }
 
   @IBAction func pickPlaylist3(_ sender: Any) {
-    self.user.SelectionFlag = 3
-    self.CheckPlaylist()
+    self.CheckPlaylist(whitchplaylist: 3)
   }
   
-  func CheckPlaylist(){
+  func CheckPlaylist(whitchplaylist:Int){
 
+    self.user.SelectionFlag = whitchplaylist
+    
     let myPlaylistQuery = MPMediaQuery.playlists()
     if let playlists = myPlaylistQuery.collections {
       print(playlists.count)
