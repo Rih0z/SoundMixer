@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+
 class MusicStatementViewController: UIViewController {
   var user:User = User()
   private var selectLayer:CALayer!
@@ -22,10 +23,10 @@ class MusicStatementViewController: UIViewController {
   
   var infomationLabel: UILabel!
 
-  
+  var music1Label: UILabel!
   var music3Label: UILabel!
   var music2Label: UILabel!
-  var music1Label: UILabel!
+  
   
   var music1Button:UIButton!
   var music2Button:UIButton!
@@ -34,8 +35,8 @@ class MusicStatementViewController: UIViewController {
 
   
   let music1Title = "音楽1"
-  let mucic2Title = "音楽2"
-  let mucic3Title = "音楽3"
+  let music2Title = "音楽2"
+  let music3Title = "音楽3"
   
   var music1Text = "音楽1を下のボタンから選択してください"
   var music2Text = "音楽2を下のボタンから選択してください"
@@ -77,27 +78,29 @@ class MusicStatementViewController: UIViewController {
     var flame = CGPoint(x:self.width/2 , y:self.height/3)
     var titleFlame = flame
     titleFlame.x = width/10
+    titleFlame.y -= musicFontSize + 4
     
     let music1TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
     music1Label = setup.setupText(lineWidth:flame, text: music1Text ,size: rect ,fontSize: musicFontSize)
     
     flame.y += dis
-    titleFlame.y = flame.y
-    let music2TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
+    titleFlame.y = flame.y - musicFontSize - 4
+    let music2TitleLabel = setup.setupText(lineWidth:titleFlame, text: music2Title ,size: rect ,fontSize: musicFontSize)
     music2Label = setup.setupText(lineWidth:flame, text: music2Text ,size: rect , fontSize: musicFontSize)
     
     flame.y += dis
-    titleFlame.y = flame.y
-    let music3TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
+    titleFlame.y = flame.y - musicFontSize - 4
+    let music3TitleLabel = setup.setupText(lineWidth:titleFlame, text: music3Title ,size: rect ,fontSize: musicFontSize)
     music3Label = setup.setupText(lineWidth:flame, text: music3Text ,size: rect, fontSize: musicFontSize)
 
     
     self.view.addSubview(music1TitleLabel)
     self.view.addSubview(music2TitleLabel)
     self.view.addSubview(music3TitleLabel)
-    self.view.addSubview(self.music1Label)
+    self.view.addSubview(music1Label)
     self.view.addSubview(self.music2Label)
     self.view.addSubview(self.music3Label)
+    
     
   }
   
@@ -203,8 +206,9 @@ class MusicStatementViewController: UIViewController {
     self.receiveData()
     
     print("musicstatement recieve data finished")
+        self.setupAll()
     self.changeMusicLabels()
-    self.setupAll()
+
     }
     
     func changeMusicLabels(){
@@ -215,6 +219,7 @@ class MusicStatementViewController: UIViewController {
             print("musicstatement music")
             print(music1)
             music1Label.text = music1
+         // music1Label.text = "aaa"
         }
         if(self.user.Playing_2 != nil){
             let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
