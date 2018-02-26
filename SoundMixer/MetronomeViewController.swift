@@ -163,8 +163,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if bpmModeFlag {
       let text = "秒表記に"
       self.bpmButton.setTitle(text,for:.normal)
+      self.bpm = 60 / self.tmpspeed
     }else{
       let text = "BPM表記に"
+      self.tmpspeed = 1 / (self.bpm/60)
       self.bpmButton.setTitle(text,for:.normal)
     }
     self.changeLRButten()
