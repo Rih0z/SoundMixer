@@ -9,6 +9,9 @@
 import UIKit
 import MediaPlayer
 
+protocol TabBarDelegate {
+  func didSelectTab(MainTabBarController: UITabBarController)
+}
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   var Id:Int!
   var PlayingSong:MPMediaItem!
@@ -22,6 +25,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     //self.selectedIndex = 0
 
   }
+  
+  override var selectedIndex: Int{
+    // タブ切り替え時に処理を行うため
+    didSet {
+      self.delegate?.tabBarController?(self, didSelect: self.viewControllers![selectedIndex])
+    }
+  }  
 
   override func viewDidLoad() {
     super.viewDidLoad()

@@ -11,8 +11,8 @@ import UIKit
 import AudioToolbox
 import MediaPlayer
 
-class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
-
+class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate , MainTabBarDelegate{
+  
   var user:User = User()
   var timer: Timer!
   var leftoval: CALayer!
@@ -35,6 +35,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   
   private var selectLayer:CALayer!
+  private var clearLayer:CALayer!
   private var touchLastPoint:CGPoint!
   
   private var beginGestureScale:CGFloat!
@@ -47,7 +48,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.setupAll()
+    
   }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -56,17 +57,19 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    self.resetView()
     self.receiveData()
-    if self.user.Playing_1 != nil {
-      self.bpm = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyBeatsPerMinute) as! Float
-      self.timerReset()
-    }
+    self.setupAll()
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.setSendData()
   }
-  
+  //タブが変更された時に実行
+  func didSelectTab(mainTabBarController: MainTabBarController) {
+    self.resetView()
+    print("MetronomeControllerView changed!!!!!!!!!!!!!!")
+  }
   //**************:update*******************
   @objc func update(tm: Timer) {
     // do something
@@ -74,19 +77,19 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       
     }else{
       if self.flag {
-       self.blueBorder(layer: self.leftoval)
-       self.whiteBorder(layer: self.rightoval)
-       self.drawRight()
-       self.flag = false
+        self.blueBorder(layer: self.leftoval)
+        self.whiteBorder(layer: self.rightoval)
+        self.drawRight()
+        self.flag = false
       }else {
-       self.blueBorder(layer: self.rightoval)
-       self.whiteBorder(layer: self.leftoval)
-       self.drawLeft()
-       self.flag = true
-     }
+        self.blueBorder(layer: self.rightoval)
+        self.whiteBorder(layer: self.leftoval)
+        self.drawLeft()
+        self.flag = true
+      }
     }
   }
-
+  
   /************* pinch ***************/
   @objc func pinchGesture(sender:UIPinchGestureRecognizer){
     effectiveScale = beginGestureScale * sender.scale
@@ -109,17 +112,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     {
       if(self.bpm < self.bpmmax - 1){
         self.bpm += 0.1
-        self.timerReset()
-        self.updateSliderValue()
       }
-
     }else{
-    if(self.tmpspeed > self.tmpmin ){
-      self.tmpspeed -= 0.1
-      self.timerReset()
-      self.updateSliderValue()
+      if(self.tmpspeed > self.tmpmin ){
+        self.tmpspeed -= 0.1
+      }
     }
-    }
+    self.timerReset()
+    self.updateSliderValue()
   }
   @objc func rectBtnTapped(sender:UIButton){
     //四角を描く 遅くするボタンをタップされたら
@@ -127,19 +127,18 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     {
       if(self.bpm > self.bpmmin + 1){
         self.bpm -= 0.1
-        self.timerReset()
-        self.updateSliderValue()
+
       }
     }else{
-    if(self.tmpspeed <= self.tmpmax){
-      self.tmpspeed += 0.1
-      if(self.tmpspeed > 5.00){
-        self.tmpspeed = 5.00
+      if(self.tmpspeed <= self.tmpmax){
+        self.tmpspeed += 0.1
+        if(self.tmpspeed > 5.00){
+          self.tmpspeed = 5.00
+        }
       }
-      self.timerReset()
-      self.updateSliderValue()
     }
-    }
+    self.timerReset()
+    self.updateSliderValue()
   }
   @objc func hiddenBtnTapped(sender:UIButton){
     //アニメ非表示ボタンが押されたら
@@ -169,7 +168,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       self.tmpspeed = 1 / (self.bpm/60)
       self.bpmButton.setTitle(text,for:.normal)
     }
+    self.resetView()
+    
     self.changeLRButten()
+    self.drawSetUp()
     self.timerReset()
     self.updateSliderValue()
     
@@ -194,6 +196,19 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   func setupAll(){
     self.drawSetUp()
     self.setupTimer()
+    self.setupBpm()
+  }
+  func setupBpm(){
+    if self.user.Playing_1 != nil {
+      self.bpm = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyBeatsPerMinute) as! Float
+      if self.bpm == 0{
+        print("BPMの情報がありません．")
+        print("BPMを60に設定しました")
+      }else {
+        print("音楽1からBPMを取得しました")
+      }
+      self.timerReset()
+    }
   }
   func setupTimer(){
     // 一定間隔で実行
@@ -202,7 +217,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       self.timer = Timer.scheduledTimer(timeInterval: Double(1 / (self.bpm/60) ), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
       
     } else{
-    self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
+      self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     }
     self.timer.fire()
   }
@@ -240,7 +255,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     let Btn = UIButton()
     Btn.frame = rect
     Btn.center = lineWidth
-
+    
     Btn.setTitle(text,for:.normal)
     Btn.backgroundColor = color
     return Btn
@@ -262,18 +277,18 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.leftButton = UIButton()
     self.leftButton.frame = CGRect(x:0,y:0,width:100,height:50)
     self.leftButton.center = CGPoint(x:width / 5,y:height - 100)
+   
     
     //四角を生成するボタン
     self.rightButton = UIButton()
     self.rightButton.frame = CGRect(x:0,y:0,width:100,height:50)
     self.rightButton.center = CGPoint(x:width * 4 / 5,y:height - 100)
     
-    
     changeLRButten()
- self.view.addSubview(self.leftButton)
+    self.view.addSubview(self.leftButton)
     self.view.addSubview(self.rightButton)
     
-
+    
     
     drawRects()
     self.drawBpmButton()
@@ -286,25 +301,33 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     
   }
   func changeLRButten(){
+    
     if self.bpmModeFlag {
       self.leftButton = self.speedDownButton(Btn: self.leftButton)
       self.rightButton  = self.speedUpButton(Btn: self.rightButton)
+      
+      self.rightButton.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
+      self.leftButton.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
     } else {
       self.rightButton = self.speedDownButton(Btn: self.rightButton)
-       self.leftButton = self.speedUpButton(Btn: self.leftButton)
+      self.leftButton = self.speedUpButton(Btn: self.leftButton)
+      
+      self.leftButton.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
+      self.rightButton.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
     }
     
   }
   func speedUpButton(Btn:UIButton) ->UIButton{
-    Btn.addTarget(self, action: #selector(MetronomeViewController.ovalBtnTapped(sender:)), for: .touchUpInside)
     Btn.setTitle("速くする",for:.normal)
     Btn.backgroundColor = UIColor.green
+   
     return Btn
   }
   func speedDownButton(Btn: UIButton) -> UIButton{
-    Btn.addTarget(self, action: #selector(MetronomeViewController.rectBtnTapped(sender:)), for: .touchUpInside)
+
     Btn.setTitle("遅くする",for:.normal)
     Btn.backgroundColor = UIColor.red
+
     return Btn
   }
   func drawBpmButton(){
@@ -328,13 +351,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.view.addSubview(self.hiddenButton)
     
   }
-
+  
   @objc func drawRects(){
     drawRight()
     drawLeft()
   }
   @objc func drawLeft(){
-   // let width = self.view.bounds.width
+    // let width = self.view.bounds.width
     let height = self.view.bounds.height
     //初期の左側ボタン
     let oval = MyShapeLayer()
@@ -372,7 +395,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     if bpmModeFlag{
       self.slider = setupSlider(linewidth: sliderFlame, target_value: self.bpm, target_min: self.bpmmin, target_max: self.bpmmax)
     }else{
-       self.slider = setupSlider(linewidth: sliderFlame, target_value: self.tmpspeed, target_min: self.tmpmin, target_max: self.tmpmax)
+      self.slider = setupSlider(linewidth: sliderFlame, target_value: self.tmpspeed, target_min: self.tmpmin, target_max: self.tmpmax)
     }
     self.view.addSubview(self.slider)
   }
@@ -392,9 +415,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     self.speedLabel.sizeToFit()
     self.view.addSubview(self.speedLabel)
   }
-
+  
   //**********clear***************
-
+  
   func clearRects(){
     let rect = MyShapeLayer()
     rect.frame = CGRect(x:0,y:self.view.bounds.height/2 ,width:self.view.bounds.width,height:100)
@@ -417,10 +440,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   //*****************Reset**********************
   func reset(){
     self.timer.invalidate()
+    self.resetView()
+  }
+  func resetView(){
     let rect = MyShapeLayer()
     rect.frame = CGRect(x:0,y:0,width:self.view.bounds.width,height:self.view.bounds.height)
     rect.clearAll(lineWidth:1)
-    self.view.layer.addSublayer(rect)
+    self.clearLayer = rect
+    self.view.layer.addSublayer(self.clearLayer)
   }
   func timerReset(){
     self.flagReset()
@@ -451,7 +478,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     return self.view.layer.hitTest(touchPoint)!
   }
   func selectLayerFunc(layer:CALayer?) {
-    if((layer == self.view.layer) || (layer == nil)){
+    if((layer == self.view.layer) || (layer == nil)  || (layer == self.clearLayer) ){
       selectLayer = nil
       return
     }
@@ -473,7 +500,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     touchLastPoint = touchPoint
     //選択されたレイヤーをselectLayerにいれる
     self.selectLayerFunc(layer:layer)
-    if(selectLayer != nil && selectLayer != self.view.layer){
+    if(selectLayer != nil ){
       if self.hiddenFlag {
       }else{
         selectLayer.borderWidth = 3.0
@@ -499,12 +526,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
       //  CATransaction.begin()
       CATransaction.setDisableActions(true)
       if self.hiddenFlag {
-        
       }else{
-      // selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
-      selectLayer.borderWidth = 3.0
-      selectLayer.borderColor = UIColor.green.cgColor
-      //   CATransaction.commit()
+        // selectLayer.position = CGPoint(x:px + touchOffsetPoint.x,y:py + touchOffsetPoint.y)
+        selectLayer.borderWidth = 3.0
+        selectLayer.borderColor = UIColor.green.cgColor
+        //   CATransaction.commit()
       }
     }
   }
@@ -525,8 +551,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
   func map(x:Float , in_min:Float , in_max:Float,out_min:Float,out_max:Float )-> Float{
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
   }
-
- // ************ vibrate ********************
+  
+  // ************ vibrate ********************
   func shortVibrate() {
     AudioServicesPlaySystemSound(1003);
     AudioServicesDisposeSystemSoundID(1003);
@@ -537,7 +563,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate{
     {
       self.user = appDelegate.user
     }
-
+    
   }
   func setSendData(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate

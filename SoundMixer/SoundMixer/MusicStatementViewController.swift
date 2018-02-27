@@ -22,7 +22,11 @@ class MusicStatementViewController: UIViewController {
   var height:CGFloat!
   
   var infomationLabel: UILabel!
-
+  
+  var music1Switch:UISwitch!
+  var music2Switch:UISwitch!
+  var music3Switch:UISwitch!
+  
   var music1Label: UILabel!
   var music3Label: UILabel!
   var music2Label: UILabel!
@@ -33,7 +37,7 @@ class MusicStatementViewController: UIViewController {
   var music3Button:UIButton!
   
   let titleText = "音楽選択画面"
-  
+  //配列にしたほうが綺麗なので直します
   let music1Title = "音楽1"
   let music2Title = "音楽2"
   let music3Title = "音楽3"
@@ -46,21 +50,23 @@ class MusicStatementViewController: UIViewController {
   let button1Text = "音楽1を変更する"
   let button2Text = "音楽2を変更する"
   let button3Text = "音楽3を変更する"
-
+  
+  
+  
   /*
-  @IBAction func pickPlaylist1(_ sender: Any) {
-    //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
-    self.CheckPlaylist(whitchplaylist:  1)
-  }
-
-  @IBAction func pickPlaylist2(_ sender: Any) {
-    self.CheckPlaylist(whitchplaylist: 2)
-  }
-
-  @IBAction func pickPlaylist3(_ sender: Any) {
-    self.CheckPlaylist(whitchplaylist: 3)
-  }*/
- /***********: set up ****************/
+   @IBAction func pickPlaylist1(_ sender: Any) {
+   //https://developer.apple.com/documentation/mediaplayer/mpmediaplaylist
+   self.CheckPlaylist(whitchplaylist:  1)
+   }
+   
+   @IBAction func pickPlaylist2(_ sender: Any) {
+   self.CheckPlaylist(whitchplaylist: 2)
+   }
+   
+   @IBAction func pickPlaylist3(_ sender: Any) {
+   self.CheckPlaylist(whitchplaylist: 3)
+   }*/
+  /***********: set up ****************/
   func setupAll(){
     self.width = self.view.bounds.width
     self.height = self.view.bounds.height
@@ -73,7 +79,7 @@ class MusicStatementViewController: UIViewController {
     setupMusicLabel()
     setupInfomationLabel()
   }
-  
+    //switch の描画もここでやってます
   func setupMusicLabel(){
     let rect = CGRect(x:0,y:0,width:self.width/2,height:30)
     let setup = setupParts()
@@ -81,22 +87,39 @@ class MusicStatementViewController: UIViewController {
     let dis = musicFontSize * 2 + 8
     var flame = CGPoint(x:self.width/2 , y:self.height/3)
     var titleFlame = flame
+    var switchFlame = flame
+    switchFlame.x = width * 8/10
     titleFlame.x = width/10
     titleFlame.y -= musicFontSize + 4
+
     
+    self.music1Switch = setup.setupSwitch(linewidth: switchFlame, color: UIColor.black)
     let music1TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
     music1Label = setup.setupText(lineWidth:flame, text: music1Text ,size: rect ,fontSize: musicFontSize)
     
     flame.y += dis
     titleFlame.y = flame.y - musicFontSize - 4
+    switchFlame.y = flame.y
+    
+     self.music2Switch = setup.setupSwitch(linewidth: switchFlame, color: UIColor.black)
     let music2TitleLabel = setup.setupText(lineWidth:titleFlame, text: music2Title ,size: rect ,fontSize: musicFontSize)
     music2Label = setup.setupText(lineWidth:flame, text: music2Text ,size: rect , fontSize: musicFontSize)
     
     flame.y += dis
     titleFlame.y = flame.y - musicFontSize - 4
+    switchFlame.y = flame.y
+     self.music3Switch = setup.setupSwitch(linewidth: switchFlame, color: UIColor.black)
     let music3TitleLabel = setup.setupText(lineWidth:titleFlame, text: music3Title ,size: rect ,fontSize: musicFontSize)
     music3Label = setup.setupText(lineWidth:flame, text: music3Text ,size: rect, fontSize: musicFontSize)
     
+     music1Switch.addTarget(self, action: #selector(self.switch1Tapped(sender:)), for: .touchUpInside)
+     music2Switch.addTarget(self, action: #selector(self.switch2Tapped(sender:)), for: .touchUpInside)
+     music3Switch.addTarget(self, action: #selector(self.switch3Tapped(sender:)), for: .touchUpInside)
+    
+    self.view.addSubview(music1Switch)
+    self.view.addSubview(music2Switch)
+    self.view.addSubview(music3Switch)
+   
     
     self.view.addSubview(music1TitleLabel)
     self.view.addSubview(music2TitleLabel)
@@ -105,11 +128,26 @@ class MusicStatementViewController: UIViewController {
     self.view.addSubview(self.music2Label)
     self.view.addSubview(self.music3Label)
   }
+  @objc func switch1Tapped(sender:UISwitch ){
+    self.user.musicEditFlag_1 = self.music1Switch.isOn
+   print("ユーザー1の音楽編集フラグは")
+    print(self.user.musicEditFlag_1)
+  }
+  @objc func switch2Tapped(sender:UISwitch ){
+    self.user.musicEditFlag_2 = self.music2Switch.isOn
+    print("ユーザー2の音楽編集フラグは")
+    print(self.user.musicEditFlag_2)
+  }
+  @objc func switch3Tapped(sender:UISwitch ){
+    self.user.musicEditFlag_3 = self.music3Switch.isOn
+    print("ユーザー3の音楽編集フラグは")
+    print(self.user.musicEditFlag_3)
+  }
   func setupInfomationLabel(){
     let rect = CGRect(x:0,y:0,width:self.width,height:self.height/10)
     let setup = setupParts()
     let musicFontSize:CGFloat = 20
-
+    
     let titleFlame = CGPoint(x: self.width/2 , y:self.height/10 + musicFontSize)
     var flame = titleFlame
     flame.x = self.width/2
@@ -120,10 +158,12 @@ class MusicStatementViewController: UIViewController {
     self.view.addSubview(TitleLabel)
     self.view.addSubview(infomationLabel)
   }
+
   func setupButton(){
     let rect = CGRect(x:0,y:0,width: self.width * 3/4 ,height:self.height/20)
     var frame = CGPoint(x:self.width * 1 / 2,y:self.height * 7 / 10)
     let setup = setupParts()
+    
     
     self.music1Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button1Text, color: UIColor.blue)
     self.music1Button.addTarget(self, action: #selector(self.btn1Tapped(sender:)), for: .touchUpInside)
@@ -137,10 +177,11 @@ class MusicStatementViewController: UIViewController {
     self.music3Button.addTarget(self, action: #selector(self.btn3Tapped(sender:)), for: .touchUpInside)
     
     self.view.addSubview(self.music1Button)
-     self.view.addSubview(self.music2Button)
-     self.view.addSubview(self.music3Button)
+    self.view.addSubview(self.music2Button)
+    self.view.addSubview(self.music3Button)
   }
- /****************button funcs **********************/
+  
+  /****************button funcs **********************/
   @objc func btn1Tapped( sender:UIButton ){
     print("Button1")
     self.CheckPlaylist(whitchplaylist: 1)
@@ -157,7 +198,7 @@ class MusicStatementViewController: UIViewController {
   }
   
   func CheckPlaylist(whitchplaylist:Int){
-
+    
     self.user.SelectionFlag = whitchplaylist
     
     let myPlaylistQuery = MPMediaQuery.playlists()
@@ -168,9 +209,11 @@ class MusicStatementViewController: UIViewController {
       self.goNextPage(page: "PlaylistSelection")
     }else{
       infomationLabel.text = "選択可能なプレイリストがありません"
+      infomationLabel.sizeToFit()
+      
     }
   }
-
+  
   func sendDataSet(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     appDelegate.user = self.user
@@ -180,7 +223,7 @@ class MusicStatementViewController: UIViewController {
   func goNextPage(page:String){
     let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
     let secondViewController = storyboard.instantiateInitialViewController()
-
+    
     self.navigationController?.pushViewController(secondViewController!, animated: true)
     
   }
@@ -192,69 +235,60 @@ class MusicStatementViewController: UIViewController {
     rect.clearAll(lineWidth:1)
     self.view.layer.addSublayer(rect)
     self.secretButten = rect
+    let volumeView = MPVolumeView(frame: CGRect(origin:CGPoint(x:/*-3000*/ 0, y:0), size:CGSize.zero))
+    self.view.addSubview(volumeView)
     NotificationCenter.default.addObserver(self, selector: #selector(self.volumeChanged(notification:)), name:
       NSNotification.Name("AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
-    /*
-    if (self.user.Playing_1 != nil) {
-    let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-    print(music1)
-    music1Label.text = music1
-    }
-    if (self.user.Playing_2 != nil) {
-    let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-    print(music2)
-    music2Label.text = music2
-    }
-    */
+    
     //ViewTitle.text = self.title
     // Do any additional setup after loading the view.
     //navigationItem.backBarButtonItem = UIBarButtonItem(title: "戻ります", style: .plain, target: nil, action: nil)
   }
-
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
   }
   /***************** Appear ***************************/
-
+  
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
     
     print("musicstatement recieve data finished")
-        self.setupAll()
+    self.setupAll()
     self.changeMusicLabels()
-
-    }
     
-    func changeMusicLabels(){
-        print("musicstatement before view is...")
-        //print(self.user.BeforeView)
-        if(self.user.Playing_1 != nil){
-            let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-            print("musicstatement music")
-            print(music1)
-            music1Label.text = music1
-         // music1Label.text = "aaa"
-        }
-        if(self.user.Playing_2 != nil){
-            let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-            print("musicstatement music")
-            print(music2)
-            music2Label.text = music2
-        }
-      if(self.user.Playing_3 != nil){
-        let music3 = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-        print("musicstatement music")
-        print(music3)
-        music3Label.text = music3
-      }
+  }
+  
+  func changeMusicLabels(){
+    print("musicstatement before view is...")
+    //print(self.user.BeforeView)
+    if(self.user.Playing_1 != nil){
+      let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+      print("musicstatement music")
+      print(music1)
+      music1Label.text = music1
+      // music1Label.text = "aaa"
     }
+    if(self.user.Playing_2 != nil){
+      let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+      print("musicstatement music")
+      print(music2)
+      music2Label.text = music2
+    }
+    if(self.user.Playing_3 != nil){
+      let music3 = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+      print("musicstatement music")
+      print(music3)
+      music3Label.text = music3
+    }
+  }
   func receiveData(){
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.user = appDelegate.user
-     // self.title = appDelegate.user.Name
+      // self.title = appDelegate.user.Name
     }
     //これいらないのでは
     if(self.user.Playing_1 != nil){
@@ -265,18 +299,18 @@ class MusicStatementViewController: UIViewController {
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-
-
+    
+    
   }
   /*
-  // MARK: - Navigation
-
-  // In a storyboard-based application, you will often want to do a little preparation before navigation
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-  // Get the new view controller using segue.destinationViewController.
-  // Pass the selected object to the new view controller.
-  }
-  */
+   // MARK: - Navigation
+   
+   // In a storyboard-based application, you will often want to do a little preparation before navigation
+   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+   // Get the new view controller using segue.destinationViewController.
+   // Pass the selected object to the new view controller.
+   }
+   */
   /************** Touch Action ****************/
   func hitLayer(touch:UITouch) -> CALayer{
     var touchPoint:CGPoint = touch.location(in:self.view)
@@ -313,8 +347,8 @@ class MusicStatementViewController: UIViewController {
       }
     }
   }
-
-    //タッチが動いた時
+  
+  //タッチが動いた時
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     let touch:UITouch = touches.first!
     let touchPoint:CGPoint = touch.location(in:self.view)
@@ -357,7 +391,7 @@ class MusicStatementViewController: UIViewController {
       if let volumeChangeType = userInfo["AVSystemController_AudioVolumeChangeReasonNotificationParameter"] as? String {
         if volumeChangeType == "ExplicitVolumeChange" {
           if(debug){
-          print("changed! \(userInfo)")
+            print("changed! \(userInfo)")
             // 取得
             let audioSession = AVAudioSession.sharedInstance()
             // 監視を有効にする

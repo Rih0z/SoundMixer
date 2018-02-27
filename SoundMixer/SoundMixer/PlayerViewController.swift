@@ -119,6 +119,8 @@
 
 
 
+
+
 import UIKit
 import MediaPlayer
 import AVFoundation
@@ -142,6 +144,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var player1_name:UILabel!
     var player2_name:UILabel!
     var player3_name:UILabel!
+    var Player1Pitch:UILabel!
+    var Player2Pitch:UILabel!
+    var Player3Pitch:UILabel!
+    var Player4Pitch:UILabel!
+    var Player1Vol:UILabel!
+    var Player2Vol:UILabel!
+    var Player3Vol:UILabel!
+    var Player4Vol:UILabel!
+    
+    
     private var StartButton1:UIButton! = UIButton()
     private var StartButton2:UIButton! = UIButton()
     private var StartButton3:UIButton! = UIButton()
@@ -244,6 +256,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                     sampleRate3 = self.player3.audioFile.fileFormat.sampleRate
                     duration3 = Double(self.player3.audioFile.length) / sampleRate3
                     self.player3_pos_slider.maximumValue = Float(duration3)
+
                 }
                 catch {
                     print("OWAOWARI")
@@ -284,36 +297,49 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         self.player1_pitch_slider = self.drawPitchSlider(id:1)
         self.view.addSubview(self.player1_pitch_slider)
-        
         self.player2_pitch_slider = self.drawPitchSlider(id:2)
         self.view.addSubview(self.player2_pitch_slider)
-        
         self.player3_pitch_slider = self.drawPitchSlider(id:3)
         self.view.addSubview(self.player3_pitch_slider)
-        
         self.player4_pitch_slider = self.drawPitchSlider(id:4)
         self.view.addSubview(self.player4_pitch_slider)
         
         self.player1_vol_slider = self.drawVolSlider(id:1)
         self.view.addSubview(self.player1_vol_slider)
-        
         self.player2_vol_slider = self.drawVolSlider(id:2)
         self.view.addSubview(self.player2_vol_slider)
-        
         self.player3_vol_slider = self.drawVolSlider(id:3)
         self.view.addSubview(self.player3_vol_slider)
-        
         self.player4_vol_slider = self.drawVolSlider(id:4)
         self.view.addSubview(self.player4_vol_slider)
         
         self.player1_pos_slider = self.drawPosSlider(id:1)
         self.view.addSubview(self.player1_pos_slider)
-        
         self.player2_pos_slider = self.drawPosSlider(id:2)
         self.view.addSubview(self.player2_pos_slider)
-        
         self.player3_pos_slider = self.drawPosSlider(id:3)
         self.view.addSubview(self.player3_pos_slider)
+        
+        self.Player1Pitch = self.drawPitchLabel(id:1)
+        self.view.addSubview(self.Player1Pitch)
+        self.Player2Pitch = self.drawPitchLabel(id:2)
+        self.view.addSubview(self.Player2Pitch)
+        self.Player3Pitch = self.drawPitchLabel(id:3)
+        self.view.addSubview(self.Player3Pitch)
+        self.Player4Pitch = self.drawPitchLabel(id:4)
+        self.view.addSubview(self.Player4Pitch)
+        
+        
+        self.Player1Vol = self.drawVolLabel(id:1)
+        self.view.addSubview(self.Player1Vol)
+        self.Player2Vol = self.drawVolLabel(id:2)
+        self.view.addSubview(self.Player2Vol)
+        self.Player3Vol = self.drawVolLabel(id:3)
+        self.view.addSubview(self.Player3Vol)
+        self.Player4Vol = self.drawVolLabel(id:4)
+        self.view.addSubview(self.Player4Vol)
+        
+        
         
         self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(PlayerViewController.timerUpdate), userInfo: nil, repeats: true)
         //  player = MPMusicPlayerController.applicationMusicPlayer()
@@ -337,22 +363,25 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         return label
     }
     
+    // 曲名ラベル描画
     func drawLabel(id:Int) -> UILabel{
         var flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
         var title = "選択されていません"
-        
+        // 曲名１
         if(id == 1){
             flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/8 * 0.7)
             if(self.user.Playing_1 != nil){
                 title = String(describing: self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)!)
             }
         }
+        // 曲名２
         else if(id == 2){
             flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/8 * 2.7)
             if(self.user.Playing_2 != nil){
                 title = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
             }
         }
+        // 曲名３
         else if(id == 3){
             flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/8 * 4.7)
             if(self.user.Playing_3 != nil){
@@ -368,6 +397,56 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
         
         return MusicTitle
+    }
+    
+    // ピッチラベル描画
+    func drawPitchLabel(id:Int) -> UILabel{
+        
+        //let width = self.view.bounds.width
+        let height = self.view.bounds.height
+        
+        let pos_y = [height * 1.3 / 8 , height * 3.3 / 8 , height * 5.3 / 8 ,  height * 10 / 12]
+        
+        var flame:CGPoint
+        let title = "ピッチ"
+
+        flame = CGPoint(x:self.view.bounds.width/14 , y:pos_y[id - 1])
+
+        var Pitch:UILabel!
+        let rect = CGRect(x:0,y:0,width:self.view.bounds.width,height:30)
+        
+        Pitch = setupText(lineWidth: flame, text:title,size: rect)
+        Pitch.font = UIFont(name: "HiraMinProN-W3", size: 20)
+        Pitch.sizeToFit()
+        
+        //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
+        
+        return Pitch
+    }
+    
+    // ピッチラベル描画
+    func drawVolLabel(id:Int) -> UILabel{
+        
+        //let width = self.view.bounds.width
+        let height = self.view.bounds.height
+        
+        let pos_y = [height * 1.3 / 8 , height * 3.3 / 8 , height * 5.3 / 8 ,  height * 10 / 12]
+        
+        var flame:CGPoint
+        let title = "音量"
+        
+        flame = CGPoint(x:self.view.bounds.width*8/14 , y:pos_y[id - 1])
+        
+        var Vol:UILabel!
+        let rect = CGRect(x:0,y:0,width:self.view.bounds.width,height:30)
+        
+        Vol = setupText(lineWidth: flame, text:title,size: rect)
+        Vol.font = UIFont(name: "HiraMinProN-W3", size: 20)
+        Vol.sizeToFit()
+        
+        //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
+        
+        return Vol
     }
     
     // 曲再生ボタン
@@ -468,7 +547,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let height = self.view.bounds.height
         let pos_y = [height * 1.3 / 8 , height * 3.3 / 8 , height * 5.3 / 8 ,  height * 10 / 12]
         
-        let sliderFlame = CGPoint(x:self.view.bounds.width/4  , y:pos_y[id - 1])
+        let sliderFlame = CGPoint(x:self.view.bounds.width*1.2/4  , y:pos_y[id - 1])
         
         // スライダーの作成
         let slider = UISlider()
@@ -525,7 +604,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let height = self.view.bounds.height
         let pos_y = [height * 1.3 / 8 , height * 3.3 / 8 , height * 5.3 / 8 ,  height * 10 / 12]
         
-        let sliderFlame = CGPoint(x:self.view.bounds.width * 3 / 4  , y:pos_y[id - 1])
+        let sliderFlame = CGPoint(x:self.view.bounds.width * 3.2 / 4  , y:pos_y[id - 1])
         
         // スライダーの作成
         let slider = UISlider()
@@ -612,6 +691,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     
     @objc func changePos1(_ sender: UISlider) {
+        let PlayFlag1 = player.playing
+        
         let position = Double(self.player1_pos_slider.value)
         
         // シーク位置（AVAudioFramePosition）取得
@@ -627,7 +708,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         self.player.audioPlayerNode.stop()
         
-        if framestoplay > 100 {
+        //if framestoplay > 100 {
             // 指定の位置から再生するようスケジューリング
             self.player.audioPlayerNode.scheduleSegment(self.player.audioFile,
                                                  startingFrame: newsampletime,
@@ -635,11 +716,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                                                  at: nil,
                                                  completionHandler: nil)
             
+        //}
+        if(PlayFlag1 == true){
+            self.player.audioPlayerNode.play()
         }
-        
-        self.player.audioPlayerNode.play()
     }
     @objc func changePos2(_ sender: UISlider) {
+        let PlayFlag2 = player2.playing
+        
         let position = Double(self.player2_pos_slider.value)
         
         // シーク位置（AVAudioFramePosition）取得
@@ -665,9 +749,13 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             print(newsampletime)
         }
 
-        self.player2.audioPlayerNode.play()
+        if(PlayFlag2 == true){
+            self.player2.audioPlayerNode.play()
+        }
     }
     @objc func changePos3(_ sender: UISlider) {
+        let PlayFlag3 = player3.playing
+        
         let position = Double(self.player3_pos_slider.value)
         
         // シーク位置（AVAudioFramePosition）取得
@@ -693,7 +781,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
         }
         
-        self.player3.audioPlayerNode.play()
+        if(PlayFlag3 == true){
+            self.player3.audioPlayerNode.play()
+        }
     }
     
     @objc func timerUpdate() {
