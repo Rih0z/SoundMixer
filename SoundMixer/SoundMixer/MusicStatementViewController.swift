@@ -23,34 +23,22 @@ class MusicStatementViewController: UIViewController {
   
   var infomationLabel: UILabel!
   
-  var music1Switch:UISwitch!
-  var music2Switch:UISwitch!
-  var music3Switch:UISwitch!
-  
-  var music1Label: UILabel!
-  var music3Label: UILabel!
-  var music2Label: UILabel!
-  
-  
-  var music1Button:UIButton!
-  var music2Button:UIButton!
-  var music3Button:UIButton!
-  
+  var musicSwitch = [UISwitch]()
+
+  var musicLabel = [UILabel]()
+
+  var musicButton = [UIButton]()
+
   let titleText = "音楽選択画面"
   //配列にしたほうが綺麗なので直します
-  let music1Title = "音楽1"
-  let music2Title = "音楽2"
-  let music3Title = "音楽3"
-  
-  var music1Text = "音楽1を下のボタンから選択してください"
-  var music2Text = "音楽2を下のボタンから選択してください"
-  var music3Text = "音楽3を下のボタンから選択してください"
+  let musicTitle = ["音楽1","音楽2","音楽3"]
+
+  var musicText = ["音楽1を下のボタンから選択してください", "音楽2を下のボタンから選択してください", "音楽3を下のボタンから選択してください"]
+
   var infomationText = "プレイリストから音楽を選択してください"
   
-  let button1Text = "音楽1を変更する"
-  let button2Text = "音楽2を変更する"
-  let button3Text = "音楽3を変更する"
-  
+  let buttonText = ["音楽1を変更する","音楽2を変更する","音楽3を変更する"]
+
   
   
   /*
@@ -66,6 +54,7 @@ class MusicStatementViewController: UIViewController {
    @IBAction func pickPlaylist3(_ sender: Any) {
    self.CheckPlaylist(whitchplaylist: 3)
    }*/
+  
   /***********: set up ****************/
   func setupAll(){
     self.width = self.view.bounds.width
@@ -81,6 +70,7 @@ class MusicStatementViewController: UIViewController {
   }
     //switch の描画もここでやってます
   func setupMusicLabel(){
+    var musicTitleLabel = [UILabel]()
     let rect = CGRect(x:0,y:0,width:self.width/2,height:30)
     let setup = setupParts()
     let musicFontSize:CGFloat = 20
@@ -91,55 +81,37 @@ class MusicStatementViewController: UIViewController {
     switchFlame.x = width * 8/10
     titleFlame.x = width/10
     titleFlame.y -= musicFontSize + 4
-
     
-    self.music1Switch = setup.setupSwitch(linewidth: switchFlame, color: UIColor.black)
-    let music1TitleLabel = setup.setupText(lineWidth:titleFlame, text: music1Title ,size: rect ,fontSize: musicFontSize)
-    music1Label = setup.setupText(lineWidth:flame, text: music1Text ,size: rect ,fontSize: musicFontSize)
+    for i in 0...2{
+      self.musicSwitch.append( setup.setupSwitch(linewidth: switchFlame, color: UIColor.black) )
+      musicTitleLabel.append(  setup.setupText(lineWidth:titleFlame, text: musicTitle[i] ,size: rect ,fontSize: musicFontSize) )
+      musicLabel.append(  setup.setupText(lineWidth:flame, text: musicText[i] ,size: rect ,fontSize: musicFontSize))
+      
+      self.view.addSubview(musicSwitch[i])
+      self.view.addSubview(musicTitleLabel[i])
+       self.view.addSubview(musicLabel[i])
+      flame.y += dis
+      titleFlame.y = flame.y - musicFontSize - 4
+      switchFlame.y = flame.y
+    }
     
-    flame.y += dis
-    titleFlame.y = flame.y - musicFontSize - 4
-    switchFlame.y = flame.y
-    
-     self.music2Switch = setup.setupSwitch(linewidth: switchFlame, color: UIColor.black)
-    let music2TitleLabel = setup.setupText(lineWidth:titleFlame, text: music2Title ,size: rect ,fontSize: musicFontSize)
-    music2Label = setup.setupText(lineWidth:flame, text: music2Text ,size: rect , fontSize: musicFontSize)
-    
-    flame.y += dis
-    titleFlame.y = flame.y - musicFontSize - 4
-    switchFlame.y = flame.y
-     self.music3Switch = setup.setupSwitch(linewidth: switchFlame, color: UIColor.black)
-    let music3TitleLabel = setup.setupText(lineWidth:titleFlame, text: music3Title ,size: rect ,fontSize: musicFontSize)
-    music3Label = setup.setupText(lineWidth:flame, text: music3Text ,size: rect, fontSize: musicFontSize)
-    
-     music1Switch.addTarget(self, action: #selector(self.switch1Tapped(sender:)), for: .touchUpInside)
-     music2Switch.addTarget(self, action: #selector(self.switch2Tapped(sender:)), for: .touchUpInside)
-     music3Switch.addTarget(self, action: #selector(self.switch3Tapped(sender:)), for: .touchUpInside)
-    
-    self.view.addSubview(music1Switch)
-    self.view.addSubview(music2Switch)
-    self.view.addSubview(music3Switch)
-   
-    
-    self.view.addSubview(music1TitleLabel)
-    self.view.addSubview(music2TitleLabel)
-    self.view.addSubview(music3TitleLabel)
-    self.view.addSubview(music1Label)
-    self.view.addSubview(self.music2Label)
-    self.view.addSubview(self.music3Label)
+     musicSwitch[0].addTarget(self, action: #selector(self.switch1Tapped(sender:)), for: .touchUpInside)
+     musicSwitch[1].addTarget(self, action: #selector(self.switch2Tapped(sender:)), for: .touchUpInside)
+     musicSwitch[2].addTarget(self, action: #selector(self.switch3Tapped(sender:)), for: .touchUpInside)
+ 
   }
   @objc func switch1Tapped(sender:UISwitch ){
-    self.user.musicEditFlag_1 = self.music1Switch.isOn
+    self.user.musicEditFlag_1 = self.musicSwitch[0].isOn
    print("ユーザー1の音楽編集フラグは")
     print(self.user.musicEditFlag_1)
   }
   @objc func switch2Tapped(sender:UISwitch ){
-    self.user.musicEditFlag_2 = self.music2Switch.isOn
+    self.user.musicEditFlag_2 = self.musicSwitch[1].isOn
     print("ユーザー2の音楽編集フラグは")
     print(self.user.musicEditFlag_2)
   }
   @objc func switch3Tapped(sender:UISwitch ){
-    self.user.musicEditFlag_3 = self.music3Switch.isOn
+    self.user.musicEditFlag_3 = self.musicSwitch[2].isOn
     print("ユーザー3の音楽編集フラグは")
     print(self.user.musicEditFlag_3)
   }
@@ -164,21 +136,15 @@ class MusicStatementViewController: UIViewController {
     var frame = CGPoint(x:self.width * 1 / 2,y:self.height * 7 / 10)
     let setup = setupParts()
     
-    
-    self.music1Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button1Text, color: UIColor.blue)
-    self.music1Button.addTarget(self, action: #selector(self.btn1Tapped(sender:)), for: .touchUpInside)
-    
-    frame.y += rect.height * 2
-    self.music2Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button2Text, color: UIColor.blue)
-    self.music2Button.addTarget(self, action: #selector(self.btn2Tapped(sender:)), for: .touchUpInside)
-    
-    frame.y += rect.height * 2
-    self.music3Button = setup.setupButton(rect: rect, lineWidth: frame, text: self.button3Text, color: UIColor.blue)
-    self.music3Button.addTarget(self, action: #selector(self.btn3Tapped(sender:)), for: .touchUpInside)
-    
-    self.view.addSubview(self.music1Button)
-    self.view.addSubview(self.music2Button)
-    self.view.addSubview(self.music3Button)
+    for i in 0...2 {
+    self.musicButton.append( setup.setupButton(rect: rect, lineWidth: frame, text: self.buttonText[i], color: UIColor.blue) )
+     self.view.addSubview(self.musicButton[i])
+      frame.y += rect.height * 2
+    }
+    self.musicButton[0].addTarget(self, action: #selector(self.btn1Tapped(sender:)), for: .touchUpInside)
+    self.musicButton[1].addTarget(self, action: #selector(self.btn2Tapped(sender:)), for: .touchUpInside)
+    self.musicButton[2].addTarget(self, action: #selector(self.btn3Tapped(sender:)), for: .touchUpInside)
+
   }
   
   /****************button funcs **********************/
@@ -268,20 +234,20 @@ class MusicStatementViewController: UIViewController {
       let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
       print("musicstatement music")
       print(music1)
-      music1Label.text = music1
+      musicLabel[0].text = music1
       // music1Label.text = "aaa"
     }
     if(self.user.Playing_2 != nil){
       let music2 = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle)! as! String
       print("musicstatement music")
       print(music2)
-      music2Label.text = music2
+      musicLabel[1].text = music2
     }
     if(self.user.Playing_3 != nil){
       let music3 = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle)! as! String
       print("musicstatement music")
       print(music3)
-      music3Label.text = music3
+      musicLabel[2].text = music3
     }
   }
   func receiveData(){
