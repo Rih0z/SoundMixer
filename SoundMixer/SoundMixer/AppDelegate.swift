@@ -10,6 +10,10 @@ import UIKit
 import MediaPlayer
 let userDefaults = UserDefaults.standard
 
+var player = AudioEnginePlayer()
+var player2 = AudioEnginePlayer()
+var player3 = AudioEnginePlayer()
+
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
 
   var window: UIWindow?

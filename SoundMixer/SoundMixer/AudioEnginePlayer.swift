@@ -69,6 +69,7 @@ class AudioEnginePlayer: NSObject {
             self.audioFile = try AVAudioFile(forReading: text_url)
             sampleRate = self.audioFile.fileFormat.sampleRate
             duration = Double(self.audioFile.length) / sampleRate
+            offset = 0.0
         }
         catch {
             print("OWAOWARI")
@@ -101,4 +102,10 @@ class AudioEnginePlayer: NSObject {
         audioEngine.pause()
         audioPlayerNode.pause()
     }
+    
+    func stop(){
+        audioEngine.stop()
+        audioPlayerNode.stop()
+    }
+    
 }
