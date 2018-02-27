@@ -24,7 +24,6 @@ class AudioEnginePlayer: NSObject {
   
   let FREQUENCY: [Float] = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
   let BANDS: [Float] = [0 , 0 , 0 , 0 , 0 , 0 , 0 , -15.0 , -30.0 , -50.0]
-  let FEED:DispatchTime = 3
   
   var playing: Bool {
     get {
