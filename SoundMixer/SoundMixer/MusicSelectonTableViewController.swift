@@ -70,9 +70,13 @@ class MusicSelectonTableViewController: UITableViewController {
       self.testSong = self.Songs[indexPath.row]
     }
     let url = self.testSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-    testPlayer.SetUp(text_url: url)
+   // DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+        self.testPlayer.SetUp(text_url: url)
+    
     print("セット完了")
-    testPlayer.play()
+   
+    self.testPlayer.play()
+   // }
     
   }
   func stopMusics(){

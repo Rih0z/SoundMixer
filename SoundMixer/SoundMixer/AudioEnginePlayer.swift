@@ -9,103 +9,121 @@
 import AVFoundation
 
 class AudioEnginePlayer: NSObject {
+  
+  //static let sharedInstance = AudioEnginePlayer()
+  
+  var audioEngine: AVAudioEngine!
+  var audioFile: AVAudioFile!
+  var audioPlayerNode: AVAudioPlayerNode!
+  var audioUnitTimePitch: AVAudioUnitTimePitch!
+  var audioUnitEQ = AVAudioUnitEQ(numberOfBands: 10)
+  
+  var sampleRate:Double = 0.0
+  var duration:Double = 0.0
+  var offset:Double = 0.0
+  
+  let FREQUENCY: [Float] = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
+  let BANDS: [Float] = [0 , 0 , 0 , 0 , 0 , 0 , 0 , -15.0 , -30.0 , -50.0]
+  let FEED:DispatchTime = 3
+  
+  var playing: Bool {
+    get {
+      return audioPlayerNode != nil && audioPlayerNode.isPlaying
+    }
+  }
+  
+  override init() {
+    super.init()
     
-    //static let sharedInstance = AudioEnginePlayer()
-    
-    var audioEngine: AVAudioEngine!
-    var audioFile: AVAudioFile!
-    var audioPlayerNode: AVAudioPlayerNode!
-    var audioUnitTimePitch: AVAudioUnitTimePitch!
-    var audioUnitEQ = AVAudioUnitEQ(numberOfBands: 10)
-    
-    var sampleRate:Double = 0.0
-    var duration:Double = 0.0
-    var offset:Double = 0.0
-    
-    let FREQUENCY: [Float] = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
-    let BANDS: [Float] = [0 , 0 , 0 , 0 , 0 , 0 , 0 , -15.0 , -30.0 , -50.0]
-    
-    var playing: Bool {
-        get {
-            return audioPlayerNode != nil && audioPlayerNode.isPlaying
-        }
+    do {
+      audioEngine = AVAudioEngine()
+      
+      // Prepare AVAudioPlayerNode
+      audioPlayerNode = AVAudioPlayerNode()
+      audioEngine.attach(audioPlayerNode)
+      
+      // Prepare AVAudioUnitTimePitch
+      audioUnitTimePitch = AVAudioUnitTimePitch()
+      audioEngine.attach(audioUnitTimePitch)
+      audioUnitTimePitch.bypass = false
+      
+      //
+      audioUnitEQ = AVAudioUnitEQ(numberOfBands : 10)
+      self.audioEngine.attach(self.audioUnitEQ)
+      for i in 0...9 {
+        self.audioUnitEQ.bands[i].filterType = .parametric
+        self.audioUnitEQ.bands[i].frequency = FREQUENCY[i]
+        self.audioUnitEQ.bands[i].bandwidth = 0.5 // half an octave
+        //let eq = self.value(forKey: String(format: "eq%d", i)) as! UISlider
+        //self.audioUnitEQ.bands[i].gain = eq.value
+        self.audioUnitEQ.bands[i].gain = BANDS[i]
+        self.audioUnitEQ.bands[i].bypass = false
+      }
+      self.audioUnitEQ.bypass = true
+    }
+  }
+  
+  func SetUp(text_url:URL){
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+      self.setupAll(text_url: text_url)
+    }
+  }
+  func setupAll(text_url:URL){
+    do {
+      self.audioFile = try AVAudioFile(forReading: text_url)
+      self.sampleRate = self.audioFile.fileFormat.sampleRate
+      self.duration = Double(self.audioFile.length) / self.sampleRate
+      self.offset = 0.0
+    }
+    catch {
+      print("OWAOWARI")
+      return
     }
     
-    override init() {
-        super.init()
-        
-        do {
-            audioEngine = AVAudioEngine()
-            
-            // Prepare AVAudioPlayerNode
-            audioPlayerNode = AVAudioPlayerNode()
-            audioEngine.attach(audioPlayerNode)
-            
-            // Prepare AVAudioUnitTimePitch
-            audioUnitTimePitch = AVAudioUnitTimePitch()
-            audioEngine.attach(audioUnitTimePitch)
-            audioUnitTimePitch.bypass = false
-            
-            //
-            audioUnitEQ = AVAudioUnitEQ(numberOfBands : 10)
-            self.audioEngine.attach(self.audioUnitEQ)
-            for i in 0...9 {
-                self.audioUnitEQ.bands[i].filterType = .parametric
-                self.audioUnitEQ.bands[i].frequency = FREQUENCY[i]
-                self.audioUnitEQ.bands[i].bandwidth = 0.5 // half an octave
-                //let eq = self.value(forKey: String(format: "eq%d", i)) as! UISlider
-                //self.audioUnitEQ.bands[i].gain = eq.value
-                self.audioUnitEQ.bands[i].gain = BANDS[i]
-                self.audioUnitEQ.bands[i].bypass = false
-            }
-            self.audioUnitEQ.bypass = true
-        }
+    // Playerの再生場所（先頭）を指定（途中再生の場合、再生する Frame Positionを Starting Frameに設定する）
+    self.audioPlayerNode.scheduleSegment(self.audioFile,
+                                         startingFrame: 0,
+                                         frameCount: AVAudioFrameCount(self.audioFile.length),
+                                         at: nil,
+                                         completionHandler: nil)
+    
+    self.audioEngine.connect(self.audioPlayerNode, to: self.audioUnitTimePitch, format: self.audioFile.processingFormat)
+    self.audioEngine.connect(self.audioUnitTimePitch, to: self.audioUnitEQ, fromBus: 0, toBus: 0, format: self.audioFile.processingFormat)
+    self.audioEngine.connect(self.audioUnitEQ, to: self.audioEngine.mainMixerNode, fromBus: 0, toBus: 0, format: self.audioFile.processingFormat)
+    
+  }
+  
+  func play() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      try! self.audioEngine.start()
+      /*
+       audioPlayerNode.scheduleFile(audioFile, at: nil, completionHandler: {
+       self.play()
+       });
+       */
+      self.audioPlayerNode.play()
     }
     
-    func SetUp(text_url:URL){
-        
-        do {
-            
-            self.audioFile = try AVAudioFile(forReading: text_url)
-            sampleRate = self.audioFile.fileFormat.sampleRate
-            duration = Double(self.audioFile.length) / sampleRate
-            offset = 0.0
-        }
-        catch {
-            print("OWAOWARI")
-            return
-        }
-        
-        // Playerの再生場所（先頭）を指定（途中再生の場合、再生する Frame Positionを Starting Frameに設定する）
-        self.audioPlayerNode.scheduleSegment(self.audioFile,
-                                             startingFrame: 0,
-                                             frameCount: AVAudioFrameCount(self.audioFile.length),
-                                             at: nil,
-                                             completionHandler: nil)
-        
-        self.audioEngine.connect(self.audioPlayerNode, to: self.audioUnitTimePitch, format: self.audioFile.processingFormat)
-        self.audioEngine.connect(self.audioUnitTimePitch, to: self.audioUnitEQ, fromBus: 0, toBus: 0, format: self.audioFile.processingFormat)
-        self.audioEngine.connect(self.audioUnitEQ, to: self.audioEngine.mainMixerNode, fromBus: 0, toBus: 0, format: self.audioFile.processingFormat)
+    
+  }
+  
+  func pause() {
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      // 3秒後に実行したい処理 http://swift.tecc0.com/?p=669
+      self.audioEngine.pause()
+      self.audioPlayerNode.pause()
     }
     
-    func play() {
-        try! audioEngine.start()
-        /*
-         audioPlayerNode.scheduleFile(audioFile, at: nil, completionHandler: {
-         self.play()
-         });
-         */
-        audioPlayerNode.play()
+  }
+  
+  func stop(){
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+      self.audioEngine.stop()
+      self.audioPlayerNode.stop()
     }
     
-    func pause() {
-        audioEngine.pause()
-        audioPlayerNode.pause()
-    }
     
-    func stop(){
-        audioEngine.stop()
-        audioPlayerNode.stop()
-    }
-    
+  }
+  
 }
