@@ -152,6 +152,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var Player2Vol:UILabel!
     var Player3Vol:UILabel!
     var Player4Vol:UILabel!
+    var Player1Time:UILabel!
+    var Player2Time:UILabel!
+    var Player3Time:UILabel!
     
     
     private var StartButton1:UIButton! = UIButton()
@@ -174,130 +177,77 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var player3_pos_slider:UISlider!
     var player4_pos_slider:UISlider!
     
-    
+    var initFlag = false
     var timer: Timer?
-    /*
-     func Play(id:Int) {
-     // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
-     print("play")
-     
-     if(id == 1 || id == 4){
-     
-     if(self.user.Playing_1 != nil){
-     if player.playing {
-     player.pause()
-     } else {
-     //player.audioEngine.mainMixerNode.outputVolume = 1.0
-     player.play()
-     }
-     }
-     
-     }
-     if(id == 2 || id == 4){
-     if(self.user.Playing_2 != nil){
-     
-     if player2.playing {
-     player2.pause()
-     } else {
-     //player2.audioEngine.mainMixerNode.outputVolume = 1.0
-     player2.play()
-     }
-     }
-     }
-     if(id == 3 || id == 4){
-     if(self.user.Playing_3 != nil){
-     
-     let url3: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-     
-     do {
-     player3.audioFile = try AVAudioFile(forReading: url3)
-     sampleRate3 = self.player3.audioFile.fileFormat.sampleRate
-     duration3 = Double(self.player3.audioFile.length) / sampleRate3
-     self.player3_pos_slider.maximumValue = Float(duration3)
-     
-     }
-     catch {
-     print("OWAOWARI")
-     return
-     }
-     player3.audioEngine.connect(player3.audioPlayerNode, to: player3.audioUnitTimePitch, format: player3.audioFile.processingFormat)
-     player3.audioEngine.connect(player3.audioUnitTimePitch, to: player3.audioUnitEQ, fromBus: 0, toBus: 0, format: player3.audioFile.processingFormat)
-     player3.audioEngine.connect(player3.audioUnitEQ, to: player3.audioEngine.mainMixerNode, fromBus: 0, toBus: 1, format: player3.audioFile.processingFormat)
-     
-     player3.audioEngine.prepare()
-     
-     if player3.playing {
-     player3.pause()
-     } else {
-     //player3.audioEngine.mainMixerNode.outputVolume = 1.0
-     player3.play()
-     }
-     }
-     }
-     }
-     */
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.StartButton1 = self.DrawStartButton(id:1)
-        self.view.addSubview(self.StartButton1)
-        
-        self.StartButton2 = self.DrawStartButton(id:2)
-        self.view.addSubview(self.StartButton2)
-        
-        self.StartButton3 = self.DrawStartButton(id:3)
-        self.view.addSubview(self.StartButton3)
-        
-        self.StartButton4 = self.DrawStartButton(id:4)
-        self.view.addSubview(self.StartButton4)
-        
-        self.player1_pitch_slider = self.drawPitchSlider(id:1)
-        self.view.addSubview(self.player1_pitch_slider)
-        self.player2_pitch_slider = self.drawPitchSlider(id:2)
-        self.view.addSubview(self.player2_pitch_slider)
-        self.player3_pitch_slider = self.drawPitchSlider(id:3)
-        self.view.addSubview(self.player3_pitch_slider)
-        self.player4_pitch_slider = self.drawPitchSlider(id:4)
-        self.view.addSubview(self.player4_pitch_slider)
-        
-        self.player1_vol_slider = self.drawVolSlider(id:1)
-        self.view.addSubview(self.player1_vol_slider)
-        self.player2_vol_slider = self.drawVolSlider(id:2)
-        self.view.addSubview(self.player2_vol_slider)
-        self.player3_vol_slider = self.drawVolSlider(id:3)
-        self.view.addSubview(self.player3_vol_slider)
-        self.player4_vol_slider = self.drawVolSlider(id:4)
-        self.view.addSubview(self.player4_vol_slider)
-        
-        self.player1_pos_slider = self.drawPosSlider(id:1)
-        self.view.addSubview(self.player1_pos_slider)
-        self.player2_pos_slider = self.drawPosSlider(id:2)
-        self.view.addSubview(self.player2_pos_slider)
-        self.player3_pos_slider = self.drawPosSlider(id:3)
-        self.view.addSubview(self.player3_pos_slider)
-        
-        self.Player1Pitch = self.drawPitchLabel(id:1)
-        self.view.addSubview(self.Player1Pitch)
-        self.Player2Pitch = self.drawPitchLabel(id:2)
-        self.view.addSubview(self.Player2Pitch)
-        self.Player3Pitch = self.drawPitchLabel(id:3)
-        self.view.addSubview(self.Player3Pitch)
-        self.Player4Pitch = self.drawPitchLabel(id:4)
-        self.view.addSubview(self.Player4Pitch)
-        
-        
-        self.Player1Vol = self.drawVolLabel(id:1)
-        self.view.addSubview(self.Player1Vol)
-        self.Player2Vol = self.drawVolLabel(id:2)
-        self.view.addSubview(self.Player2Vol)
-        self.Player3Vol = self.drawVolLabel(id:3)
-        self.view.addSubview(self.Player3Vol)
-        self.Player4Vol = self.drawVolLabel(id:4)
-        self.view.addSubview(self.Player4Vol)
-        
-        
+        if(initFlag == false){
+            self.StartButton1 = self.DrawStartButton(id:1)
+            self.view.addSubview(self.StartButton1)
+            
+            self.StartButton2 = self.DrawStartButton(id:2)
+            self.view.addSubview(self.StartButton2)
+            
+            self.StartButton3 = self.DrawStartButton(id:3)
+            self.view.addSubview(self.StartButton3)
+            
+            self.StartButton4 = self.DrawStartButton(id:4)
+            self.view.addSubview(self.StartButton4)
+            
+            self.player1_pitch_slider = self.drawPitchSlider(id:1)
+            self.view.addSubview(self.player1_pitch_slider)
+            self.player2_pitch_slider = self.drawPitchSlider(id:2)
+            self.view.addSubview(self.player2_pitch_slider)
+            self.player3_pitch_slider = self.drawPitchSlider(id:3)
+            self.view.addSubview(self.player3_pitch_slider)
+            self.player4_pitch_slider = self.drawPitchSlider(id:4)
+            self.view.addSubview(self.player4_pitch_slider)
+            
+            self.player1_vol_slider = self.drawVolSlider(id:1)
+            self.view.addSubview(self.player1_vol_slider)
+            self.player2_vol_slider = self.drawVolSlider(id:2)
+            self.view.addSubview(self.player2_vol_slider)
+            self.player3_vol_slider = self.drawVolSlider(id:3)
+            self.view.addSubview(self.player3_vol_slider)
+            self.player4_vol_slider = self.drawVolSlider(id:4)
+            self.view.addSubview(self.player4_vol_slider)
+            
+            self.player1_pos_slider = self.drawPosSlider(id:1)
+            self.view.addSubview(self.player1_pos_slider)
+            self.player2_pos_slider = self.drawPosSlider(id:2)
+            self.view.addSubview(self.player2_pos_slider)
+            self.player3_pos_slider = self.drawPosSlider(id:3)
+            self.view.addSubview(self.player3_pos_slider)
+            
+            self.Player1Pitch = self.drawPitchLabel(id:1)
+            self.view.addSubview(self.Player1Pitch)
+            self.Player2Pitch = self.drawPitchLabel(id:2)
+            self.view.addSubview(self.Player2Pitch)
+            self.Player3Pitch = self.drawPitchLabel(id:3)
+            self.view.addSubview(self.Player3Pitch)
+            self.Player4Pitch = self.drawPitchLabel(id:4)
+            self.view.addSubview(self.Player4Pitch)
+            
+            
+            self.Player1Vol = self.drawVolLabel(id:1)
+            self.view.addSubview(self.Player1Vol)
+            self.Player2Vol = self.drawVolLabel(id:2)
+            self.view.addSubview(self.Player2Vol)
+            self.Player3Vol = self.drawVolLabel(id:3)
+            self.view.addSubview(self.Player3Vol)
+            self.Player4Vol = self.drawVolLabel(id:4)
+            self.view.addSubview(self.Player4Vol)
+            
+            self.Player1Time = self.drawTimeLabel(id: 1)
+            self.view.addSubview(self.Player1Time)
+            self.Player2Time = self.drawTimeLabel(id: 2)
+            self.view.addSubview(self.Player2Time)
+            self.Player3Time = self.drawTimeLabel(id: 3)
+            self.view.addSubview(self.Player3Time)
+            
+            initFlag = true
+        }
         if(self.timer == nil){
             self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(PlayerViewController.timerUpdate), userInfo: nil, repeats: true)
             
@@ -385,7 +335,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         return Pitch
     }
     
-    // ピッチラベル描画
+    // 音量ラベル描画
     func drawVolLabel(id:Int) -> UILabel{
         
         //let width = self.view.bounds.width
@@ -410,6 +360,33 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         return Vol
     }
     
+    // 再生時間表示ラベル描画
+    func drawTimeLabel(id:Int) -> UILabel{
+        
+        //let width = self.view.bounds.width
+        let height = self.view.bounds.height
+        
+        let pos_y = [height * 2.0 / 8 , height * 4.0 / 8 , height * 6.0 / 8]
+        
+        var flame:CGPoint
+        let min = 0.0
+        let sec = 0.0
+        let title = String(format:"%02d:%02d",min, sec)
+        
+        flame = CGPoint(x:self.view.bounds.width*8/14 , y:pos_y[id - 1])
+        
+        var Time:UILabel!
+        let rect = CGRect(x:0,y:0,width:self.view.bounds.width,height:30)
+        
+        Time = setupText(lineWidth: flame, text:title,size: rect)
+        Time.font = UIFont(name: "HiraMinProN-W3", size: 20)
+        Time.sizeToFit()
+        
+        //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
+        
+        return Time
+    }
+    
     // 曲再生ボタン
     func DrawStartButton(id:Int) -> UIButton{
         
@@ -419,7 +396,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let pos_y = [height * 2 / 8 , height * 4 / 8 , height * 6 / 8 ,  height * 13 / 14]
         
         let rect = CGRect(x:0,y:0,width:50,height:50)
-        let frame = CGPoint(x:width * 1 / 5,y:pos_y[id - 1])
+        let frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
         let text = "再生"
         
         
@@ -665,7 +642,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     // 再生位置スライダ作成
     func drawPosSlider(id:Int) -> UISlider{
         let height = self.view.bounds.height
-        let pos_y = [height * 2.0 / 8 , height * 4.0 / 8 , height * 6.0 / 8 ,  height * 11 / 12]
+        let pos_y = [height * 2.2 / 8 , height * 4.2 / 8 , height * 6.2 / 8 ,  height * 11 / 12]
         
         let sliderFlame = CGPoint(x:self.view.bounds.width * 1.8 / 3  , y:pos_y[id - 1])
         
@@ -818,7 +795,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
             let min = Int((currentTime + 0.49) / 60.0)
             let sec = Int(Int(currentTime + 0.49) % 60)
-            var text = String(format:"%02d:%02d",min, sec)
+            Player1Time.text = String(format:"%02d:%02d",min, sec)
             //print(text)
         }
         
@@ -836,7 +813,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
             let min = Int((currentTime + 0.49) / 60.0)
             let sec = Int(Int(currentTime + 0.49) % 60)
-            var text = String(format:"%02d:%02d",min, sec)
+            Player2Time.text = String(format:"%02d:%02d",min, sec)
             //print(text)
         }
         
@@ -854,7 +831,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
             let min = Int((currentTime + 0.49) / 60.0)
             let sec = Int(Int(currentTime + 0.49) % 60)
-            var text = String(format:"%02d:%02d",min, sec)
+            Player3Time.text = String(format:"%02d:%02d",min, sec)
             //print(text)
         }
         
@@ -875,28 +852,28 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.player3_name = self.drawLabel(id:3)
         self.view.addSubview(self.player3_name)
         
-        if(self.user.Playing_1 != nil){
+        if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
             player.stop()
             let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
             player.SetUp(text_url : url)
             print("曲１セット完了")
             self.player1_pos_slider.maximumValue = Float(player.duration)
         }
-        if(self.user.Playing_2 != nil){
+        if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
             player2.stop()
             let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
             player2.SetUp(text_url : url)
             print("曲2セット完了")
             self.player2_pos_slider.maximumValue = Float(player2.duration)
         }
-        if(self.user.Playing_3 != nil){
+        if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
             player3.stop()
             let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
             player3.SetUp(text_url : url)
             print("曲3セット完了")
             self.player3_pos_slider.maximumValue = Float(player3.duration)
         }
-        
+        user.SelectionFlag = 0
     }
     func receiveData(){
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
