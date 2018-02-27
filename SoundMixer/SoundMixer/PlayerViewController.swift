@@ -174,42 +174,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var player3_pos_slider:UISlider!
     var player4_pos_slider:UISlider!
     
-    var sampleRate1 = 0.0
-    var sampleRate2 = 0.0
-    var sampleRate3 = 0.0
-    var duration1 = 0.0
-    var duration2 = 0.0
-    var duration3 = 0.0
     
     var timer: Timer?
-    var offset1 = 0.0
-    var offset2 = 0.0
-    var offset3 = 0.0
     
     func Play(id:Int) {
         // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
         print("play")
         
         if(id == 1 || id == 4){
+            
             if(self.user.Playing_1 != nil){
-                let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                
-                do {
-                    player.audioFile = try AVAudioFile(forReading: url)
-                    sampleRate1 = self.player.audioFile.fileFormat.sampleRate
-                    duration1 = Double(self.player.audioFile.length) / sampleRate1
-                    self.player1_pos_slider.maximumValue = Float(duration1)
-                }
-                catch {
-                    print("OWAOWARI")
-                    return
-                }
-                player.audioEngine.connect(player.audioPlayerNode, to: player.audioUnitTimePitch, format: player.audioFile.processingFormat)
-                player.audioEngine.connect(player.audioUnitTimePitch, to: player.audioUnitEQ, fromBus: 0, toBus: 0, format: player.audioFile.processingFormat)
-                player.audioEngine.connect(player.audioUnitEQ, to: player.audioEngine.mainMixerNode, fromBus: 0, toBus: 0, format: player.audioFile.processingFormat)
-                
-                player.audioEngine.prepare()
-                
                 if player.playing {
                     player.pause()
                 } else {
@@ -221,24 +195,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         }
         if(id == 2 || id == 4){
             if(self.user.Playing_2 != nil){
-                let url2: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                
-                do {
-                    player2.audioFile = try AVAudioFile(forReading: url2)
-                    sampleRate2 = self.player2.audioFile.fileFormat.sampleRate
-                    duration2 = Double(self.player2.audioFile.length) / sampleRate2
-                    self.player2_pos_slider.maximumValue = Float(duration2)
-                }
-                catch {
-                    print("OWAOWARI")
-                    return
-                }
-                player2.audioEngine.connect(player2.audioPlayerNode, to: player2.audioUnitTimePitch, format: player2.audioFile.processingFormat)
-                player2.audioEngine.connect(player2.audioUnitTimePitch, to: player2.audioUnitEQ, fromBus: 0, toBus: 0, format: player2.audioFile.processingFormat)
-                player2.audioEngine.connect(player2.audioUnitEQ, to: player2.audioEngine.mainMixerNode, fromBus: 0, toBus: 1, format: player2.audioFile.processingFormat)
-                
-                player2.audioEngine.prepare()
-                
+
                 if player2.playing {
                     player2.pause()
                 } else {
@@ -249,6 +206,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         }
         if(id == 3 || id == 4){
             if(self.user.Playing_3 != nil){
+                /*
                 let url3: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
                 
                 do {
@@ -267,7 +225,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 player3.audioEngine.connect(player3.audioUnitEQ, to: player3.audioEngine.mainMixerNode, fromBus: 0, toBus: 1, format: player3.audioFile.processingFormat)
                 
                 player3.audioEngine.prepare()
-                
+                */
                 if player3.playing {
                     player3.pause()
                 } else {
@@ -582,21 +540,33 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
 
     @objc func changePitch1(_ sender: UISlider) {
-        player.audioUnitTimePitch.pitch = player1_pitch_slider.value
+        if(user.musicEditFlag[0] == true){
+            player.audioUnitTimePitch.pitch = player1_pitch_slider.value
+        }
     }
     @objc func changePitch2(_ sender: UISlider) {
-        player2.audioUnitTimePitch.pitch = player2_pitch_slider.value
+        if(user.musicEditFlag[1] == true){
+            player2.audioUnitTimePitch.pitch = player2_pitch_slider.value
+        }
     }
     @objc func changePitch3(_ sender: UISlider) {
-        player3.audioUnitTimePitch.pitch = player3_pitch_slider.value
+        if(user.musicEditFlag[2] == true){
+            player3.audioUnitTimePitch.pitch = player3_pitch_slider.value
+        }
     }
     @objc func changePitch4(_ sender: UISlider) {
-        player1_pitch_slider.value = player4_pitch_slider.value
-        player2_pitch_slider.value = player4_pitch_slider.value
-        player3_pitch_slider.value = player4_pitch_slider.value
-        player.audioUnitTimePitch.pitch = player1_pitch_slider.value
-        player2.audioUnitTimePitch.pitch = player2_pitch_slider.value
-        player3.audioUnitTimePitch.pitch = player3_pitch_slider.value
+        if(user.musicEditFlag[0] == true){
+            player1_pitch_slider.value = player4_pitch_slider.value
+            player.audioUnitTimePitch.pitch = player1_pitch_slider.value
+        }
+        if(user.musicEditFlag[2] == true){
+            player2_pitch_slider.value = player4_pitch_slider.value
+            player2.audioUnitTimePitch.pitch = player2_pitch_slider.value
+        }
+        if(user.musicEditFlag[3] == true){
+            player3_pitch_slider.value = player4_pitch_slider.value
+            player3.audioUnitTimePitch.pitch = player3_pitch_slider.value
+        }
     }
     
     // 音量調整用スライダ作成
@@ -696,19 +666,19 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let position = Double(self.player1_pos_slider.value)
         
         // シーク位置（AVAudioFramePosition）取得
-        let newsampletime = AVAudioFramePosition(sampleRate1 * position)
+        let newsampletime = AVAudioFramePosition(player.sampleRate * position)
         
         // 残り時間取得（sec）
-        let length = self.duration1 - position
+        let length = player.duration - position
         
         // 残りフレーム数（AVAudioFrameCount）取得
-        let framestoplay = AVAudioFrameCount(sampleRate1 * length)
+        let framestoplay = AVAudioFrameCount(player.sampleRate * length)
         
-        self.offset1 = position // ←シーク位置までの時間を一旦退避
+        player.offset = position // ←シーク位置までの時間を一旦退避
         
         self.player.audioPlayerNode.stop()
         
-        //if framestoplay > 100 {
+        if framestoplay > 100 {
             // 指定の位置から再生するようスケジューリング
             self.player.audioPlayerNode.scheduleSegment(self.player.audioFile,
                                                  startingFrame: newsampletime,
@@ -716,7 +686,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                                                  at: nil,
                                                  completionHandler: nil)
             
-        //}
+        }
         if(PlayFlag1 == true){
             self.player.audioPlayerNode.play()
         }
@@ -727,15 +697,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let position = Double(self.player2_pos_slider.value)
         
         // シーク位置（AVAudioFramePosition）取得
-        let newsampletime = AVAudioFramePosition(sampleRate2 * position)
+        let newsampletime = AVAudioFramePosition(player2.sampleRate * position)
         
         // 残り時間取得（sec）
-        let length = self.duration2 - position
+        let length = player2.duration - position
         
         // 残りフレーム数（AVAudioFrameCount）取得
-        let framestoplay = AVAudioFrameCount(sampleRate2 * length)
+        let framestoplay = AVAudioFrameCount(player2.sampleRate * length)
         
-        self.offset2 = position // ←シーク位置までの時間を一旦退避
+        player2.offset = position // ←シーク位置までの時間を一旦退避
         
         self.player2.audioPlayerNode.stop()
         
@@ -759,15 +729,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let position = Double(self.player3_pos_slider.value)
         
         // シーク位置（AVAudioFramePosition）取得
-        let newsampletime = AVAudioFramePosition(sampleRate3 * position)
+        let newsampletime = AVAudioFramePosition(player3.sampleRate * position)
         
         // 残り時間取得（sec）
-        let length = self.duration3 - position
+        let length = player3.duration - position
         
         // 残りフレーム数（AVAudioFrameCount）取得
-        let framestoplay = AVAudioFrameCount(sampleRate3 * length)
+        let framestoplay = AVAudioFrameCount(player3.sampleRate * length)
         
-        self.offset3 = position // ←シーク位置までの時間を一旦退避
+        player3.offset = position // ←シーク位置までの時間を一旦退避
         
         self.player3.audioPlayerNode.stop()
         
@@ -792,7 +762,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
             let nodeTime = player.audioPlayerNode.lastRenderTime
             let playerTime = player.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
-            let currentTime = (Double(playerTime!.sampleTime) / sampleRate1) + self.offset1 // シーク位置以前の時間を追加
+            let currentTime = (Double(playerTime!.sampleTime) / player.sampleRate) + player.offset // シーク位置以前の時間を追加
             
             self.player1_pos_slider.value = Float(currentTime)  // 現在の経過時間をスライダーで表示
             
@@ -810,7 +780,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
             let nodeTime = player2.audioPlayerNode.lastRenderTime
             let playerTime = player2.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
-            let currentTime = (Double(playerTime!.sampleTime) / sampleRate2) + self.offset2 // シーク位置以前の時間を追加
+            let currentTime = (Double(playerTime!.sampleTime) / player2.sampleRate) + player2.offset // シーク位置以前の時間を追加
             
             self.player2_pos_slider.value = Float(currentTime)  // 現在の経過時間をスライダーで表示
             
@@ -828,7 +798,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
             let nodeTime = player3.audioPlayerNode.lastRenderTime
             let playerTime = player3.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
-            let currentTime = (Double(playerTime!.sampleTime) / sampleRate3) + self.offset3 // シーク位置以前の時間を追加
+            let currentTime = (Double(playerTime!.sampleTime) / player3.sampleRate) + player3.offset // シーク位置以前の時間を追加
             
             self.player3_pos_slider.value = Float(currentTime)  // 現在の経過時間をスライダーで表示
             
@@ -859,7 +829,24 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.player3_name = self.drawLabel(id:3)
         self.view.addSubview(self.player3_name)
         
-
+        if(self.user.Playing_1 != nil){
+            let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+            player.SetUp(text_url : url)
+            print("曲１セット完了")
+            self.player1_pos_slider.maximumValue = Float(player.duration)
+        }
+        if(self.user.Playing_2 != nil){
+            let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+            player2.SetUp(text_url : url)
+            print("曲2セット完了")
+            self.player2_pos_slider.maximumValue = Float(player2.duration)
+        }
+        if(self.user.Playing_3 != nil){
+            let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+            player3.SetUp(text_url : url)
+            print("曲3セット完了")
+            self.player3_pos_slider.maximumValue = Float(player3.duration)
+        }
         
     }
     func receiveData(){
