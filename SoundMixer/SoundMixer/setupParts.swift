@@ -29,14 +29,14 @@ class setupParts : CALayer {
     return Btn
   }
   
-  @objc func setupSwitch(linewidth : CGPoint , color:UIColor ) -> UISwitch{
+  @objc func setupSwitch(linewidth : CGPoint , color:UIColor,switchco:Bool ) -> UISwitch{
     // Swicthを作成する.
     let mySwicth: UISwitch = UISwitch()
    mySwicth.layer.position = linewidth
     // Swicthの枠線を表示する.
     mySwicth.tintColor = color
     // SwitchをOnに設定する.
-    mySwicth.isOn = false
+    mySwicth.isOn = switchco
     // SwitchのOn/Off切り替わりの際に、呼ばれるイベントを設定する.
     //mySwicth.addTarget(self, action: "onClickMySwicth:", forControlEvents: UIControlEvents.valueChanged)
     // SwitchをViewに追加する.

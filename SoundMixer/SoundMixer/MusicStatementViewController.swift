@@ -83,7 +83,7 @@ class MusicStatementViewController: UIViewController {
     titleFlame.y -= musicFontSize + 4
     
     for i in 0...2{
-      self.musicSwitch.append( setup.setupSwitch(linewidth: switchFlame, color: UIColor.black) )
+      self.musicSwitch.append( setup.setupSwitch(linewidth: switchFlame, color: UIColor.black,switchco: self.user.musicEditFlag[i]) )
       musicTitleLabel.append(  setup.setupText(lineWidth:titleFlame, text: musicTitle[i] ,size: rect ,fontSize: musicFontSize) )
       musicLabel.append(  setup.setupText(lineWidth:flame, text: musicText[i] ,size: rect ,fontSize: musicFontSize))
       
@@ -101,19 +101,19 @@ class MusicStatementViewController: UIViewController {
  
   }
   @objc func switch1Tapped(sender:UISwitch ){
-    self.user.musicEditFlag_1 = self.musicSwitch[0].isOn
+    self.user.musicEditFlag[0] = self.musicSwitch[0].isOn
    print("ユーザー1の音楽編集フラグは")
-    print(self.user.musicEditFlag_1)
+    print(self.user.musicEditFlag[0])
   }
   @objc func switch2Tapped(sender:UISwitch ){
-    self.user.musicEditFlag_2 = self.musicSwitch[1].isOn
+    self.user.musicEditFlag[1] = self.musicSwitch[1].isOn
     print("ユーザー2の音楽編集フラグは")
-    print(self.user.musicEditFlag_2)
+    print(self.user.musicEditFlag[1])
   }
   @objc func switch3Tapped(sender:UISwitch ){
-    self.user.musicEditFlag_3 = self.musicSwitch[2].isOn
+    self.user.musicEditFlag[2] = self.musicSwitch[2].isOn
     print("ユーザー3の音楽編集フラグは")
-    print(self.user.musicEditFlag_3)
+    print(self.user.musicEditFlag[2])
   }
   func setupInfomationLabel(){
     let rect = CGRect(x:0,y:0,width:self.width,height:self.height/10)

@@ -16,9 +16,7 @@ class User {
   var Playing_2:MPMediaItem?
   var Playing_3:MPMediaItem?
   //チェックボックスのフラグ
-  var musicEditFlag_1:Bool = false
-  var musicEditFlag_2:Bool = false
-  var musicEditFlag_3:Bool = false
+  var musicEditFlag:[Bool] = [false,false,false]
   //どの曲を選択しているのか
   var SelectionFlag:Int = 0
   //前にデータの受け渡しがあったビューがどこか教えてくれます．デバッグようなのでなくても大丈夫
