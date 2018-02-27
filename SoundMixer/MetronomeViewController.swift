@@ -57,7 +57,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    self.resetView()
+    self.reset()
     self.receiveData()
     self.setupAll()
   }
@@ -150,7 +150,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
       let text = "アニメ表示"
       self.hiddenButton.setTitle(text,for:.normal)
     }else{
+      
+      let tmpbpm = self.bpm
       self.setupAll()
+      self.bpm = tmpbpm
+      resetTimerText()
       let text = "アニメ非表示"
       self.hiddenButton.setTitle(text,for:.normal)
       
@@ -439,7 +443,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   }
   //*****************Reset**********************
   func reset(){
-    self.timer.invalidate()
+    if(self.timer != nil){
+      self.timer.invalidate()
+    }
     self.resetView()
   }
   func resetView(){
@@ -457,6 +463,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.timer.invalidate()
     self.setupTimer()
     //self.drawSpeed()
+    self.resetTimerText()
+  }
+  func flagReset(){
+    self.setupflag = true
+    self.flag = true
+  }
+  func resetTimerText(){
     if bpmModeFlag
     {
       self.speedLabel.text = String(floor(self.bpm*10)/10 ) + " BPM"
@@ -466,11 +479,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
     self.speedLabel.sizeToFit()
   }
-  func flagReset(){
-    self.setupflag = true
-    self.flag = true
-  }
-  
   /************** Touch Action ****************/
   func hitLayer(touch:UITouch) -> CALayer{
     var touchPoint:CGPoint = touch.location(in:self.view)
