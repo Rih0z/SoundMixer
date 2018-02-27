@@ -20,6 +20,7 @@
 		90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90577E2A20330E9300D46AF9 /* UserViewController.swift */; };
 		905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */; };
 		905E86B920357C73004BE779 /* MainTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905E86B820357C73004BE779 /* MainTabBarDelegate.swift */; };
+		9068DCDA2044DE9D009648C5 /* AudioEnginePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9068DCD92044DE9D009648C5 /* AudioEnginePlayer.swift */; };
 		906A7CD72039A53D008CF890 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 906A7CD62039A53D008CF890 /* QuartzCore.framework */; };
 		906A7CD92039A7DC008CF890 /* MyShapeLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */; };
 		9081D44B203677B40085A8EA /* PlaylistSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */; };
@@ -48,6 +49,7 @@
 		90577E2A20330E9300D46AF9 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicSelectonTableViewController.swift; sourceTree = "<group>"; };
 		905E86B820357C73004BE779 /* MainTabBarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarDelegate.swift; sourceTree = "<group>"; };
+		9068DCD92044DE9D009648C5 /* AudioEnginePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioEnginePlayer.swift; sourceTree = "<group>"; };
 		906A7CD62039A53D008CF890 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyShapeLayer.swift; sourceTree = "<group>"; };
 		9081D44A203677B40085A8EA /* PlaylistSelection.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PlaylistSelection.storyboard; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				905E86B820357C73004BE779 /* MainTabBarDelegate.swift */,
 				90577E2820330C4100D46AF9 /* MetronomeViewController.swift */,
+				9068DCD92044DE9D009648C5 /* AudioEnginePlayer.swift */,
 				909E6F532043C1BC00BDB10D /* setupParts.swift */,
 				906A7CD82039A7DC008CF890 /* MyShapeLayer.swift */,
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
@@ -212,6 +215,7 @@
 				9081D4592036A2690085A8EA /* MusicStatementViewController.swift in Sources */,
 				90577E2B20330E9300D46AF9 /* UserViewController.swift in Sources */,
 				90577E152032E0ED00D46AF9 /* PlayerViewController.swift in Sources */,
+				9068DCDA2044DE9D009648C5 /* AudioEnginePlayer.swift in Sources */,
 				903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */,
 				90577E2920330C4100D46AF9 /* MetronomeViewController.swift in Sources */,
 				90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */,
