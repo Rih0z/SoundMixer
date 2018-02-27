@@ -61,6 +61,7 @@ class MusicSelectonTableViewController: UITableViewController {
   func tryingMusic(indexPath:IndexPath){
     if(testSong == nil)
     {
+      stopMusics()
       print("新しく曲をセットします")
       self.testSong = self.Songs[indexPath.row]
     }else{
@@ -74,7 +75,11 @@ class MusicSelectonTableViewController: UITableViewController {
     testPlayer.play()
     
   }
-  
+  func stopMusics(){
+    player.stop()
+    player2.stop()
+    player3.stop()
+  }
   override func viewDidLoad() {
     super.viewDidLoad()
     // Uncomment the following line to preserve selection between presentations
