@@ -30,7 +30,7 @@ class MusicSelectonTableViewController: UITableViewController {
 
   
   func goNextPage(page:String){
-    testPlayer.pause()
+    testPlayer.stop()
       let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
       let secondViewController = storyboard.instantiateInitialViewController()
       self.navigationController?.pushViewController(secondViewController!, animated: true)
@@ -65,12 +65,12 @@ class MusicSelectonTableViewController: UITableViewController {
       self.testSong = self.Songs[indexPath.row]
     }else{
       print("一時停止して次の曲をセットします")
-      testPlayer.pause()
+      testPlayer.stop()
       self.testSong = self.Songs[indexPath.row]
     }
     let url = self.testSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
     testPlayer.SetUp(text_url: url)
-    print("一曲目セット完了")
+    print("セット完了")
     testPlayer.play()
     
   }
