@@ -282,7 +282,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         if(id == 1){
             flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/8 * 0.7)
             if(self.user.Playing_1 != nil){
-                title = String(describing: self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)!)
+              
+              title = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+
             }
         }
             // 曲名２
@@ -296,7 +298,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         else if(id == 3){
             flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/8 * 4.7)
             if(self.user.Playing_3 != nil){
-                title = String(describing: self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle)!)
+              title = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle)! as! String
             }
         }
         var MusicTitle:UILabel!
