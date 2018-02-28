@@ -368,6 +368,9 @@ class MusicStatementViewController: UIViewController {
             }
             // 監視を開始
             audioSession.addObserver(self, forKeyPath: "outputVolume", options: [ .new ], context: nil)
+            
+            print(player.audioEngine.mainMixerNode.outputVolume)
+            
             print("audio volume : \(volume)")
             // 監視を終了
             audioSession.removeObserver(self, forKeyPath: "outputVolume")

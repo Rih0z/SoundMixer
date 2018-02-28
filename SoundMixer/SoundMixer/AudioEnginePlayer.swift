@@ -24,7 +24,11 @@ class AudioEnginePlayer: NSObject {
   
   let FREQUENCY: [Float] = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
   let BANDS: [Float] = [0 , 0 , 0 , 0 , 0 , 0 , 0 , -15.0 , -30.0 , -50.0]
-  
+  var feedOutVolume:Float!
+  let feedInVolume:Float = 0.5
+  var playingFlag:Bool = false
+  var pouseFlag:Bool = false
+  var firstPlayFlag:Bool = true
   var playing: Bool {
     get {
       return audioPlayerNode != nil && audioPlayerNode.isPlaying
@@ -63,8 +67,13 @@ class AudioEnginePlayer: NSObject {
   }
   
   func SetUp(text_url:URL){
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+    if(self.playingFlag){
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+        self.setupAll(text_url: text_url)
+      }
+    }else{
       self.setupAll(text_url: text_url)
+      
     }
   }
   func setupAll(text_url:URL){
@@ -93,36 +102,78 @@ class AudioEnginePlayer: NSObject {
   }
   
   func play() {
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-      try! self.audioEngine.start()
-      /*
-       audioPlayerNode.scheduleFile(audioFile, at: nil, completionHandler: {
-       self.play()
-       });
-       */
-      self.audioPlayerNode.play()
+    if self.firstPlayFlag || self.pouseFlag  {
+      self.playStart()
+    } else {
+      print("waiting for stop music .....")
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        print("3 seconds passed ! PlayStart")
+        self.playStart()
+      }
     }
-    
-    
+  }
+  func playStart(){
+    self.audioEngine.mainMixerNode.outputVolume = 0
+    let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedIn), userInfo: nil, repeats: true)
+   
+    print("FIRST PLAY")
+    try! self.audioEngine.start()
+    print("PLAY START ")
+    self.audioPlayerNode.play()
+    self.firstPlayFlag = false
+    self.playingFlag = true
+    self.pouseFlag = false
+    print("PLAY()")
+    self.audioEngine.mainMixerNode.outputVolume = 0//.1
+     timer.fire()
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+      print("AFTER 5 SECONDS")
+      timer.invalidate()
+      print("TIMER IVALIDATE")
+      
+    }
   }
   
   func pause() {
-    
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+    print(self.audioEngine.mainMixerNode.outputVolume)
+    if self.playingFlag {
       // 3秒後に実行したい処理 http://swift.tecc0.com/?p=669
-      self.audioEngine.pause()
-      self.audioPlayerNode.pause()
+      self.feedOutVolume = self.audioEngine.mainMixerNode.outputVolume
+      let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedOut), userInfo: nil, repeats: true)
+      timer.fire()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+        self.pouseFlag = true
+        self.audioEngine.pause()
+        self.audioPlayerNode.pause()
+        timer.invalidate()
+      }
     }
-    
   }
   
   func stop(){
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
-      self.audioEngine.stop()
-      self.audioPlayerNode.stop()
-    }
-    
+      if self.playingFlag {
+        self.feedOutVolume = self.audioEngine.mainMixerNode.outputVolume
+        let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedOut), userInfo: nil, repeats: true)
+        timer.fire()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+          self.audioEngine.stop()
+          self.audioPlayerNode.stop()
+          self.playingFlag = false
+          self.pouseFlag = false
+          timer.invalidate()
+        }
+      } else {
+      }
+      print("STOP COMPLETE")
     
   }
-  
+  @objc func feedOut(){
+    print("feed out")
+    self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
+  }
+  @objc func feedIn(){
+    print("feed in")
+    self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
+    
+  }
 }
