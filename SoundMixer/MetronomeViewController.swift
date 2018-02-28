@@ -206,6 +206,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     if self.user.Playing_1 != nil {
       self.bpm = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyBeatsPerMinute) as! Float
       if self.bpm == 0{
+        self.bpm = 60
         print("BPMの情報がありません．")
         print("BPMを60に設定しました")
       }else {
