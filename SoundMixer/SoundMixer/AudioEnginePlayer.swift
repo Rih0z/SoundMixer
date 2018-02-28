@@ -78,6 +78,7 @@ class AudioEnginePlayer: NSObject {
   }
   func setupAll(text_url:URL){
     do {
+        print("nset url")
       self.audioFile = try AVAudioFile(forReading: text_url)
       self.sampleRate = self.audioFile.fileFormat.sampleRate
       self.duration = Double(self.audioFile.length) / self.sampleRate
@@ -87,13 +88,22 @@ class AudioEnginePlayer: NSObject {
       print("OWAOWARI")
       return
     }
-    
+    print("\n")
+    print(self.audioFile)
+    print("\n")
+    print(self.audioFile.length)
+    print()
     // Playerの再生場所（先頭）を指定（途中再生の場合、再生する Frame Positionを Starting Frameに設定する）
-    self.audioPlayerNode.scheduleSegment(self.audioFile,
+    
+    /*self.audioPlayerNode.scheduleSegment(self.audioFile,
                                          startingFrame: 0,
-                                         frameCount: AVAudioFrameCount(self.audioFile.length),
+                                         frameCount: AVAudioFrameCount(167580),
                                          at: nil,
                                          completionHandler: nil)
+     */
+    //self.audioPlayerNode.scheduleFile(audioFile, at:nil, completionHandler:nil)
+    
+    print("111111111111111111")
     
     self.audioEngine.connect(self.audioPlayerNode, to: self.audioUnitTimePitch, format: self.audioFile.processingFormat)
     self.audioEngine.connect(self.audioUnitTimePitch, to: self.audioUnitEQ, fromBus: 0, toBus: 0, format: self.audioFile.processingFormat)
