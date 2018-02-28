@@ -17,13 +17,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   var PlayingSong:MPMediaItem!
   var user:User = User()
   var musiclabel1 :String?
-
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
-
+    
     //self.selectedIndex = 1
     //self.selectedIndex = 0
-
+    
   }
   
   override var selectedIndex: Int{
@@ -31,14 +31,14 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     didSet {
       self.delegate?.tabBarController?(self, didSelect: self.viewControllers![selectedIndex])
     }
-  }  
-
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     self.delegate = self
-
+    
   }
-
+  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
   }
@@ -72,7 +72,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     appDelegate.user = self.user
   }
-
+  
   override func viewWillAppear(_ animated: Bool) {
     self.receiveData()
     
@@ -91,8 +91,14 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.user.homeflag = false
       self.selectedIndex = 2
     }
-
+    else if self.user.editflag {
+      self.user.editflag = false
+      self.selectedIndex = 1
+    }
+    
     self.title = self.user.Name
+    
+    self.showBarButton()
   }
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
   }
@@ -109,6 +115,25 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       print("どのタブが開いているかあ")
       print(self.selectedIndex)
     }
+  }
+  
+  var barRightButton: UIBarButtonItem!
+  func showBarButton() {
+    self.navigationController?.setNavigationBarHidden(false, animated: false)
+    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
+    //self.barRightButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.goLoadSetting))
+    self.navigationItem.rightBarButtonItem = self.barRightButton
+  }
+  
+  @objc func goLoadSetting() {
+    self.goNextPage(page: "SettingSelection")
+  }
+  
+  func goNextPage(page:String){
+    let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
+    let secondViewController = storyboard.instantiateInitialViewController()
+    
+    self.navigationController?.pushViewController(secondViewController!, animated: true)
   }
 }
 

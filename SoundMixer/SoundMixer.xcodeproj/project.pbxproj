@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9001352520476C8E0032EAB7 /* SettingSelection.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9001352420476C8E0032EAB7 /* SettingSelection.storyboard */; };
+		9001352720476CA40032EAB7 /* SettingSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9001352620476CA30032EAB7 /* SettingSelectionViewController.swift */; };
 		903661C920340B63008D2B39 /* PlaylistSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */; };
 		903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903661CC20342329008D2B39 /* MainTabBarController.swift */; };
 		903661D020342701008D2B39 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 903661CF20342701008D2B39 /* MediaPlayer.framework */; };
@@ -34,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9001352420476C8E0032EAB7 /* SettingSelection.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SettingSelection.storyboard; sourceTree = "<group>"; };
+		9001352620476CA30032EAB7 /* SettingSelectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingSelectionViewController.swift; sourceTree = "<group>"; };
 		903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistSelectionViewController.swift; sourceTree = "<group>"; };
 		903661CC20342329008D2B39 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		903661CF20342701008D2B39 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -121,6 +125,8 @@
 				9081D4582036A2690085A8EA /* MusicStatementViewController.swift */,
 				903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */,
 				905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */,
+				9001352620476CA30032EAB7 /* SettingSelectionViewController.swift */,
+				9001352420476C8E0032EAB7 /* SettingSelection.storyboard */,
 				90577E142032E0ED00D46AF9 /* PlayerViewController.swift */,
 				90577E2820330C4100D46AF9 /* MetronomeViewController.swift */,
 				90577E242033070900D46AF9 /* User.swift */,
@@ -194,6 +200,7 @@
 				9081D45120367A040085A8EA /* Player.storyboard in Resources */,
 				9081D44D203678530085A8EA /* MusicSelection.storyboard in Resources */,
 				90577E1A2032E0ED00D46AF9 /* Assets.xcassets in Resources */,
+				9001352520476C8E0032EAB7 /* SettingSelection.storyboard in Resources */,
 				90577E182032E0ED00D46AF9 /* Main.storyboard in Resources */,
 				9081D45520367AA20085A8EA /* MainTabBar.storyboard in Resources */,
 				9081D44B203677B40085A8EA /* PlaylistSelection.storyboard in Resources */,
@@ -217,6 +224,7 @@
 				90577E152032E0ED00D46AF9 /* PlayerViewController.swift in Sources */,
 				9068DCDA2044DE9D009648C5 /* AudioEnginePlayer.swift in Sources */,
 				903661CD20342329008D2B39 /* MainTabBarController.swift in Sources */,
+				9001352720476CA40032EAB7 /* SettingSelectionViewController.swift in Sources */,
 				90577E2920330C4100D46AF9 /* MetronomeViewController.swift in Sources */,
 				90577E112032E0ED00D46AF9 /* AppDelegate.swift in Sources */,
 				905E86B720355FF1004BE779 /* MusicSelectonTableViewController.swift in Sources */,
