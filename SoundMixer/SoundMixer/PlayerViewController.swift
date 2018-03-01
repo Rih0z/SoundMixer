@@ -163,8 +163,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     private var StartButton4:UIButton! = UIButton()
   private var StartButton5:UIButton! = UIButton()
   private var StartButton6:UIButton! = UIButton()
-    
-    var player1_pitch_slider:UISlider!
+      private var StartButton7:UIButton! = UIButton()
+  var player1_pitch_slider:UISlider!
     var player2_pitch_slider:UISlider!
     var player3_pitch_slider:UISlider!
     var player4_pitch_slider:UISlider!
@@ -205,7 +205,10 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
           
           self.StartButton6 = self.DrawStartButton(id: 6)
           self.view.addSubview(self.StartButton6)
-            
+          
+          self.StartButton7 = self.DrawStartButton(id: 7)
+          self.view.addSubview(self.StartButton7)
+          
             self.player1_pitch_slider = self.drawPitchSlider(id:1)
             self.view.addSubview(self.player1_pitch_slider)
             self.player2_pitch_slider = self.drawPitchSlider(id:2)
@@ -414,7 +417,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       let pos_y = [height * 2 / 8 , height * 4 / 8 , height * 6 / 8 ,  height * 13 / 14]
       
       let rect = CGRect(x:0,y:0,width:100,height:50)
-      if(id != 5 && id != 6) {
+      if(id != 5 && id != 6 && id != 7) {
         switch id{
         case 1:
           text = "音楽1再生"
@@ -438,6 +441,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         text = "完了"
         frame = CGPoint(x:width * 6 / 7,y:pos_y[3])
       }
+      else if(id == 7){
+        text = "全曲停止"
+        frame = CGPoint(x:width * 2 / 7,y:pos_y[4 - 1])
+        
+      }
       
       
       
@@ -453,14 +461,17 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         btn.addTarget(self, action: #selector(PlayerViewController.StartBtn3Tapped(sender:)), for: .touchUpInside)
       }
       if(id == 4){
-        btn.addTarget(self, action: #selector(PlayerViewController.StartBtn4Tapped(sender:)), for: .touchUpInside)
+       //  btn.addTarget(self, action: #selector(PlayerViewController.StartBtn4Tapped(sender:)), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(PlayerViewController.allStartTapped(sender:)), for: .touchUpInside)
       }
       if(id == 5){
         btn.addTarget(self, action: #selector(PlayerViewController.StartBtn5Tapped(sender:)), for: .touchUpInside)
       }
       if(id == 6){
          btn.addTarget(self, action: #selector(PlayerViewController.StartBtn6Tapped(sender:)), for: .touchUpInside)
-
+      }
+      if(id == 7){
+         btn.addTarget(self, action: #selector(PlayerViewController.allStopTapped(sender:)), for: .touchUpInside)
       }
       btn.setTitle(text,for:.normal)
       btn.backgroundColor = UIColor.blue
@@ -521,37 +532,62 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     @objc func StartBtn4Tapped(sender:UIButton){
         if (player3.playing == false && player2.playing == false && player.playing == false)
         {
-            let text = "全曲停止"
-            if(self.user.Playing_1 != nil){
-                self.StartButton1.setTitle(text,for:.normal)
-                player.play()
-            }
-            if(self.user.Playing_2 != nil){
-                self.StartButton2.setTitle(text,for:.normal)
-                player2.play()
-            }
-            if(self.user.Playing_3 != nil){
-                self.StartButton3.setTitle(text,for:.normal)
-                player3.play()
-            }
-            self.StartButton4.setTitle(text,for:.normal)
+          self.allStop()
         }else{
-            let text = "全曲再生"
-            if(self.user.Playing_1 != nil){
-                self.StartButton1.setTitle(text,for:.normal)
-                player.pause()
-            }
-            if(self.user.Playing_2 != nil){
-                self.StartButton2.setTitle(text,for:.normal)
-                player2.pause()
-            }
-            if(self.user.Playing_3 != nil){
-                self.StartButton3.setTitle(text,for:.normal)
-                player3.pause()
-            }
-            self.StartButton4.setTitle(text,for:.normal)
+          self.allStart()
         }
     }
+  @objc func allStartTapped(sender:UIButton){
+    if (player3.playing == false && player2.playing == false && player.playing == false)
+    {
+      //何もしない
+     // self.allStop()
+    }else{
+      self.allStart()
+    }
+  }
+  @objc func allStopTapped(sender:UIButton){
+    if (player3.playing == false && player2.playing == false && player.playing == false)
+    {
+      self.allStop()
+    }else{
+    //  self.allStart()
+    }
+  }
+  
+  func allStop(){
+    let text = "全曲停止"
+    if(self.user.Playing_1 != nil){
+      self.StartButton1.setTitle(text,for:.normal)
+      player.play()
+    }
+    if(self.user.Playing_2 != nil){
+      self.StartButton2.setTitle(text,for:.normal)
+      player2.play()
+    }
+    if(self.user.Playing_3 != nil){
+      self.StartButton3.setTitle(text,for:.normal)
+      player3.play()
+    }
+    self.StartButton4.setTitle(text,for:.normal)
+  }
+  func allStart(){
+    let text = "全曲再生"
+    if(self.user.Playing_1 != nil){
+      self.StartButton1.setTitle(text,for:.normal)
+      player.pause()
+    }
+    if(self.user.Playing_2 != nil){
+      self.StartButton2.setTitle(text,for:.normal)
+      player2.pause()
+    }
+    if(self.user.Playing_3 != nil){
+      self.StartButton3.setTitle(text,for:.normal)
+      player3.pause()
+    }
+    self.StartButton4.setTitle(text,for:.normal)
+    
+  }
   @objc func  StartBtn5Tapped(sender:UIButton){
     let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
     let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
