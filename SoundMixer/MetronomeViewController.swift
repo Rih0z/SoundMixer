@@ -26,7 +26,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   var bpmmax:Float = 250
   var bpmmin:Float = 1
   var bpm:Float = 60
-  
+  var playingFlag = false
   
   var speedLabel:UILabel!
   var slider:UISlider!
@@ -57,6 +57,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    self.stopAll()
     self.reset()
     self.receiveData()
     self.setupAll()
@@ -64,6 +65,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.setSendData()
+    self.stopAll()
   }
   //タブが変更された時に実行
   func didSelectTab(mainTabBarController: MainTabBarController) {
@@ -141,24 +143,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.updateSliderValue()
   }
   @objc func hiddenBtnTapped(sender:UIButton){
-    //アニメ非表示ボタンが押されたら
-    self.hiddenFlag = !self.hiddenFlag
-    if self.hiddenFlag
-    {
-      self.reset()
-      self.drawHiddenButton()
-      let text = "アニメ表示"
-      self.hiddenButton.setTitle(text,for:.normal)
-    }else{
-      
-      let tmpbpm = self.bpm
-      self.setupAll()
-      self.bpm = tmpbpm
-      resetTimerText()
-      let text = "アニメ非表示"
-      self.hiddenButton.setTitle(text,for:.normal)
-      
-    }
+   // self.animationOnOff()
+    self.playStartStop()
   }
   @objc func bpmBtnTapped(sender:UIButton){
     //表示切り替えボタンが押されたら
@@ -195,6 +181,59 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }else{
       self.slider.value = self.map(x: self.tmpspeed, in_min: self.tmpmin, in_max: self.tmpmax, out_min: slider.minimumValue, out_max: slider.maximumValue)
     }
+  }
+  func animationOnOff(){
+    //アニメ非表示ボタンが押されたら
+    self.hiddenFlag = !self.hiddenFlag
+    if self.hiddenFlag
+    {
+      self.reset()
+      self.drawHiddenButton()
+     // let text = "アニメ表示"
+     // self.hiddenButton.setTitle(text,for:.normal)
+    }else{
+      
+      let tmpbpm = self.bpm
+      self.setupAll()
+      self.bpm = tmpbpm
+      resetTimerText()
+    //  let text = "アニメ非表示"
+    //  self.hiddenButton.setTitle(text,for:.normal)
+      
+    }
+  }
+  
+  func playStartStop(){
+    if self.playingFlag {
+      self.stopAll()
+      let text = "全曲再生"
+      self.hiddenButton.setTitle(text,for:.normal)
+    } else {
+      self.playAll()
+      let text = "全曲停止"
+      self.hiddenButton.setTitle(text,for:.normal)
+    }
+  }
+  func playAll(){
+    var initFlag = true
+    while player.playingFlag || player2.playingFlag || player3.playingFlag {
+      if initFlag {
+        self.stopAll()
+        print("音楽が止まるまでお待ちください...")
+        initFlag = false
+      }
+    }
+    print("音楽が止まりました．再生開始")
+    self.playingFlag = true
+    player.play()
+    player2.play()
+    player3.play()
+  }
+  func stopAll(){
+    self.playingFlag = false
+    player.stop()
+    player2.stop()
+    player3.stop()
   }
   //***********set up *************
   func setupAll(){
@@ -350,7 +389,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let height = self.view.bounds.height
     let rect = CGRect(x:0,y:0,width:150,height:50)
     let frame = CGPoint(x:width * 4 / 5,y:height / 6)
-    let text = "アニメ非表示"
+    let text = "同時再生開始"
     self.hiddenButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
     self.hiddenButton.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.hiddenButton)

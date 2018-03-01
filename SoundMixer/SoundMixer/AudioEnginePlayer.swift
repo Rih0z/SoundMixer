@@ -29,6 +29,9 @@ class AudioEnginePlayer: NSObject {
     var playingFlag:Bool = false
     var pouseFlag:Bool = false
     var firstPlayFlag:Bool = true
+    var feedInFlag = false
+    var feedOutFlag = false
+  
     var playing: Bool {
         get {
             return audioPlayerNode != nil && audioPlayerNode.isPlaying
@@ -166,9 +169,11 @@ class AudioEnginePlayer: NSObject {
         print("PLAY()")
         self.audioEngine.mainMixerNode.outputVolume = 0//.1
         timer.fire()
+        self.feedInFlag = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 3){
             print("AFTER 5 SECONDS")
             timer.invalidate()
+            self.feedOutFlag = false
             print("TIMER IVALIDATE")
             
         }
@@ -181,11 +186,13 @@ class AudioEnginePlayer: NSObject {
             self.feedOutVolume = self.audioEngine.mainMixerNode.outputVolume
             let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedOut), userInfo: nil, repeats: true)
             timer.fire()
+            self.feedOutFlag = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
                 self.pouseFlag = true
                 self.audioEngine.pause()
                 self.audioPlayerNode.pause()
                 timer.invalidate()
+                self.feedOutFlag = false
             }
         }
     }
@@ -195,12 +202,14 @@ class AudioEnginePlayer: NSObject {
             self.feedOutVolume = self.audioEngine.mainMixerNode.outputVolume
             let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedOut), userInfo: nil, repeats: true)
             timer.fire()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+            self.feedOutFlag = true
+          DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
                 self.audioEngine.stop()
                 self.audioPlayerNode.stop()
                 self.playingFlag = false
                 self.pouseFlag = false
                 timer.invalidate()
+                self.feedOutFlag = false
             }
         } else {
         }
@@ -208,12 +217,21 @@ class AudioEnginePlayer: NSObject {
         
     }
     @objc func feedOut(){
+      //必要ないかも，連打した場合メッセージで待ってくださいとか出した方がいいかも　あるいは連打した場合の処理を考えるか
+      if self.feedInFlag {
+        self.feedOutFlag = false
+      } else {
         print("feed out")
         self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
+      }
     }
     @objc func feedIn(){
+      //再生停止を連打した場合　，フィードインとフィードアウトが混じるので，フィードいんを止めてフィードアウトさせる
+      if self.feedOutFlag {
+        self.feedInFlag = false
+      } else {
         print("feed in")
         self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
-        
+      }
     }
 }
