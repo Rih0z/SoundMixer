@@ -413,9 +413,21 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       
       let pos_y = [height * 2 / 8 , height * 4 / 8 , height * 6 / 8 ,  height * 13 / 14]
       
-      let rect = CGRect(x:0,y:0,width:50,height:50)
+      let rect = CGRect(x:0,y:0,width:100,height:50)
       if(id != 5 && id != 6) {
-        text = "再生"
+        switch id{
+        case 1:
+          text = "音楽1再生"
+        case 2:
+          text = "音楽2再生"
+        case 3:
+          text = "音楽3再生"
+        case 4:
+          text = "全曲再生"
+        default:
+          text = "再生"
+        }
+        
         frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
       }
       else if(id == 5) {
@@ -459,14 +471,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         if player.playing == false
         {
             if(self.user.Playing_1 != nil){
-                let text = "停止"
+                let text = "音楽1停止"
                 self.StartButton1.setTitle(text,for:.normal)
                 player.play()
             }
             
         }else{
             if(self.user.Playing_1 != nil){
-                let text = "再生"
+                let text = "音楽1再生"
                 self.StartButton1.setTitle(text,for:.normal)
                 player.pause()
             }
@@ -476,14 +488,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         if player2.playing == false
         {
             if(self.user.Playing_2 != nil){
-                let text = "停止"
+                let text = "音楽2停止"
                 self.StartButton2.setTitle(text,for:.normal)
                 player2.play()
             }
             
         }else{
             if(self.user.Playing_2 != nil){
-                let text = "再生"
+                let text = "音楽2再生"
                 self.StartButton2.setTitle(text,for:.normal)
                 player2.pause()
             }
@@ -493,14 +505,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         if player3.playing == false
         {
             if(self.user.Playing_3 != nil){
-                let text = "停止"
+                let text = "音楽3停止"
                 self.StartButton3.setTitle(text,for:.normal)
                 player3.play()
             }
             
         }else{
             if(self.user.Playing_3 != nil){
-                let text = "再生"
+                let text = "音楽3再生"
                 self.StartButton3.setTitle(text,for:.normal)
                 player3.pause()
             }
@@ -509,7 +521,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     @objc func StartBtn4Tapped(sender:UIButton){
         if (player3.playing == false && player2.playing == false && player.playing == false)
         {
-            let text = "停止"
+            let text = "全曲停止"
             if(self.user.Playing_1 != nil){
                 self.StartButton1.setTitle(text,for:.normal)
                 player.play()
@@ -524,7 +536,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             }
             self.StartButton4.setTitle(text,for:.normal)
         }else{
-            let text = "再生"
+            let text = "全曲再生"
             if(self.user.Playing_1 != nil){
                 self.StartButton1.setTitle(text,for:.normal)
                 player.pause()
