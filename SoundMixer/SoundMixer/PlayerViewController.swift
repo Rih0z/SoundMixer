@@ -569,8 +569,20 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     present(alert, animated: true, completion: nil)
   }
   @objc func  StartBtn6Tapped(sender:UIButton){
+    self.goHome()
+  }
+  func goHome(){
     self.user.homeflag = true
     self.goNextPage(page: "MainTabBar")
+    if self.user.Playing_1 != nil{
+      player.stop()
+    }
+    if self.user.Playing_2 != nil {
+      player2.stop()
+    }
+    if self.user.Playing_3 != nil {
+      player3.stop()
+    }
   }
   func goNextPage(page:String){
     let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
