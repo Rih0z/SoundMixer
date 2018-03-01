@@ -162,6 +162,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     private var StartButton3:UIButton! = UIButton()
     private var StartButton4:UIButton! = UIButton()
   private var StartButton5:UIButton! = UIButton()
+  private var StartButton6:UIButton! = UIButton()
     
     var player1_pitch_slider:UISlider!
     var player2_pitch_slider:UISlider!
@@ -201,6 +202,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
           
           self.StartButton5 = self.DrawStartButton(id:5)
           self.view.addSubview(self.StartButton5)
+          
+          self.StartButton6 = self.DrawStartButton(id: 6)
+          self.view.addSubview(self.StartButton6)
             
             self.player1_pitch_slider = self.drawPitchSlider(id:1)
             self.view.addSubview(self.player1_pitch_slider)
@@ -410,14 +414,19 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       let pos_y = [height * 2 / 8 , height * 4 / 8 , height * 6 / 8 ,  height * 13 / 14]
       
       let rect = CGRect(x:0,y:0,width:50,height:50)
-      if(id != 5) {
+      if(id != 5 && id != 6) {
         text = "再生"
         frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
       }
       else if(id == 5) {
-        text = "保存"
+        text = "登録"
         frame = CGPoint(x:width * 5 / 7,y:pos_y[3])
       }
+      else if(id == 6) {
+        text = "完了"
+        frame = CGPoint(x:width * 6 / 7,y:pos_y[3])
+      }
+      
       
       
       let btn = UIButton(frame: rect)
@@ -436,6 +445,10 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       }
       if(id == 5){
         btn.addTarget(self, action: #selector(PlayerViewController.StartBtn5Tapped(sender:)), for: .touchUpInside)
+      }
+      if(id == 6){
+         btn.addTarget(self, action: #selector(PlayerViewController.StartBtn6Tapped(sender:)), for: .touchUpInside)
+
       }
       btn.setTitle(text,for:.normal)
       btn.backgroundColor = UIColor.blue
@@ -527,7 +540,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             self.StartButton4.setTitle(text,for:.normal)
         }
     }
-  @objc func StartBtn5Tapped(sender:UIButton) {
+  @objc func  StartBtn5Tapped(sender:UIButton){
     let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
     let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
       let textField = alert.textFields![0] as UITextField
@@ -555,6 +568,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     present(alert, animated: true, completion: nil)
   }
+  @objc func  StartBtn6Tapped(sender:UIButton){
+    self.user.homeflag = true
+    self.goNextPage(page: "MainTabBar")
+  }
+  func goNextPage(page:String){
+    let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
+    let secondViewController = storyboard.instantiateInitialViewController()
+    self.navigationController?.pushViewController(secondViewController!, animated: true)
+  }
+  
   func sendUserInfo() {
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
       appDelegate.user = self.user

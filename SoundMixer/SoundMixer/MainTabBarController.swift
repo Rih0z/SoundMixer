@@ -105,8 +105,21 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     }
     
     self.title = self.user.Name
-    
     self.showBarButton()
+
+  }
+  func barButton(){
+    switch self.selectedIndex {
+    case 0:
+      print("selelct")
+    case 1:
+      print("edit")
+      self.showBarButton()
+    case 2:
+      print("met")
+    default:
+          self.showBarButton()
+    }
   }
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
   }
@@ -126,6 +139,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   }
   
   var barRightButton: UIBarButtonItem!
+  
   func showBarButton() {
     self.navigationController?.setNavigationBarHidden(false, animated: false)
     self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))

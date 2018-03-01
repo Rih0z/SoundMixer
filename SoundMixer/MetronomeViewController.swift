@@ -42,6 +42,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   private var effectiveScale:CGFloat!
   
   private var hiddenButton:UIButton!
+  private var animationButton:UIButton!
   private var bpmButton:UIButton!
   private var leftButton:UIButton!
   private var rightButton:UIButton!
@@ -146,6 +147,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
    // self.animationOnOff()
     self.playStartStop()
   }
+  @objc func animationBtnTapped(sender:UIButton){
+    self.animationOnOff()
+    
+  }
   @objc func bpmBtnTapped(sender:UIButton){
     //表示切り替えボタンが押されたら
     self.bpmModeFlag = !self.bpmModeFlag
@@ -189,16 +194,17 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     {
       self.reset()
       self.drawHiddenButton()
-     // let text = "アニメ表示"
-     // self.hiddenButton.setTitle(text,for:.normal)
+      self.drawAnimationButton()
+     let text = "アニメ表示"
+      self.animationButton.setTitle(text,for:.normal)
     }else{
       
       let tmpbpm = self.bpm
       self.setupAll()
       self.bpm = tmpbpm
       resetTimerText()
-    //  let text = "アニメ非表示"
-    //  self.hiddenButton.setTitle(text,for:.normal)
+     let text = "アニメ非表示"
+    self.animationButton.setTitle(text,for:.normal)
       
     }
   }
@@ -215,6 +221,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
   }
   func playAll(){
+    if (self.user.Playing_1 != nil || self.user.Playing_2 != nil || self.user.Playing_3 != nil){
     var initFlag = true
     while player.playingFlag || player2.playingFlag || player3.playingFlag {
       if initFlag {
@@ -228,6 +235,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     player.play()
     player2.play()
     player3.play()
+    }else {
+      print("音楽がどこにもセットされていません")
+    }
   }
   func stopAll(){
     self.playingFlag = false
@@ -337,6 +347,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     drawRects()
     self.drawBpmButton()
     self.drawHiddenButton()
+    self.drawAnimationButton()
     //ピンチ
     let pinch = UIPinchGestureRecognizer()
     pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
@@ -393,7 +404,16 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.hiddenButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
     self.hiddenButton.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.hiddenButton)
-    
+  }
+  func drawAnimationButton(){
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    let rect = CGRect(x:0,y:0,width:150,height:50)
+    let frame = CGPoint(x:width * 4 / 5,y:height / 6 - 55)
+    let text = "アニメ非表示"
+    self.animationButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
+    self.animationButton.addTarget(self, action: #selector(MetronomeViewController.animationBtnTapped(sender:)), for: .touchUpInside)
+    self.view.addSubview(self.animationButton)
   }
   
   @objc func drawRects(){
