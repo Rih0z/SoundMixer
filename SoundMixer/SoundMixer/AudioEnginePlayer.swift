@@ -173,7 +173,7 @@ class AudioEnginePlayer: NSObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3){
             print("AFTER 5 SECONDS")
             timer.invalidate()
-            self.feedOutFlag = false
+            self.feedInFlag = false
             print("TIMER IVALIDATE")
             
         }
