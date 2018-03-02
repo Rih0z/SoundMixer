@@ -78,7 +78,13 @@ class MusicSelectonTableViewController: UITableViewController {
     
     print("セット完了")
     if self.testplayFlag {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+      var lesttime:Double = 3
+      if testPlayer.feedOutLest != nil{
+        lesttime = Double(testPlayer.feedOutLest)
+        print("残り時間を代入しました")
+      }
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + lesttime) {
         self.testPlayer.SetUp(text_url: url)
         self.testPlayer.play()
         self.testplayFlag = false

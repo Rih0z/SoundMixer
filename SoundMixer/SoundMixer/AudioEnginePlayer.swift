@@ -31,6 +31,9 @@ class AudioEnginePlayer: NSObject {
     var firstPlayFlag:Bool = true
     var feedInFlag = false
     var feedOutFlag = false
+  let feedInOutTime:Double = 3
+  var feedOutCount:Float = 0
+  var feedOutLest:Float!
   
     var playing: Bool {
         get {
@@ -71,7 +74,7 @@ class AudioEnginePlayer: NSObject {
     
     func SetUp(text_url:URL){
         if(player.playingFlag || player2.playingFlag || player3.playingFlag ){
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
                 self.setupAll(text_url: text_url)
             }
         }else{
@@ -156,7 +159,7 @@ class AudioEnginePlayer: NSObject {
         self.playStart()
       } else {
         print("waiting for stop music .....")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime) {
           print("3 seconds passed ! PlayStart")
           self.playStart()
         }
@@ -179,7 +182,7 @@ class AudioEnginePlayer: NSObject {
         self.audioEngine.mainMixerNode.outputVolume = 0//.1
         timer.fire()
         self.feedInFlag = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
             print("AFTER 5 SECONDS")
             timer.invalidate()
             self.feedInFlag = false
@@ -198,7 +201,7 @@ class AudioEnginePlayer: NSObject {
             let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedOut), userInfo: nil, repeats: true)
             timer.fire()
             self.feedOutFlag = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime ) {
                 self.pouseFlag = true
                 self.audioEngine.pause()
                 self.audioPlayerNode.pause()
@@ -211,14 +214,13 @@ class AudioEnginePlayer: NSObject {
     
     func stop(){
       if(self.feedOutFlag){
-        
       }else{
         if self.playingFlag {
             self.feedOutVolume = self.audioEngine.mainMixerNode.outputVolume
             let timer = Timer.scheduledTimer(timeInterval: 0.1 , target: self, selector: #selector(self.feedOut), userInfo: nil, repeats: true)
             timer.fire()
             self.feedOutFlag = true
-          DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+          DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime ) {
                 self.audioEngine.stop()
                 self.audioPlayerNode.stop()
                 self.playingFlag = false
@@ -226,7 +228,6 @@ class AudioEnginePlayer: NSObject {
                 timer.invalidate()
                 self.feedOutFlag = false
                  print("STOP COMPLETE")
-            
           }
         } else {
         }
@@ -234,25 +235,36 @@ class AudioEnginePlayer: NSObject {
       }
     }
   @objc func feedOut(){
-    if self.feedOutFlag {
+  //  if self.feedOutFlag {
       //必要ないかも，連打した場合メッセージで待ってくださいとか出した方がいいかも　あるいは連打した場合の処理を考えるか
       //    if self.feedInFlag {
       //       self.feedOutFlag = false
       //    } else {
       print("feed out")
       self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
-      //   }
+    if self.feedOutLest != nil {
+      self.feedOutLest = nil
     }
+    self.feedOutCount = self.feedOutCount + 1
+      //   }
+  //  }
   }
   @objc func feedIn(){
-    if self.feedInFlag {
+   // if self.feedInFlag {
       //再生停止を連打した場合　，フィードインとフィードアウトが混じるので，フィードいんを止めてフィードアウトさせる
       if self.feedOutFlag {
+        print("feedout 中に　feedinしました")
         self.feedInFlag = false
+       // feedOutLest = 1
+        self.feedOutLest = Float(self.feedInOutTime) - ((self.feedOutCount  / Float(30))
+          * Float(self.feedInOutTime))
+        self.feedOutCount = 0
+        //うまく実装できてないスムーズにフィードイン機能
       } else {
         print("feed in")
         self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
+
       }
     }
-  }
+ // }
 }

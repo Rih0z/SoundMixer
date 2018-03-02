@@ -36,7 +36,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   
   private var hiddenFlag :Bool = false
   
-  
   private var selectLayer:CALayer!
   private var clearLayer:CALayer!
   private var touchLastPoint:CGPoint!
@@ -61,7 +60,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    self.stopAll()
+    self.pauseAll()
     self.reset()
     self.receiveData()
     self.setupAll()
@@ -69,7 +68,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.setSendData()
-    self.stopAll()
+    self.pauseAll()
+    let text = "全曲再生"
+    self.hiddenButton.setTitle(text,for:.normal)
+    self.allplayingFlag = false
   }
   //タブが変更された時に実行
   func didSelectTab(mainTabBarController: MainTabBarController) {
