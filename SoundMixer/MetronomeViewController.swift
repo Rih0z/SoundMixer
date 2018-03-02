@@ -19,6 +19,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   var rightoval: CALayer!
   var flag:Bool = true
   var setupflag:Bool = true
+ //全曲再生のとこ
+  var initFlag:Bool = true
   var bpmModeFlag:Bool = true
   var tmpspeed:Float = 3.0
   var tmpmax:Float = 5.05
@@ -26,7 +28,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   var bpmmax:Float = 250
   var bpmmin:Float = 1
   var bpm:Float = 60
-  var playingFlag = false
+  var allplayingFlag = false
+  var allplayLockFlag = false
   
   var speedLabel:UILabel!
   var slider:UISlider!
@@ -164,7 +167,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
       self.bpmButton.setTitle(text,for:.normal)
     }
     self.resetView()
-    
     self.changeLRButten()
     self.drawSetUp()
     self.timerReset()
@@ -188,74 +190,131 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
   }
   func animationOnOff(){
-    //アニメ非表示ボタンが押されたら
-    self.hiddenFlag = !self.hiddenFlag
-    if self.hiddenFlag
-    {
-      self.reset()
-      self.drawHiddenButton()
-      self.drawAnimationButton()
-     let text = "アニメ表示"
-      self.animationButton.setTitle(text,for:.normal)
-    }else{
+    if self.allplayLockFlag {
       
-      let tmpbpm = self.bpm
-      self.setupAll()
-      self.bpm = tmpbpm
-      resetTimerText()
-     let text = "アニメ非表示"
-    self.animationButton.setTitle(text,for:.normal)
-      
+    } else {
+      if self.allplayingFlag {
+      } else {
+        //アニメ非表示ボタンが押されたら
+        self.hiddenFlag = !self.hiddenFlag
+        if self.hiddenFlag
+        {
+          self.reset()
+          self.drawHiddenButton()
+          self.drawAnimationButton()
+          
+          let text = "アニメ表示"
+          self.animationButton.setTitle(text,for:.normal)
+          
+        }else{
+          
+          let tmpbpm = self.bpm
+          self.setupAll()
+          self.bpm = tmpbpm
+          resetTimerText()
+          let text = "アニメ非表示"
+          self.animationButton.setTitle(text,for:.normal)
+          
+        }
+      }
     }
   }
   
   func playStartStop(){
-    if self.playingFlag {
-      self.stopAll()
-      let text = "全曲再生"
+    if self.allplayLockFlag {
+      
+    } else {
+    if self.allplayingFlag {
+      self.allplayLockFlag = true
+      self.pauseAll()
+      let text = "フィードアウト中"
       self.hiddenButton.setTitle(text,for:.normal)
+      self.hiddenButton.backgroundColor? = (UIColor.red)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+        self.allplayingFlag = false
+        let text = "全曲再生"
+        self.hiddenButton.setTitle(text,for:.normal)
+        self.hiddenButton.backgroundColor? = UIColor.blue
+        self.allplayLockFlag = false
+      }
     } else {
       self.playAll()
-      let text = "全曲停止"
+      self.allplayLockFlag = true
+      let text = "フィードイン中"
       self.hiddenButton.setTitle(text,for:.normal)
+      self.hiddenButton.backgroundColor? = UIColor.red
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+        self.allplayLockFlag = false
+        self.allplayingFlag = true
+        let text = "全曲停止"
+        self.hiddenButton.setTitle(text,for:.normal)
+        self.hiddenButton.backgroundColor? = UIColor.blue
+        
+      }
+      
+    }
     }
   }
   func playAll(){
     if (self.user.Playing_1 != nil || self.user.Playing_2 != nil || self.user.Playing_3 != nil){
-    var initFlag = true
-    while player.playingFlag || player2.playingFlag || player3.playingFlag {
-      if initFlag {
-        self.stopAll()
-        print("音楽が止まるまでお待ちください...")
-        initFlag = false
+/*
+      while player.playingFlag || player2.playingFlag || player3.playingFlag {
+        if self.initFlag {
+          print("音楽が止まるまでお待ちください...")
+          self.initFlag = false
+          self.stopAll()
+        }
       }
-    }
-    print("音楽が止まりました．再生開始")
-    self.playingFlag = true
-    player.play()
-    player2.play()
-    player3.play()
+ */
+      self.initFlag = false
+      print("音楽が止まりました．再生開始")
+      self.playAll2()
     }else {
       print("音楽がどこにもセットされていません")
     }
   }
-
   func stopAll(){
-     self.playingFlag = false
     if(self.user.Playing_1 != nil){
       player.stop()
     }
     if(self.user.Playing_2 != nil){
-
       player2.stop()
     }
     if(self.user.Playing_3 != nil){
-
       player3.stop()
     }
-    // text = "全曲再生"
-    //    self.StartButton4.setTitle(text,for:.normal)
+  
+  }
+  func pauseAll(){
+    if(self.user.Playing_1 != nil){
+      player.pause()
+    }
+    if(self.user.Playing_2 != nil){
+      
+      player2.pause()
+    }
+    if(self.user.Playing_3 != nil){
+      player3.pause()
+    }
     
+    
+
+    
+  }
+  func playAll2(){
+    
+    if(self.user.Playing_1 != nil){
+      player.play()
+    }
+    if(self.user.Playing_2 != nil){
+      player2.play()
+    }
+    if(self.user.Playing_3 != nil){
+      player3.play()
+    }
+    
+
   }
   //***********set up *************
   func setupAll(){
