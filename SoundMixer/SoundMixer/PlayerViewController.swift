@@ -6,6 +6,37 @@
 //  Copyright © 2018年 EdTechTokushima. All rights reserved.
 //
 /*
+ これが音楽選択画面に移る処理
+ func CheckPlaylist(whitchplaylist:Int){
+ //音楽1の変更の場合1 2なら2 3,なら3
+ self.user.SelectionFlag = whitchplaylist
+ 
+ let myPlaylistQuery = MPMediaQuery.playlists()
+ if let playlists = myPlaylistQuery.collections {
+ print(playlists.count)
+ self.user.BeforeView = "music statement"
+ self.sendDataSet()
+ self.goNextPage(page: "PlaylistSelection")
+ }else{
+ infomationLabel.text = "選択可能なプレイリストがありません"
+ infomationLabel.sizeToFit()
+ 
+ }
+ }
+ func goNextPage(page:String){
+ let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
+ let secondViewController = storyboard.instantiateInitialViewController()
+ 
+ self.navigationController?.pushViewController(secondViewController!, animated: true)
+ 
+ }
+ 
+ 
+ 
+ */
+
+
+/*
  import UIKit
  import MediaPlayer
  class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {

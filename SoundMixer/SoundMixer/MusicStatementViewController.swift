@@ -164,7 +164,7 @@ class MusicStatementViewController: UIViewController {
   }
   
   func CheckPlaylist(whitchplaylist:Int){
-    
+    //音楽1の変更の場合1 2なら2 3,なら3
     self.user.SelectionFlag = whitchplaylist
     
     let myPlaylistQuery = MPMediaQuery.playlists()
