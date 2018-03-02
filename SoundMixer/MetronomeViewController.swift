@@ -239,11 +239,23 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
       print("音楽がどこにもセットされていません")
     }
   }
+
   func stopAll(){
-    self.playingFlag = false
-    player.stop()
-    player2.stop()
-    player3.stop()
+     self.playingFlag = false
+    if(self.user.Playing_1 != nil){
+      player.stop()
+    }
+    if(self.user.Playing_2 != nil){
+
+      player2.stop()
+    }
+    if(self.user.Playing_3 != nil){
+
+      player3.stop()
+    }
+    // text = "全曲再生"
+    //    self.StartButton4.setTitle(text,for:.normal)
+    
   }
   //***********set up *************
   func setupAll(){
