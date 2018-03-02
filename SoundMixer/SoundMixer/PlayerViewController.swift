@@ -564,7 +564,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     @objc func StartBtn4Tapped(sender:UIButton){
         if (player3.playing == false || player2.playing || false && player.playing == false)
         {
-            self.allStop()
+            self.allPause()
         }else{
             self.allStart()
         }
@@ -583,7 +583,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     @objc func allStopTapped(sender:UIButton){
         if (player3.playing == true || player2.playing == true || player.playing == true)
         {
-            self.allStop()
+            self.allPause()
         }else{
              // self.allStart()
         }
@@ -609,7 +609,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
      // text = "全曲停止"
       //  self.StartButton4.setTitle(text,for:.normal)
     }
-    func allStop(){
+    func allPause(){
         var text = "音楽1再生"
         if(self.user.Playing_1 != nil){
           text = "音楽1再生"
@@ -1191,6 +1191,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         super.viewDidDisappear(animated)
         self.user.BeforeView = "player"
         self.setSendData()
+       // self.allPause()
         print("player sendData finished")
     }
     func setSendData(){

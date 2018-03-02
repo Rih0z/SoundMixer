@@ -92,6 +92,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.user.homeflag = false
       self.selectedIndex = 2
       self.initFlag = false
+      
     }
     else if self.user.editflag {
       self.user.editflag = false
@@ -126,13 +127,17 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   func selectTabName(){
     switch self.selectedIndex {
     case 0:
-      self.title = self.user.Name
+      print("0")
+      //self.title = self.user.Name
     case 1:
-      self.title = "再生"
+      print("!")
+      //self.title = "再生"
     case 2:
-      self.title = "メトロノーム"
+      print("2")
+      self.allPause()
+    //self.title = "メトロノーム"
     default:
-      self.title = self.user.Name
+      //self.title = self.user.Name
       print("どのタブが開いているかあ")
       print(self.selectedIndex)
     }
@@ -156,6 +161,25 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     let secondViewController = storyboard.instantiateInitialViewController()
     
     self.navigationController?.pushViewController(secondViewController!, animated: true)
+  }
+  func allPause(){
+    var text = "音楽1再生"
+    if(self.user.Playing_1 != nil){
+      text = "音楽1再生"
+      player.pause()
+    }
+    if(self.user.Playing_2 != nil){
+      text = "音楽2再生"
+      
+      player2.pause()
+    }
+    if(self.user.Playing_3 != nil){
+      text = "音楽3再生"
+      player3.pause()
+    }
+    // text = "全曲再生"
+    //    self.StartButton4.setTitle(text,for:.normal)
+    
   }
 }
 

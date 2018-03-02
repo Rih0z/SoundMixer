@@ -64,6 +64,19 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.reset()
     self.receiveData()
     self.setupAll()
+    let text = "準備中"
+    self.hiddenButton.setTitle(text,for:.normal)
+    self.hiddenButton.backgroundColor? = (UIColor.red)
+    self.allplayLockFlag = true
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+      self.allplayingFlag = false
+      let text = "全曲再生"
+      self.hiddenButton.setTitle(text,for:.normal)
+      self.hiddenButton.backgroundColor? = UIColor.blue
+      self.allplayLockFlag = false
+    }
+
+    
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
