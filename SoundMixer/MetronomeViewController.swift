@@ -149,8 +149,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.updateSliderValue()
   }
   @objc func hiddenBtnTapped(sender:UIButton){
-   // self.animationOnOff()
+    if self.user.Playing_1 != nil || self.user.Playing_2 != nil || self.user.Playing_3 != nil{
     self.playStartStop()
+    }
   }
   @objc func animationBtnTapped(sender:UIButton){
     self.animationOnOff()
