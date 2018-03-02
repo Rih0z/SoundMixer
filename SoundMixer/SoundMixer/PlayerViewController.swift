@@ -575,13 +575,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             self.StartButton3.setTitle(text,for:.normal)
             player3.play()
         }
-      text = "全曲停止"
-        self.StartButton4.setTitle(text,for:.normal)
+     // text = "全曲停止"
+      //  self.StartButton4.setTitle(text,for:.normal)
     }
     func allStop(){
         var text = "音楽1再生"
         if(self.user.Playing_1 != nil){
-            self.StartButton1.setTitle(text,for:.normal)
+          text = "音楽1再生"
+          self.StartButton1.setTitle(text,for:.normal)
             player.pause()
         }
         if(self.user.Playing_2 != nil){
@@ -594,8 +595,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             self.StartButton3.setTitle(text,for:.normal)
             player3.pause()
         }
-      text = "全曲再生"
-        self.StartButton4.setTitle(text,for:.normal)
+     // text = "全曲再生"
+    //    self.StartButton4.setTitle(text,for:.normal)
         
     }
     @objc func  StartBtn5Tapped(sender:UIButton){
