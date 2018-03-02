@@ -559,35 +559,42 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     
     func allStart(){
-        let text = "全曲停止"
+      var text = "全曲停止"
         if(self.user.Playing_1 != nil){
+          text = "音楽1停止"
             self.StartButton1.setTitle(text,for:.normal)
             player.play()
         }
         if(self.user.Playing_2 != nil){
+          text = "音楽2停止"
             self.StartButton2.setTitle(text,for:.normal)
             player2.play()
         }
         if(self.user.Playing_3 != nil){
+          text = "音楽3停止"
             self.StartButton3.setTitle(text,for:.normal)
             player3.play()
         }
+      text = "全曲停止"
         self.StartButton4.setTitle(text,for:.normal)
     }
     func allStop(){
-        let text = "全曲再生"
+        var text = "音楽1再生"
         if(self.user.Playing_1 != nil){
             self.StartButton1.setTitle(text,for:.normal)
             player.pause()
         }
         if(self.user.Playing_2 != nil){
+          text = "音楽2再生"
             self.StartButton2.setTitle(text,for:.normal)
             player2.pause()
         }
         if(self.user.Playing_3 != nil){
+          text = "音楽3再生"
             self.StartButton3.setTitle(text,for:.normal)
             player3.pause()
         }
+      text = "全曲再生"
         self.StartButton4.setTitle(text,for:.normal)
         
     }
