@@ -1184,9 +1184,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     if(self.loadFlag == false) {
       if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
-        if(player.playing == true){
-          player.stop()
-        }
+        player.audioPlayerNode.stop()
         //self.StartButton1.setTitle("準備中",for:.normal)
         let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player.SetUp(text_url : url)
@@ -1195,9 +1193,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.player1_pos_slider.value = 0.0
       }
       if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
-        if(player2.playing == true){
-          player2.stop()
-        }
+        player2.audioPlayerNode.stop()
         //self.StartButton2.setTitle("音楽2再生",for:.normal)
         let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player2.SetUp(text_url : url)
@@ -1206,9 +1202,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.player2_pos_slider.value = 0.0
       }
       if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
-        if(player3.playing == true){
-          player3.stop()
-        }
+        player3.audioPlayerNode.stop()
         //self.StartButton3.setTitle("音楽3再生",for:.normal)
         let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player3.SetUp(text_url : url)
@@ -1220,21 +1214,21 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     else if(self.loadFlag == true) {
       if(self.user.Playing_1 != nil){
-        player.stop()
+        player.audioPlayerNode.stop()
         let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player.SetUp(text_url : url)
         print("曲１セット完了")
         self.player1_pos_slider.maximumValue = Float(player.duration)
       }
       if(self.user.Playing_2 != nil){
-        player2.stop()
+        player2.audioPlayerNode.stop()
         let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player2.SetUp(text_url : url)
         print("曲2セット完了")
         self.player2_pos_slider.maximumValue = Float(player2.duration)
       }
       if(self.user.Playing_3 != nil){
-        //player3.stop()
+        player3.audioPlayerNode.stop()
         let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player3.SetUp(text_url : url)
         print("曲3セット完了")
