@@ -29,7 +29,7 @@ class MusicSelectonTableViewController: UITableViewController {
   
   
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-    self.tryingMusic(indexPath: indexPath)
+  //  self.tryingMusic(indexPath: indexPath)
     //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
   }
   

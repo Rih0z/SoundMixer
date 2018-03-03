@@ -37,6 +37,7 @@ class AudioEnginePlayer: NSObject {
     var feedOutFlag = false
     let feedInOutTime:Double = 3
     var feedOutCount:Float = 0
+   var feedInCount:Float = 0
     var feedOutLest:Float!
     
     var playing: Bool {
@@ -209,6 +210,7 @@ class AudioEnginePlayer: NSObject {
                     self.pouseFlag = true
                     self.audioEngine.pause()
                     self.audioPlayerNode.pause()
+                   self.feedOutCount = 0
                     timer.invalidate()
                     self.feedOutFlag = false
                 }
@@ -225,12 +227,14 @@ class AudioEnginePlayer: NSObject {
                 timer.fire()
                 self.feedOutFlag = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime ) {
-                    self.audioEngine.stop()
+                   self.audioEngine.mainMixerNode.outputVolume = 0
+                  self.audioEngine.stop()
                     self.audioPlayerNode.stop()
                     self.playingFlag = false
                     self.pouseFlag = false
                     timer.invalidate()
                     self.feedOutFlag = false
+                  self.feedOutCount = 0
                     print("STOP COMPLETE")
                 }
             } else {
@@ -238,35 +242,50 @@ class AudioEnginePlayer: NSObject {
             
         }
     }
-    @objc func feedOut(){
-        //  if self.feedOutFlag {
-        //必要ないかも，連打した場合メッセージで待ってくださいとか出した方がいいかも　あるいは連打した場合の処理を考えるか
-        //    if self.feedInFlag {
-        //       self.feedOutFlag = false
-        //    } else {
-        print("feed out")
-        self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
-        if self.feedOutLest != nil {
-            self.feedOutLest = nil
-        }
-        self.feedOutCount = self.feedOutCount + 1
-        //   }
-        //  }
+  @objc func feedOut(){
+    //  if self.feedOutFlag {
+    //必要ないかも，連打した場合メッセージで待ってくださいとか出した方がいいかも　あるいは連打した場合の処理を考えるか
+    //    if self.feedInFlag {
+    //       self.feedOutFlag = false
+    //    } else {
+
+    if self.audioEngine.mainMixerNode.outputVolume == 0 {
+      
+    } else {
+      self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
+          print("feed out")
+      if self.feedOutLest != nil {
+        self.feedOutLest = nil
+      }
+     
+      
+     if feedOutCount == 28 {
+        self.audioEngine.mainMixerNode.outputVolume = 0
+      print("ccount  28  feedout    STOP")
+        self.feedOutCount = 0
+     }else{
+      self.feedOutCount = self.feedOutCount + 1
+      
+      }
+      //   }
+      //  }
     }
+  }
     @objc func feedIn(){
         // if self.feedInFlag {
         //再生停止を連打した場合　，フィードインとフィードアウトが混じるので，フィードいんを止めてフィードアウトさせる
         if self.feedOutFlag {
-            print("feedout 中に　feedinしました")
+            print("feedin 中に　feedoutしました")
             self.feedInFlag = false
-            // feedOutLest = 1
-            self.feedOutLest = Float(self.feedInOutTime) - ((self.feedOutCount  / Float(30))
+            // 残り時間
+            self.feedOutLest = Float(self.feedInOutTime) - ((self.feedInCount  / Float(30))
                 * Float(self.feedInOutTime))
-            self.feedOutCount = 0
+            self.feedInCount = 0
             //うまく実装できてないスムーズにフィードイン機能
         } else {
             print("feed in")
             self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
+          self.feedInCount = self.feedInCount + 1
             
         }
     }
