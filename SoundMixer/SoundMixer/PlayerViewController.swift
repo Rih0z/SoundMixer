@@ -1015,10 +1015,38 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       print("alltextchangeplayerror")
     }
   }
+  func textChangePrepare(id:Int){
+        let text = "準備中"
+    switch id {
+    case 1:
+      self.StartButton1.setTitle(text,for:.normal)
+      self.StartButton1.backgroundColor? = (UIColor.red)
+    case 2:
+
+      self.StartButton2.setTitle(text,for:.normal)
+      self.StartButton2.backgroundColor? = (UIColor.red)
+    case 3:
+      self.StartButton3.setTitle(text,for:.normal)
+      self.StartButton3.backgroundColor? = (UIColor.red)
+      
+    case 4:
+      self.StartButton4.setTitle(text,for:.normal)
+      self.StartButton4.backgroundColor? = (UIColor.red)
+    default:
+      print("alltextchangeplayerror")
+    }
+  }
+  
   func allTextChengePlay(){
     for i in 1...4 {
       self.textChangePlay(id:i)
     }
+  }
+  func allTextChangePrepare(){
+    for i in 1...4 {
+      self.textChangePrepare(id:i)
+    }
+    
   }
 
 
@@ -1030,7 +1058,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
   func lockButton(){
     self.playLockFlag = true
+    //タブ切り替えの時はすでにインスタンスが生成されているので一つ見ればわかる
+    if self.StartButton1 != nil{
+      self.allTextChangePrepare()
+    }
     DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+      //現れてから3秒後にはもうインスタンスが生成されているので
       self.playLockFlag = false
       self.allTextChengePlay()
     }
