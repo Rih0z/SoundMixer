@@ -62,6 +62,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   var timer: Timer?
   
   var loadFlag:Bool = false
+
   private var playLockFlag = false
   private var musicLockFlag:[Bool] = [false,false,false,false]
   var rowNum:Int = 0
@@ -79,12 +80,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+ 
     self.receiveData()
     self.lockButton()
     self.loadTemplete()
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+   
     self.user.BeforeView = "player"
     self.setSendData()
     // self.allPause()
@@ -418,22 +421,28 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
   
   func textChangePlay(id:Int){
+    
     switch id {
     case 1:
+      if player.playing == false {
       let text = "音楽1再生"
       self.StartButton1.setTitle(text,for:.normal)
       self.StartButton1.backgroundColor? = (UIColor.blue)
+      }
     case 2:
+      if player2.playing == false {
       let text = "音楽2再生"
       self.StartButton2.setTitle(text,for:.normal)
       self.StartButton2.backgroundColor? = (UIColor.blue)
+      }
     case 3:
+      if player3.playing == true {
       let text = "音楽3再生"
       self.StartButton3.setTitle(text,for:.normal)
       self.StartButton3.backgroundColor? = (UIColor.blue)
-      
+      }
     case 4:
-      let text = "音楽4再生"
+      let text = "全曲再生"
       self.StartButton4.setTitle(text,for:.normal)
       self.StartButton4.backgroundColor? = (UIColor.blue)
     default:
@@ -466,6 +475,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     for i in 1...4 {
       self.textChangePlay(id:i)
     }
+    print("alltext change play")
   }
   func allTextChangePrepare(){
     for i in 1...4 {
@@ -482,8 +492,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     DispatchQueue.main.asyncAfter(deadline: .now() + 3){
       //現れてから3秒後にはもうインスタンスが生成されているので
+   
       self.playLockFlag = false
       self.allTextChengePlay()
+      
+    
     }
   }
   
@@ -497,20 +510,17 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   func music1Play(){
     if self.user.Playing_1 == nil {
       self.CheckPlaylist(whitchplaylist: 1)
-    }
-    if player.playing == false
+    } else if player.playing == false
     {
-      if(self.user.Playing_1 != nil){
-        let text = "音楽1停止"
-        self.StartButton1.setTitle(text,for:.normal)
-        player.play()
-      }
+      let text = "音楽1停止"
+      self.StartButton1.setTitle(text,for:.normal)
+      player.play()
       
     }else{
-      if(self.user.Playing_1 != nil){
-        player.pause()
-        self.feedOutText(id: 1)
-      }
+      
+      player.pause()
+      self.feedOutText(id: 1)
+      
     }
   }
   

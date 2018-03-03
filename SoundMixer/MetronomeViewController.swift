@@ -171,6 +171,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     
   }
   @objc func bpmBtnTapped(sender:UIButton){
+    if self.allplayLockFlag {
+      
+    }else {
     //表示切り替えボタンが押されたら
     self.bpmModeFlag = !self.bpmModeFlag
     if bpmModeFlag {
@@ -187,7 +190,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.drawSetUp()
     self.timerReset()
     self.updateSliderValue()
-    
+    }
   }
   @objc func onChange(_ sender: UISlider) {
     // スライダーの値が変更された時の処理
@@ -209,8 +212,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     if self.allplayLockFlag {
       
     } else {
-      if self.allplayingFlag {
-      } else {
+     // if self.allplayingFlag {
+    //  } else {
         //アニメ非表示ボタンが押されたら
         self.hiddenFlag = !self.hiddenFlag
         if self.hiddenFlag
@@ -232,7 +235,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
           self.animationButton.setTitle(text,for:.normal)
           
         }
-      }
+    //  }
     }
   }
   
@@ -477,7 +480,12 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let height = self.view.bounds.height
     let rect = CGRect(x:0,y:0,width:150,height:50)
     let frame = CGPoint(x:width * 1 / 5,y:height / 6)
-    let text = "秒表記に"
+    var text:String!
+    if bpmModeFlag {
+      text = "秒表記に"
+    }else {
+      text = "bpm表記に"
+    }
     self.bpmButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
     self.bpmButton.addTarget(self, action: #selector(MetronomeViewController.bpmBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.bpmButton)
@@ -487,7 +495,10 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let height = self.view.bounds.height
     let rect = CGRect(x:0,y:0,width:150,height:50)
     let frame = CGPoint(x:width * 4 / 5,y:height / 6)
-    let text = "同時再生開始"
+    var text = "全曲再生"
+    if self.allplayingFlag {
+      text = "全曲停止"
+    }
     self.hiddenButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
     self.hiddenButton.addTarget(self, action: #selector(MetronomeViewController.hiddenBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.hiddenButton)
