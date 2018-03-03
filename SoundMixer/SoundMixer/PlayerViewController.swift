@@ -1,156 +1,3 @@
-//
-//  SecondViewController.swift
-//  SoundMixer
-//
-//  Created by 利穂 虹希 on 2018/02/13.
-//  Copyright © 2018年 EdTechTokushima. All rights reserved.
-//
-/*
- これが音楽選択画面に移る処理
- func CheckPlaylist(whitchplaylist:Int){
- //音楽1の変更の場合1 2なら2 3,なら3
- self.user.SelectionFlag = whitchplaylist
- 
- let myPlaylistQuery = MPMediaQuery.playlists()
- if let playlists = myPlaylistQuery.collections {
- print(playlists.count)
- self.user.BeforeView = "music statement"
- self.sendDataSet()
- self.goNextPage(page: "PlaylistSelection")
- }else{
- infomationLabel.text = "選択可能なプレイリストがありません"
- infomationLabel.sizeToFit()
- 
- }
- }
- func goNextPage(page:String){
- let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
- let secondViewController = storyboard.instantiateInitialViewController()
- 
- self.navigationController?.pushViewController(secondViewController!, animated: true)
- 
- }
- 
- 
- 
- */
-
-
-/*
- import UIKit
- import MediaPlayer
- class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
- var audioPlayer:AVAudioPlayer?
- var PlayingSong:MPMediaItem!
- var player = MPMusicPlayerController()
- var user:User = User()
- //作り直したストーリーボードではこのボタン関数消して新しいボタン関数でこの中に書いてる関数動かせば大丈夫
- /*
- @IBAction func Play(_ sender: Any) {
- self.playMusic(whitchmusic: 1)
- }
- */
- //これも．こっちは音楽２上野が音楽1に対応してる
- /*
- @IBAction func Play2(_ sender: Any) {
- self.playMusic(whitchmusic: 2)
- }
- */
- func playMusic(whitchmusic: Int){
- var errorMes:String = "音楽１と音楽2に"
- // 選択した曲情報がPlayingSongに入っているので、これをplayerにセット。
- print("play")
- switch whitchmusic {
- case 1:
- self.PlayingSong = self.user.Playing_1
- errorMes = "音楽1に"
- case 2:
- errorMes = "音楽2に"
- self.PlayingSong = self.user.Playing_2
- case 3:
- errorMes = "音楽3に"
- self.PlayingSong = self.user.Playing_3
- default:
- print("フラグが立っていませんmusicselection")
- print(self.user.SelectionFlag)
- }
- 
- if(PlayingSong != nil){
- print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)!)
- let url: URL  = PlayingSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
- //  let url: NSURL = PlayingSong.valueForProperty(MPMediaItemPropertyAssetURL) as! NSURL
- //  if  url != nil {
- do {
- // itemのassetURLからプレイヤーを作成する
- audioPlayer = try AVAudioPlayer(contentsOf: url , fileTypeHint: nil)
- } catch  {
- // エラー発生してプレイヤー作成失敗
- // messageLabelに失敗したことを表示
- print( "この音楽は再生できません")
- audioPlayer = nil
- // 戻る
- return
- }
- // 再生開始
- if let player = audioPlayer {
- player.play()
- // メッセージラベルに曲タイトルを表示
- // (MPMediaItemが曲情報を持っているのでそこから取得)
- //   let title = item.title ?? ""
- // messageLabel.text = title
- }
- }else{
- print(errorMes)
- print("音楽が選択されていません")
- }
- self.user.SelectionFlag = 0
- 
- }
- override func viewWillAppear(_ animated: Bool) {
- super.viewDidDisappear(animated)
- self.receiveData()
- }
- func receiveData(){
- if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
- self.user = appDelegate.user
- }
- }
- override func viewWillDisappear(_ animated: Bool) {
- super.viewDidDisappear(animated)
- self.user.BeforeView = "player"
- self.setSendData()
- print("player sendData finished")
- }
- func setSendData(){
- let appDelegate = UIApplication.shared.delegate as! AppDelegate
- appDelegate.user = self.user
- if(self.user.Playing_1 != nil){
- let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
- print("player music")
- print(music1)
- }
- 
- }
- override func viewDidLoad() {
- super.viewDidLoad()
- //  player = MPMusicPlayerController.applicationMusicPlayer()
- // Do any additional setup after loading the view, typically from a nib.
- // player = MPMusicPlayerController.applicationMusicPlayer()
- //player = MPMusicPlayerController.systemMusicPlayer()
- }
- 
- override func didReceiveMemoryWarning() {
- super.didReceiveMemoryWarning()
- // Dispose of any resources that can be recreated.
- }
- 
- 
- }
- */
-
-
-
-
 
 import UIKit
 import MediaPlayer
@@ -214,6 +61,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var timer: Timer?
     
     var loadFlag:Bool = false
+    private var playLockFlag = false
     var rowNum:Int = 0
     
     override func viewDidLoad() {
@@ -294,7 +142,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             initFlag = true
         }
         if(self.timer == nil){
-            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(PlayerViewController.timerUpdate), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(PlayerViewController.timerUpdate), userInfo: nil, repeats: true)
             
             print("タイマーを開始しました")
         }
@@ -418,8 +266,22 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let pos_y = [height * 2.0 / 8 , height * 4.0 / 8 , height * 6.0 / 8]
         
         var flame:CGPoint
-        let min = 0.0
-        let sec = 0.0
+        var min = 0
+        var sec = 0
+        
+        if(id == 1){
+            min = Int((player.pos + 0.49) / 60.0)
+            sec = Int(Int(player.pos + 0.49) % 60)
+        }
+        else if(id == 2){
+            min = Int((player2.pos + 0.49) / 60.0)
+            sec = Int(Int(player2.pos + 0.49) % 60)
+        }
+        else if(id == 3){
+            min = Int((player3.pos + 0.49) / 60.0)
+            sec = Int(Int(player3.pos + 0.49) % 60)
+        }
+        
         let title = String(format:"%02d:%02d",min, sec)
         
         flame = CGPoint(x:self.view.bounds.width*8/14 , y:pos_y[id - 1])
@@ -432,6 +294,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         Time.sizeToFit()
         
         //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
+        
+
+        
         
         return Time
     }
@@ -448,7 +313,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let pos_y = [height * 2 / 8 , height * 4 / 8 , height * 6 / 8 ,  height * 13 / 14]
         
         let rect = CGRect(x:0,y:0,width:100,height:50)
+       let btn = UIButton(frame: rect)
         if(id != 5 && id != 6 && id != 7) {
+          /*
             switch id{
             case 1:
                 text = "音楽1再生"
@@ -461,36 +328,48 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             default:
                 text = "再生"
             }
-
-            
+ */
+          text = "準備中"
+ btn.backgroundColor = UIColor.red
             frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
         }
         else if(id == 5) {
             text = "登録"
             frame = CGPoint(x:width * 5 / 7,y:pos_y[3])
+           btn.backgroundColor = UIColor.blue
         }
         else if(id == 6) {
             text = "完了"
             frame = CGPoint(x:width * 6 / 7,y:pos_y[3])
+           btn.backgroundColor = UIColor.blue
         }
         else if(id == 7){
             text = "全曲停止"
             frame = CGPoint(x:width * 2 / 7,y:pos_y[4 - 1])
-            
+           btn.backgroundColor = UIColor.blue
         }
         
         
         
-        let btn = UIButton(frame: rect)
+      
         btn.center = frame
         if(id == 1){
             btn.addTarget(self, action: #selector(PlayerViewController.StartBtn1Tapped(sender:)), for: .touchUpInside)
+            if(player.playing == true){
+                text = "音楽1停止"
+            }
         }
         if(id == 2){
             btn.addTarget(self, action: #selector(PlayerViewController.StartBtn2Tapped(sender:)), for: .touchUpInside)
+            if(player2.playing == true){
+                text = "音楽2停止"
+            }
         }
         if(id == 3){
             btn.addTarget(self, action: #selector(PlayerViewController.StartBtn3Tapped(sender:)), for: .touchUpInside)
+            if(player3.playing == true){
+                text = "音楽3停止"
+            }
         }
         if(id == 4){
             //  btn.addTarget(self, action: #selector(PlayerViewController.StartBtn4Tapped(sender:)), for: .touchUpInside)
@@ -506,69 +385,99 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             btn.addTarget(self, action: #selector(PlayerViewController.allStopTapped(sender:)), for: .touchUpInside)
         }
         btn.setTitle(text,for:.normal)
-        btn.backgroundColor = UIColor.blue
+      
         
         return btn
     }
+
     @objc func StartBtn1Tapped(sender:UIButton){
-        if player.playing == false
-        {
-            if(self.user.Playing_1 != nil){
-                let text = "音楽1停止"
-                self.StartButton1.setTitle(text,for:.normal)
-                player.play()
-            }
-            
-        }else{
-            if(self.user.Playing_1 != nil){
-                let text = "音楽1再生"
-                self.StartButton1.setTitle(text,for:.normal)
-                player.pause()
-            }
-        }
+      if self.playLockFlag {
+      } else {
+        self.music1Play()
+      }
     }
+  func music1Play(){
+    if player.playing == false
+    {
+      if(self.user.Playing_1 != nil){
+        let text = "音楽1停止"
+        self.StartButton1.setTitle(text,for:.normal)
+        player.play()
+      }
+      
+    }else{
+      if(self.user.Playing_1 != nil){
+        let text = "音楽1再生"
+        self.StartButton1.setTitle(text,for:.normal)
+        player.pause()
+      }
+    }
+  }
+
     @objc func StartBtn2Tapped(sender:UIButton){
-        if player2.playing == false
-        {
-            if(self.user.Playing_2 != nil){
-                let text = "音楽2停止"
-                self.StartButton2.setTitle(text,for:.normal)
-                player2.play()
-            }
-            
-        }else{
-            if(self.user.Playing_2 != nil){
-                let text = "音楽2再生"
-                self.StartButton2.setTitle(text,for:.normal)
-                player2.pause()
-            }
-        }
+      if(self.playLockFlag){
+        
+      }else{
+      self.music2Play()
+      }
+  }
+  func music2Play(){
+    if player2.playing == false
+    {
+      if(self.user.Playing_2 != nil){
+        let text = "音楽2停止"
+        self.StartButton2.setTitle(text,for:.normal)
+        player2.play()
+      }
+      
+    }else{
+      if(self.user.Playing_2 != nil){
+        let text = "音楽2再生"
+        self.StartButton2.setTitle(text,for:.normal)
+        player2.pause()
+      }
     }
+  }
     @objc func StartBtn3Tapped(sender:UIButton){
-        if player3.playing == false
-        {
-            if(self.user.Playing_3 != nil){
-                let text = "音楽3停止"
-                self.StartButton3.setTitle(text,for:.normal)
-                player3.play()
-            }
-            
-        }else{
-            if(self.user.Playing_3 != nil){
-                let text = "音楽3再生"
-                self.StartButton3.setTitle(text,for:.normal)
-                player3.pause()
-            }
-        }
+      if self.playLockFlag {
+        
+      }else{
+        self.music3Play()
+      }
+
     }
+  func music3Play(){
+    if player3.playing == false
+    {
+      if(self.user.Playing_3 != nil){
+        let text = "音楽3停止"
+        self.StartButton3.setTitle(text,for:.normal)
+        player3.play()
+      }
+      
+    }else{
+      if(self.user.Playing_3 != nil){
+        let text = "音楽3再生"
+        self.StartButton3.setTitle(text,for:.normal)
+        player3.pause()
+      }
+    }
+  }
     @objc func StartBtn4Tapped(sender:UIButton){
-        if (player3.playing == false || player2.playing || false && player.playing == false)
-        {
-            self.allPause()
-        }else{
-            self.allStart()
-        }
+      if self.playLockFlag {
+      } else {
+        self.musicAllPlay()
+      }
     }
+  func musicAllPlay(){
+    if (player3.playing == false || player2.playing || false && player.playing == false)
+    {
+      self.allPause()
+    }else{
+      self.allStart()
+    }
+    
+  }
     @objc func allStartTapped(sender:UIButton){
         if (player3.playing == false && player2.playing == false && player.playing == false)
         {
@@ -610,20 +519,20 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       //  self.StartButton4.setTitle(text,for:.normal)
     }
     func allPause(){
-        var text = "音楽1再生"
+       // var text = "音楽1再生"
         if(self.user.Playing_1 != nil){
-          text = "音楽1再生"
-          self.StartButton1.setTitle(text,for:.normal)
+       //   text = "音楽1再生"
+       //   self.StartButton1.setTitle(text,for:.normal)
             player.pause()
         }
         if(self.user.Playing_2 != nil){
-          text = "音楽2再生"
-            self.StartButton2.setTitle(text,for:.normal)
+      //    text = "音楽2再生"
+       //     self.StartButton2.setTitle(text,for:.normal)
             player2.pause()
         }
         if(self.user.Playing_3 != nil){
-          text = "音楽3再生"
-            self.StartButton3.setTitle(text,for:.normal)
+       //   text = "音楽3再生"
+        //    self.StartButton3.setTitle(text,for:.normal)
             player3.pause()
         }
      // text = "全曲再生"
@@ -631,33 +540,33 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
     }
     @objc func  StartBtn5Tapped(sender:UIButton){
-        let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
-        let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            let template_name = textField.text!
-            //self.recUserInfo()
-            
-            if self.user.Playing_1 != nil && self.user.Playing_2 != nil && self.user.Playing_3 != nil { //3曲全て選曲していないと曲を登録できない
-                self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: player.audioEngine.mainMixerNode.outputVolume, volume2: player2.audioEngine.mainMixerNode.outputVolume, volume3: player3.audioEngine.mainMixerNode.outputVolume, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
-            }
-            
-            self.sendUserInfo()
-            
-            let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
-            let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
-            let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
-            userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position], forKey: String(self.user.Id - 1)+"_"+"Setting")
-            print("いけてる，その2")
-        }
-        let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
-        
-        // UIAlertControllerにtextFieldを追加
-        alert.addTextField { (textField:UITextField!) -> Void in }
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
+    let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
+    let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
+      let textField = alert.textFields![0] as UITextField
+      var template_name = textField.text!
+      if(template_name.isEmpty) {
+        template_name = "名称未設定のテンプレート"
+      }
+      
+      self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: player.audioEngine.mainMixerNode.outputVolume, volume2: player2.audioEngine.mainMixerNode.outputVolume, volume3: player3.audioEngine.mainMixerNode.outputVolume, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
+      
+      self.sendUserInfo()
+      
+      let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
+      let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
+      let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
+      userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position], forKey: String(self.user.Id - 1)+"_"+"Setting")
+      print("いけてる，その2")
     }
+    let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
+    
+    // UIAlertControllerにtextFieldを追加
+    alert.addTextField { (textField:UITextField!) -> Void in }
+    alert.addAction(saveAction)
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: true, completion: nil)
+  }
     @objc func  StartBtn6Tapped(sender:UIButton){
         self.goHome()
     }
@@ -710,15 +619,19 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         if(id == 1){
             slider.addTarget(self, action: #selector(self.changePitch1), for: .valueChanged)
+            slider.value = player.pitch
         }
         if(id == 2){
             slider.addTarget(self, action: #selector(self.changePitch2), for: .valueChanged)
+            slider.value = player2.pitch
         }
         if(id == 3){
             slider.addTarget(self, action: #selector(self.changePitch3), for: .valueChanged)
+            slider.value = player3.pitch
         }
         if(id == 4){
             slider.addTarget(self, action: #selector(self.changePitch4), for: .valueChanged)
+            slider.value = 0.0
         }
         
         return slider
@@ -728,34 +641,37 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     @objc func changePitch1(_ sender: UISlider) {
         if(user.musicEditFlag[0] == true){
+            player.pitch = player1_pitch_slider.value
             player.audioUnitTimePitch.pitch = player1_pitch_slider.value
         }
     }
     @objc func changePitch2(_ sender: UISlider) {
         if(user.musicEditFlag[1] == true){
+            player2.pitch = player2_pitch_slider.value
             player2.audioUnitTimePitch.pitch = player2_pitch_slider.value
         }
     }
     @objc func changePitch3(_ sender: UISlider) {
         if(user.musicEditFlag[2] == true){
+            player3.pitch = player3_pitch_slider.value
             player3.audioUnitTimePitch.pitch = player3_pitch_slider.value
         }
     }
     @objc func changePitch4(_ sender: UISlider) {
-        player1_pitch_slider.value = player4_pitch_slider.value
-        player2_pitch_slider.value = player4_pitch_slider.value
-        player3_pitch_slider.value = player4_pitch_slider.value
         
         if(user.musicEditFlag[0] == true){
-            
+            player.pitch = player1_pitch_slider.value
+            player1_pitch_slider.value = player4_pitch_slider.value
             player.audioUnitTimePitch.pitch = player1_pitch_slider.value
         }
         if(user.musicEditFlag[1] == true){
-            
+            player2.pitch = player2_pitch_slider.value
+            player2_pitch_slider.value = player4_pitch_slider.value
             player2.audioUnitTimePitch.pitch = player2_pitch_slider.value
         }
         if(user.musicEditFlag[2] == true){
-            
+            player3.pitch = player3_pitch_slider.value
+            player3_pitch_slider.value = player4_pitch_slider.value
             player3.audioUnitTimePitch.pitch = player3_pitch_slider.value
         }
     }
@@ -783,12 +699,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         if(id == 1){
             slider.addTarget(self, action: #selector(self.changeVol1), for: .valueChanged)
+            slider.value = player.vol
         }
         if(id == 2){
             slider.addTarget(self, action: #selector(self.changeVol2), for: .valueChanged)
+            slider.value = player2.vol
         }
         if(id == 3){
             slider.addTarget(self, action: #selector(self.changeVol3), for: .valueChanged)
+            slider.value = player3.vol
         }
         if(id == 4){
             slider.addTarget(self, action: #selector(self.changeVol4), for: .valueChanged)
@@ -800,12 +719,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     @objc func changeVol1(_ sender: UISlider) {
         player.audioEngine.mainMixerNode.outputVolume = player1_vol_slider.value
+        player.vol = player1_vol_slider.value
     }
     @objc func changeVol2(_ sender: UISlider) {
         player2.audioEngine.mainMixerNode.outputVolume = player2_vol_slider.value
+        player2.vol = player2_vol_slider.value
     }
     @objc func changeVol3(_ sender: UISlider) {
         player3.audioEngine.mainMixerNode.outputVolume = player3_vol_slider.value
+        player3.vol = player2_vol_slider.value
     }
     @objc func changeVol4(_ sender: UISlider) {
         player1_vol_slider.value = player4_vol_slider.value
@@ -814,6 +736,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         player.audioEngine.mainMixerNode.outputVolume = player1_vol_slider.value
         player2.audioEngine.mainMixerNode.outputVolume = player2_vol_slider.value
         player3.audioEngine.mainMixerNode.outputVolume = player3_vol_slider.value
+        player.vol = player1_vol_slider.value
+        player2.vol = player2_vol_slider.value
+        player3.vol = player3_vol_slider.value
     }
     
     // 再生位置スライダ作成
@@ -839,12 +764,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         if(id == 1){
             slider.addTarget(self, action: #selector(self.changePos1), for: .touchUpInside)
+            slider.value = player.pos
         }
         if(id == 2){
             slider.addTarget(self, action: #selector(self.changePos2), for: .touchUpInside)
+            slider.value = player2.pos
         }
         if(id == 3){
             slider.addTarget(self, action: #selector(self.changePos3), for: .touchUpInside)
+            slider.value = player3.pos
         }
         
         return slider
@@ -960,10 +888,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         if player.playing == true{
             
-            let position = Double(self.player1_pos_slider.value)
+            let nodeTime = player.audioPlayerNode.lastRenderTime
+            let playerTime = player.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
+            let currentTime = (Double(playerTime!.sampleTime) / player.sampleRate) + player.offset // シーク位置以前の時間を追加
             
             // 残り時間取得（sec）
-            let length = player.duration - position
+            let length = player.duration - currentTime
             
             if(length < 1.0){
                 player.audioPlayerNode.stop()
@@ -974,211 +904,246 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                                                        completionHandler: nil)
                 player.audioPlayerNode.play()
                 self.player1_pos_slider.value = 0.0
+                player.pos = 0.0
                 player.offset = 0.0
                 Player1Time.text = String(format:"%02d:%02d",0, 0)
                 
             }
             else{
                 
-                let nodeTime = player.audioPlayerNode.lastRenderTime
-                let playerTime = player.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
-                let currentTime = (Double(playerTime!.sampleTime) / player.sampleRate) + player.offset // シーク位置以前の時間を追加
-                
                 self.player1_pos_slider.value = Float(currentTime)  // 現在の経過時間をスライダーで表示
-                
-                
-                //print(currentTime)
-                //messageLabel.text = String(Int(currentTime + 0.49))
+                player.pos = Float(currentTime)
                 
                 let min = Int((currentTime + 0.49) / 60.0)
                 let sec = Int(Int(currentTime + 0.49) % 60)
                 Player1Time.text = String(format:"%02d:%02d",min, sec)
             }
-            //print(text)
         }
+        
         
         if player2.playing == true{
             
-            let position = Double(self.player2_pos_slider.value)
+            let nodeTime = player2.audioPlayerNode.lastRenderTime
+            let playerTime = player2.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
+            let currentTime = (Double(playerTime!.sampleTime) / player2.sampleRate) + player2.offset // シーク位置以前の時間を追加
             
             // 残り時間取得（sec）
-            let length = player2.duration - position
+            let length = player2.duration - currentTime
             
             if(length < 1.0){
                 player2.audioPlayerNode.stop()
                 player2.audioPlayerNode.scheduleSegment(player2.audioFile,
-                                                        startingFrame: 0,
-                                                        frameCount: AVAudioFrameCount(player2.audioFile.length),
-                                                        at: nil,
-                                                        completionHandler: nil)
+                                                       startingFrame: 0,
+                                                       frameCount: AVAudioFrameCount(player2.audioFile.length),
+                                                       at: nil,
+                                                       completionHandler: nil)
                 player2.audioPlayerNode.play()
                 self.player2_pos_slider.value = 0.0
+                player2.pos = 0.0
                 player2.offset = 0.0
                 Player2Time.text = String(format:"%02d:%02d",0, 0)
                 
             }
             else{
                 
-                let nodeTime = player2.audioPlayerNode.lastRenderTime
-                let playerTime = player2.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
-                let currentTime = (Double(playerTime!.sampleTime) / player2.sampleRate) + player2.offset // シーク位置以前の時間を追加
-                
                 self.player2_pos_slider.value = Float(currentTime)  // 現在の経過時間をスライダーで表示
-                
-                
-                //print(currentTime)
-                //messageLabel.text = String(Int(currentTime + 0.49))
+                player2.pos = Float(currentTime)
                 
                 let min = Int((currentTime + 0.49) / 60.0)
                 let sec = Int(Int(currentTime + 0.49) % 60)
                 Player2Time.text = String(format:"%02d:%02d",min, sec)
             }
-            //print(text)
         }
+        
         
         if player3.playing == true{
             
-            let position = Double(self.player3_pos_slider.value)
+            let nodeTime = player3.audioPlayerNode.lastRenderTime
+            let playerTime = player3.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
+            let currentTime = (Double(playerTime!.sampleTime) / player3.sampleRate) + player3.offset // シーク位置以前の時間を追加
             
             // 残り時間取得（sec）
-            let length = player3.duration - position
+            let length = player3.duration - currentTime
             
             if(length < 1.0){
                 player3.audioPlayerNode.stop()
                 player3.audioPlayerNode.scheduleSegment(player3.audioFile,
-                                                        startingFrame: 0,
-                                                        frameCount: AVAudioFrameCount(player3.audioFile.length),
-                                                        at: nil,
-                                                        completionHandler: nil)
+                                                       startingFrame: 0,
+                                                       frameCount: AVAudioFrameCount(player3.audioFile.length),
+                                                       at: nil,
+                                                       completionHandler: nil)
                 player3.audioPlayerNode.play()
                 self.player3_pos_slider.value = 0.0
+                player3.pos = 0.0
                 player3.offset = 0.0
                 Player3Time.text = String(format:"%02d:%02d",0, 0)
                 
             }
             else{
                 
-                let nodeTime = player3.audioPlayerNode.lastRenderTime
-                let playerTime = player3.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
-                let currentTime = (Double(playerTime!.sampleTime) / player3.sampleRate) + player3.offset // シーク位置以前の時間を追加
-                
                 self.player3_pos_slider.value = Float(currentTime)  // 現在の経過時間をスライダーで表示
-                
-                
-                //print(currentTime)
-                //messageLabel.text = String(Int(currentTime + 0.49))
+                player3.pos = Float(currentTime)
                 
                 let min = Int((currentTime + 0.49) / 60.0)
                 let sec = Int(Int(currentTime + 0.49) % 60)
                 Player3Time.text = String(format:"%02d:%02d",min, sec)
-                //print(text)
             }
         }
         
     }
-    
-    
+  
+  func textChangePlay(id:Int){
+    switch id {
+    case 1:
+      let text = "音楽1再生"
+      self.StartButton1.setTitle(text,for:.normal)
+      self.StartButton1.backgroundColor? = (UIColor.blue)
+    case 2:
+      let text = "音楽2再生"
+      self.StartButton2.setTitle(text,for:.normal)
+      self.StartButton2.backgroundColor? = (UIColor.blue)
+    case 3:
+      let text = "音楽3再生"
+      self.StartButton3.setTitle(text,for:.normal)
+      self.StartButton3.backgroundColor? = (UIColor.blue)
+      
+    case 4:
+      let text = "音楽4再生"
+      self.StartButton4.setTitle(text,for:.normal)
+      self.StartButton4.backgroundColor? = (UIColor.blue)
+    default:
+      print("alltextchangeplayerror")
+    }
+  }
+  func allTextChengePlay(){
+    for i in 1...4 {
+      self.textChangePlay(id:i)
+    }
+  }
+
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.receiveData()
-        
-        if self.loadFlag == true { //テンプレートを読み込んだとき
-            self.user.Playing_1 = self.user.Playing_1_MPMedia[self.rowNum]
-            self.user.Playing_2 = self.user.Playing_2_MPMedia[self.rowNum]
-            self.user.Playing_3 = self.user.Playing_3_MPMedia[self.rowNum]
-            
-            player.audioEngine.mainMixerNode.outputVolume = self.user.Playing_1_volume[self.rowNum]
-            player1_vol_slider.value = self.user.Playing_1_volume[self.rowNum]
-            player2.audioEngine.mainMixerNode.outputVolume = self.user.Playing_2_volume[self.rowNum]
-            player2_vol_slider.value = self.user.Playing_2_volume[self.rowNum]
-            player3.audioEngine.mainMixerNode.outputVolume = self.user.Playing_3_volume[self.rowNum]
-            player3_vol_slider.value = self.user.Playing_3_volume[self.rowNum]
-            
-            player.audioUnitTimePitch.pitch = self.user.Playing_1_pitch[self.rowNum]
-            player1_pitch_slider.value = self.user.Playing_1_pitch[self.rowNum]
-            player2.audioUnitTimePitch.pitch = self.user.Playing_2_pitch[self.rowNum]
-            player2_pitch_slider.value = self.user.Playing_2_pitch[self.rowNum]
-            player3.audioUnitTimePitch.pitch = self.user.Playing_3_pitch[self.rowNum]
-            player3_pitch_slider.value = self.user.Playing_3_pitch[self.rowNum]
-            
-            if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
-                appDelegate.loadFlag = false
-            }
-            //self.loadFlag = false
-        }
-        
-        self.player1_name = self.drawLabel(id:1)
-        self.view.addSubview(self.player1_name)
-        
-        self.player2_name = self.drawLabel(id:2)
-        self.view.addSubview(self.player2_name)
-        
-        self.player3_name = self.drawLabel(id:3)
-        self.view.addSubview(self.player3_name)
-        
-        if(self.loadFlag == false) {
-            if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
-                player.stop()
-                self.StartButton1.setTitle("音楽1再生",for:.normal)
-                let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                player.SetUp(text_url : url)
-                print("曲１セット完了")
-                self.player1_pos_slider.maximumValue = Float(player.duration)
-            }
-            if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
-                player2.stop()
-                self.StartButton2.setTitle("音楽2再生",for:.normal)
-                let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                player2.SetUp(text_url : url)
-                print("曲2セット完了")
-                self.player2_pos_slider.maximumValue = Float(player2.duration)
-            }
-            if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
-                player3.stop()
-                self.StartButton3.setTitle("音楽3再生",for:.normal)
-                let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                player3.SetUp(text_url : url)
-                print("曲3セット完了")
-                self.player3_pos_slider.maximumValue = Float(player3.duration)
-            }
-            user.SelectionFlag = 0
-        }
-        else if(self.loadFlag == true) {
-            if(self.user.Playing_1 != nil){
-                player.stop()
-                let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                player.SetUp(text_url : url)
-                print("曲１セット完了")
-                self.player1_pos_slider.maximumValue = Float(player.duration)
-            }
-            if(self.user.Playing_2 != nil){
-                player2.stop()
-                let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                player2.SetUp(text_url : url)
-                print("曲2セット完了")
-                self.player2_pos_slider.maximumValue = Float(player2.duration)
-            }
-            if(self.user.Playing_3 != nil){
-                player3.stop()
-                let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-                player3.SetUp(text_url : url)
-                print("曲3セット完了")
-                self.player3_pos_slider.maximumValue = Float(player3.duration)
-            }
-            self.loadFlag = false
-        }
-        
-        if(player.duration != 0.0){
-            self.player1_pos_slider.maximumValue = Float(player.duration)
-        }
-        if(player2.duration != 0.0){
-            self.player2_pos_slider.maximumValue = Float(player2.duration)
-        }
-        if(player3.duration != 0.0){
-            self.player3_pos_slider.maximumValue = Float(player3.duration)
-        }
-        //user.SelectionFlag = 0
+      self.lockButton()
+      self.loadTemplete()
     }
+  func lockButton(){
+    self.playLockFlag = true
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3){
+      self.playLockFlag = false
+      self.allTextChengePlay()
+    }
+  }
+  func loadTemplete(){
+    if self.loadFlag == true { //テンプレートを読み込んだとき
+      self.user.Playing_1 = self.user.Playing_1_MPMedia[self.rowNum]
+      self.user.Playing_2 = self.user.Playing_2_MPMedia[self.rowNum]
+      self.user.Playing_3 = self.user.Playing_3_MPMedia[self.rowNum]
+      
+      player.audioEngine.mainMixerNode.outputVolume = self.user.Playing_1_volume[self.rowNum]
+      player1_vol_slider.value = self.user.Playing_1_volume[self.rowNum]
+      player2.audioEngine.mainMixerNode.outputVolume = self.user.Playing_2_volume[self.rowNum]
+      player2_vol_slider.value = self.user.Playing_2_volume[self.rowNum]
+      player3.audioEngine.mainMixerNode.outputVolume = self.user.Playing_3_volume[self.rowNum]
+      player3_vol_slider.value = self.user.Playing_3_volume[self.rowNum]
+      
+      player.audioUnitTimePitch.pitch = self.user.Playing_1_pitch[self.rowNum]
+      player1_pitch_slider.value = self.user.Playing_1_pitch[self.rowNum]
+      player2.audioUnitTimePitch.pitch = self.user.Playing_2_pitch[self.rowNum]
+      player2_pitch_slider.value = self.user.Playing_2_pitch[self.rowNum]
+      player3.audioUnitTimePitch.pitch = self.user.Playing_3_pitch[self.rowNum]
+      player3_pitch_slider.value = self.user.Playing_3_pitch[self.rowNum]
+      
+      if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
+        appDelegate.loadFlag = false
+      }
+      //self.loadFlag = false
+    }
+    
+    
+    
+    self.player1_name = self.drawLabel(id:1)
+    self.view.addSubview(self.player1_name)
+    
+    self.player2_name = self.drawLabel(id:2)
+    self.view.addSubview(self.player2_name)
+    
+    self.player3_name = self.drawLabel(id:3)
+    self.view.addSubview(self.player3_name)
+    
+    if(self.loadFlag == false) {
+      if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
+        if(player.playing == true){
+          player.stop()
+        }
+        //self.StartButton1.setTitle("準備中",for:.normal)
+        let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player.SetUp(text_url : url)
+        print("曲１セット完了")
+        self.player1_pos_slider.maximumValue = Float(player.duration)
+        self.player1_pos_slider.value = 0.0
+      }
+      if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
+        if(player2.playing == true){
+          player2.stop()
+        }
+       //self.StartButton2.setTitle("音楽2再生",for:.normal)
+        let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player2.SetUp(text_url : url)
+        print("曲2セット完了desu")
+        self.player2_pos_slider.maximumValue = Float(player2.duration)
+        self.player2_pos_slider.value = 0.0
+      }
+      if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
+        if(player3.playing == true){
+          player3.stop()
+        }
+        //self.StartButton3.setTitle("音楽3再生",for:.normal)
+        let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player3.SetUp(text_url : url)
+        print("曲3セット完了")
+        self.player3_pos_slider.maximumValue = Float(player3.duration)
+        self.player3_pos_slider.value = 0.0
+      }
+      user.SelectionFlag = 0
+    }
+    else if(self.loadFlag == true) {
+      if(self.user.Playing_1 != nil){
+        player.stop()
+        let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player.SetUp(text_url : url)
+        print("曲１セット完了")
+        self.player1_pos_slider.maximumValue = Float(player.duration)
+      }
+      if(self.user.Playing_2 != nil){
+        player2.stop()
+        let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player2.SetUp(text_url : url)
+        print("曲2セット完了")
+        self.player2_pos_slider.maximumValue = Float(player2.duration)
+      }
+      if(self.user.Playing_3 != nil){
+        //player3.stop()
+        let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player3.SetUp(text_url : url)
+        print("曲3セット完了")
+        self.player3_pos_slider.maximumValue = Float(player3.duration)
+      }
+      self.loadFlag = false
+    }
+    
+    if(player.duration != 0.0){
+      self.player1_pos_slider.maximumValue = Float(player.duration)
+    }
+    if(player2.duration != 0.0){
+      self.player2_pos_slider.maximumValue = Float(player2.duration)
+    }
+    if(player3.duration != 0.0){
+      self.player3_pos_slider.maximumValue = Float(player3.duration)
+    }
+    //user.SelectionFlag = 0
+  }
     func receiveData(){
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
             self.user = appDelegate.user

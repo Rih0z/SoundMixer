@@ -46,24 +46,36 @@ class User {
   var Playing_3_position = [Double]()
   
   func setSetting(temp_name: String, MPMedia1: MPMediaItem?, MPMedia2: MPMediaItem?, MPMedia3: MPMediaItem?, pitch1: Float, pitch2: Float, pitch3: Float, volume1: Float, volume2: Float, volume3: Float, position1: Double, position2: Double, position3: Double) {
-    if MPMedia1 != nil && MPMedia2 != nil && MPMedia3 != nil {
-      self.template_name.append(temp_name)
-      
+    self.template_name.append(temp_name)
+    if MPMedia1 != nil {
       self.Playing_1_MPMedia.append(MPMedia1!)
-      self.Playing_2_MPMedia.append(MPMedia2!)
-      self.Playing_3_MPMedia.append(MPMedia3!)
-      
-      self.Playing_1_pitch.append(pitch1)
-      self.Playing_2_pitch.append(pitch2)
-      self.Playing_3_pitch.append(pitch3)
-      
-      self.Playing_1_volume.append(volume1)
-      self.Playing_2_volume.append(volume2)
-      self.Playing_3_volume.append(volume3)
-      
-      self.Playing_1_position.append(position1)
-      self.Playing_2_position.append(position2)
-      self.Playing_3_position.append(position3)
     }
+    else {
+      self.Playing_1_MPMedia.append(nil)
+    }
+    if MPMedia2 != nil {
+      self.Playing_2_MPMedia.append(MPMedia2!)
+    }
+    else {
+      self.Playing_2_MPMedia.append(nil)
+    }
+    if MPMedia3 != nil {
+      self.Playing_3_MPMedia.append(MPMedia3!)
+    }
+    else {
+      self.Playing_3_MPMedia.append(nil)
+    }
+    
+    self.Playing_1_pitch.append(pitch1)
+    self.Playing_2_pitch.append(pitch2)
+    self.Playing_3_pitch.append(pitch3)
+    
+    self.Playing_1_volume.append(volume1)
+    self.Playing_2_volume.append(volume2)
+    self.Playing_3_volume.append(volume3)
+    
+    self.Playing_1_position.append(position1)
+    self.Playing_2_position.append(position2)
+    self.Playing_3_position.append(position3)
   }
 }

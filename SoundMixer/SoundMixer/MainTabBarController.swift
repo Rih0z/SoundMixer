@@ -163,18 +163,18 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     self.navigationController?.pushViewController(secondViewController!, animated: true)
   }
   func allPause(){
-    var text = "音楽1再生"
+   /// var text = "音楽1再生"
     if(self.user.Playing_1 != nil){
-      text = "音楽1再生"
+ //     text = "音楽1再生"
       player.pause()
     }
     if(self.user.Playing_2 != nil){
-      text = "音楽2再生"
+  //    text = "音楽2再生"
       
       player2.pause()
     }
     if(self.user.Playing_3 != nil){
-      text = "音楽3再生"
+   //   text = "音楽3再生"
       player3.pause()
     }
     // text = "全曲再生"
