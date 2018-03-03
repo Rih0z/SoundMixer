@@ -436,7 +436,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       self.StartButton2.backgroundColor? = (UIColor.blue)
       }
     case 3:
-      if player3.playing == true {
+      if player3.playing ==  false {
       let text = "音楽3再生"
       self.StartButton3.setTitle(text,for:.normal)
       self.StartButton3.backgroundColor? = (UIColor.blue)
