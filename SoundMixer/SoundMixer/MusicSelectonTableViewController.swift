@@ -29,7 +29,7 @@ class MusicSelectonTableViewController: UITableViewController {
   
   
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-   
+    self.tryingMusic(indexPath: indexPath)
     //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
   }
   
@@ -47,6 +47,7 @@ class MusicSelectonTableViewController: UITableViewController {
     
     return SongNum
   }
+  /*
   // UITableViewDelegate  https://ja.stackoverflow.com/questions/34343/cell%E3%82%92%E5%B7%A6%E3%81%AB%E3%82%B9%E3%83%AF%E3%82%A4%E3%83%97%E3%81%95%E3%81%9B-%E5%89%8A%E9%99%A4%E3%83%9C%E3%82%BF%E3%83%B3-%E3%81%A8-%E8%A9%B3%E7%B4%B0%E3%83%9C%E3%82%BF%E3%83%B3-%E3%82%92%E8%A1%A8%E7%A4%BA%E3%81%95%E3%81%9B%E3%81%9F%E3%81%84
   override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     let action = UITableViewRowAction(style: .default, title: "お試し再生"){ action, indexPath in
@@ -56,11 +57,12 @@ class MusicSelectonTableViewController: UITableViewController {
     action.backgroundColor = UIColor.blue
     return [action]
   }
-  
+  */
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
     let cell = tableView.dequeueReusableCell(withIdentifier: "MusicCell",for: indexPath)
     cell.textLabel?.text = self.SongNames[indexPath.row]
     // cell.backgroundColor = UIColor.lightGray
+    //cell.accessoryType = .checkmark
     return cell
   }
   

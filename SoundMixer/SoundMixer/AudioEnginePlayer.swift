@@ -265,7 +265,7 @@ class AudioEnginePlayer: NSObject {
             self.feedOutCount = 0
             //うまく実装できてないスムーズにフィードイン機能
         } else {
-            //print("feed in")
+            print("feed in")
             self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
             
         }
