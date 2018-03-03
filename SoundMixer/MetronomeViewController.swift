@@ -64,7 +64,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.reset()
     self.receiveData()
     self.setupAll()
-    let text = "準備中"
+    let text = "フェードアウト"
     self.hiddenButton.setTitle(text,for:.normal)
     self.hiddenButton.backgroundColor? = (UIColor.red)
     self.allplayLockFlag = true
@@ -243,7 +243,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     if self.allplayingFlag {
       self.allplayLockFlag = true
       self.pauseAll()
-      let text = "フィードアウト中"
+      let text = "フェードアウトアウト中"
       self.hiddenButton.setTitle(text,for:.normal)
       self.hiddenButton.backgroundColor? = (UIColor.red)
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
@@ -256,7 +256,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     } else {
       self.playAll()
       self.allplayLockFlag = true
-      let text = "フィードイン中"
+      let text = "フェードイン中"
       self.hiddenButton.setTitle(text,for:.normal)
       self.hiddenButton.backgroundColor? = UIColor.red
       

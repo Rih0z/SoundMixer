@@ -62,6 +62,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     var loadFlag:Bool = false
     private var playLockFlag = false
+  private var musicLockFlag:[Bool] = [false,false,false,false]
     var rowNum:Int = 0
     
     override func viewDidLoad() {
@@ -329,7 +330,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 text = "再生"
             }
  */
-          text = "準備中"
+          text = "フェードアウト"
  btn.backgroundColor = UIColor.red
             frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
         }
@@ -390,8 +391,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         return btn
     }
 
+  func feedOutText(id:Int){
+    self.musicLockFlag[id] = true
+    self.textChangePrepare(id:id)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+      self.textChangePlay(id: id)
+      self.musicLockFlag[id] = false
+    }
+  }
     @objc func StartBtn1Tapped(sender:UIButton){
-      if self.playLockFlag {
+      if self.playLockFlag || self.musicLockFlag[1] {
       } else {
         self.music1Play()
       }
@@ -407,15 +416,14 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       
     }else{
       if(self.user.Playing_1 != nil){
-        let text = "音楽1再生"
-        self.StartButton1.setTitle(text,for:.normal)
         player.pause()
+        self.feedOutText(id: 1)
       }
     }
   }
 
     @objc func StartBtn2Tapped(sender:UIButton){
-      if(self.playLockFlag){
+      if(self.playLockFlag || self.musicLockFlag[2]){
         
       }else{
       self.music2Play()
@@ -432,14 +440,13 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       
     }else{
       if(self.user.Playing_2 != nil){
-        let text = "音楽2再生"
-        self.StartButton2.setTitle(text,for:.normal)
         player2.pause()
+        self.feedOutText(id: 2)
       }
     }
   }
     @objc func StartBtn3Tapped(sender:UIButton){
-      if self.playLockFlag {
+      if self.playLockFlag || self.musicLockFlag[3] {
         
       }else{
         self.music3Play()
@@ -457,9 +464,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       
     }else{
       if(self.user.Playing_3 != nil){
-        let text = "音楽3再生"
-        self.StartButton3.setTitle(text,for:.normal)
         player3.pause()
+        self.feedOutText(id: 3)
       }
     }
   }
@@ -493,6 +499,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         if (player3.playing == true || player2.playing == true || player.playing == true)
         {
             self.allPause()
+            self.lockButton()
         }else{
              // self.allStart()
         }
@@ -1016,7 +1023,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
   }
   func textChangePrepare(id:Int){
-        let text = "準備中"
+        let text = "フェードアウト"
     switch id {
     case 1:
       self.StartButton1.setTitle(text,for:.normal)
