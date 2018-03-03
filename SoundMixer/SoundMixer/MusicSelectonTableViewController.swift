@@ -25,8 +25,11 @@ class MusicSelectonTableViewController: UITableViewController {
   var timer: Timer?
   var testplayFlag : Bool = false
   // Cell が選択された場合
+  
+  
+  
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-    self.goNextPage(page: "MainTabBar")
+   
     //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
   }
   
@@ -57,6 +60,7 @@ class MusicSelectonTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
     let cell = tableView.dequeueReusableCell(withIdentifier: "MusicCell",for: indexPath)
     cell.textLabel?.text = self.SongNames[indexPath.row]
+    // cell.backgroundColor = UIColor.lightGray
     return cell
   }
   
@@ -128,6 +132,17 @@ class MusicSelectonTableViewController: UITableViewController {
     super.viewDidDisappear(animated)
     self.receiveData()
     self.setupHomeBtn()
+    self.showPlaylist()
+
+  }
+  func receiveData(){
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    self.user = appDelegate.user
+    self.Playlist = appDelegate.Playlists
+    print("Selectionflag musicselection")
+    print(self.user.SelectionFlag)
+  }
+  func showPlaylist(){
     let playlistname = self.Playlist?.value(forProperty: MPMediaPlaylistPropertyName)! as! String
     self.title = playlistname
     //  print("musicsselection music...")
@@ -145,14 +160,6 @@ class MusicSelectonTableViewController: UITableViewController {
       self.Songs.append(song)
     }
   }
-  func receiveData(){
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    self.user = appDelegate.user
-    self.Playlist = appDelegate.Playlists
-    print("Selectionflag musicselection")
-    print(self.user.SelectionFlag)
-  }
-  
   func setSendData()
   {
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
