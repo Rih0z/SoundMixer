@@ -24,12 +24,23 @@ class MusicSelectonTableViewController: UITableViewController {
   var testPlayer:AudioEnginePlayer = AudioEnginePlayer()
   var timer: Timer?
   var testplayFlag : Bool = false
+  var testplayLockFlag :Bool = false
+  var testplaysong:String!
   // Cell が選択された場合
   
   
   
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
-  //  self.tryingMusic(indexPath: indexPath)
+      let cell = tableView.dequeueReusableCell(withIdentifier: "MusicCell",for: indexPath)
+    if self.testplayLockFlag {
+      //cell.backgroundColor = UIColor.red
+      self.title = self.testplaysong + "の準備中お待ちください..."
+      
+    } else {
+      self.title = "選択した曲を再生します"
+      cell.backgroundColor = UIColor.blue
+      self.tryingMusic(indexPath: indexPath)
+    }
     //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/f1b6eeee5305e649d32b
   }
   
@@ -61,6 +72,9 @@ class MusicSelectonTableViewController: UITableViewController {
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
     let cell = tableView.dequeueReusableCell(withIdentifier: "MusicCell",for: indexPath)
     cell.textLabel?.text = self.SongNames[indexPath.row]
+    if self.testplayLockFlag {
+    cell.selectionStyle = UITableViewCellSelectionStyle.none
+    }
     // cell.backgroundColor = UIColor.lightGray
     //cell.accessoryType = .checkmark
     return cell
@@ -75,27 +89,33 @@ class MusicSelectonTableViewController: UITableViewController {
     }else{
       print("停止して次の曲をセットします")
       testPlayer.stop()
+      self.title = "フェードアウト中..."
+      self.testplayLockFlag = true
       self.testplayFlag = true
       self.testSong = self.Songs[indexPath.row]
     }
     let url = self.testSong.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
     // DispatchQueue.main.asyncAfter(deadline: .now() + 3){
-    
-    
+    testplaysong = self.testSong.value(forProperty: MPMediaItemPropertyTitle) as! String
+     self.title = self.testplaysong + "の再生準備中"
     print("セット完了")
     if self.testplayFlag {
-      var lesttime:Double = 3
+      let lesttime:Double = 3/*
       if testPlayer.feedOutLest != nil{
         lesttime = Double(testPlayer.feedOutLest)
         print("残り時間を代入しました")
-      }
-      
-      DispatchQueue.main.asyncAfter(deadline: .now() + lesttime) {
+      }*/
+      DispatchQueue.main.asyncAfter(deadline: .now() + (lesttime)) {
         self.testPlayer.SetUp(text_url: url)
         self.testPlayer.play()
+        self.title = self.testplaysong + "再生中"
+        self.testplayLockFlag = false
         self.testplayFlag = false
       }
     }else {
+      print("test play setup")
+      
+      
       self.testPlayer.SetUp(text_url: url)
       self.testPlayer.play()
     }
@@ -103,6 +123,7 @@ class MusicSelectonTableViewController: UITableViewController {
     
   }
   func stopMusics(){
+    
     if self.user.Playing_1 != nil {
       player.stop()
     }
@@ -162,9 +183,7 @@ class MusicSelectonTableViewController: UITableViewController {
       self.Songs.append(song)
     }
   }
-  func setSendData()
-  {
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+  func setMusic(){
     if let indexPath = self.tableView.indexPathForSelectedRow {
       switch self.user.SelectionFlag {
       case 1:
@@ -180,12 +199,19 @@ class MusicSelectonTableViewController: UITableViewController {
         print("フラグが立っていませんmusicselection")
         print(self.user.SelectionFlag)
       }
-      appDelegate.user = self.user
+      
     }
+  }
+  func setSendData()
+  {
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    appDelegate.user = self.user
+    
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.user.BeforeView = "music selection"
+    self.setMusic()
     setSendData()
     testPlayer.stop()
     if(self.user.Playing_1 != nil)

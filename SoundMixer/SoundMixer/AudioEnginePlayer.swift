@@ -78,8 +78,10 @@ class AudioEnginePlayer: NSObject {
     }
     
     func SetUp(text_url:URL){
-        if(player.playingFlag || player2.playingFlag || player3.playingFlag ){
-            DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
+        //if(player.playingFlag || player2.playingFlag || player3.playingFlag ){
+      //こうじゃないとお試し再生機能が例外になる
+      if(self.playingFlag ){
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
                 self.setupAll(text_url: text_url)
             }
         }else{
