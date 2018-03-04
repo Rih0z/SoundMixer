@@ -39,6 +39,7 @@ class MusicStatementViewController: UIViewController {
   
   let buttonText = ["音楽1を変更する","音楽2を変更する","音楽3を変更する"]
 
+  let teachingText = "スイッチをオンにしないと，音楽編集画面でのピッチ変更が有効になりません"
   
   
   /*
@@ -74,7 +75,7 @@ class MusicStatementViewController: UIViewController {
     let rect = CGRect(x:0,y:0,width:self.width/2,height:30)
     let setup = setupParts()
     let musicFontSize:CGFloat = 20
-    let dis = musicFontSize * 2 + 8
+    let dis = self.height/5
     var flame = CGPoint(x:self.width/2 , y:self.height/3)
     var titleFlame = flame
     var switchFlame = flame
@@ -122,24 +123,26 @@ class MusicStatementViewController: UIViewController {
     
     let titleFlame = CGPoint(x: self.width/2 , y:self.height/10 + musicFontSize)
     var flame = titleFlame
-    flame.x = self.width/2
+   
     flame.y += musicFontSize * 2
     let TitleLabel = setup.setupText(lineWidth:titleFlame, text: titleText ,size: rect ,fontSize: musicFontSize)
     infomationLabel = setup.setupText(lineWidth:flame, text: infomationText ,size: rect ,fontSize: musicFontSize)
-    
+    flame.y += musicFontSize * 2
+    let teachLabel = setup.setupText(lineWidth:flame, text: self.teachingText ,size: rect ,fontSize: musicFontSize)
     self.view.addSubview(TitleLabel)
     self.view.addSubview(infomationLabel)
+    self.view.addSubview(teachLabel)
   }
 
   func setupButton(){
     let rect = CGRect(x:0,y:0,width: self.width * 3/4 ,height:self.height/20)
-    var frame = CGPoint(x:self.width * 1 / 2,y:self.height * 7 / 10)
+    var frame = CGPoint(x:self.width * 1 / 2,y:self.height / 3 + 70)
     let setup = setupParts()
     
     for i in 0...2 {
     self.musicButton.append( setup.setupButton(rect: rect, lineWidth: frame, text: self.buttonText[i], color: UIColor.blue) )
      self.view.addSubview(self.musicButton[i])
-      frame.y += rect.height * 2
+      frame.y += self.height / 5
     }
     self.musicButton[0].addTarget(self, action: #selector(self.btn1Tapped(sender:)), for: .touchUpInside)
     self.musicButton[1].addTarget(self, action: #selector(self.btn2Tapped(sender:)), for: .touchUpInside)
@@ -324,6 +327,7 @@ class MusicStatementViewController: UIViewController {
     touchLastPoint = touchPoint
     
     if (selectLayer == self.secretButten ){
+      if self.secret {
       //hitしたレイヤーがあった場合
       //  let px:CGFloat = selectLayer.position.x
       //  let py:CGFloat = selectLayer.position.y
@@ -334,6 +338,7 @@ class MusicStatementViewController: UIViewController {
       selectLayer.borderWidth = 3.0
       selectLayer.borderColor = UIColor.red.cgColor
       //   CATransaction.commit()
+      }
     }
   }
   
