@@ -27,6 +27,7 @@ class User {
   var BeforeView:String?
   //このフラグが立っていたらメトロノーム画面に遷移します絵d
   var homeflag:Bool = false
+  var playerflag:Bool = false
   var musicSetFlag:Bool = false
   
   var editflag:Bool = false

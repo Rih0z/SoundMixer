@@ -156,8 +156,8 @@ class MusicSelectonTableViewController: UITableViewController {
     self.receiveData()
     self.setupHomeBtn()
     self.showPlaylist()
-
   }
+  
   func receiveData(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     self.user = appDelegate.user
@@ -233,6 +233,7 @@ class MusicSelectonTableViewController: UITableViewController {
   }
   @objc func goHome(){
     self.user.homeflag = true
+    self.user.playerflag = true
     goNextPage(page: "MainTabBar")
   }
   

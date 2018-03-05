@@ -43,6 +43,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   private var StartButton5:UIButton! = UIButton()
   private var StartButton6:UIButton! = UIButton()
   private var StartButton7:UIButton! = UIButton()
+  
+  private var DeleteButton:[UIButton] = [UIButton(),UIButton(),UIButton()]
+  
   var player1_pitch_slider:UISlider!
   var player2_pitch_slider:UISlider!
   var player3_pitch_slider:UISlider!
@@ -66,6 +69,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   private var playLockFlag = false
   private var musicLockFlag:[Bool] = [false,false,false,false]
   var rowNum:Int = 0
+  private var playMusicNum = 3
   
   /****************** ライフサイクル系 ***************************/
   
@@ -135,6 +139,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     self.StartButton7 = self.DrawStartButton(id: 7)
     self.view.addSubview(self.StartButton7)
     
+    for i in 8...10 {
+      self.DeleteButton[i - 8] = self.DrawStartButton(id: i)
+      self.view.addSubview(self.DeleteButton[i - 8])
+    }
+    
     self.player1_pitch_slider = self.drawPitchSlider(id:1)
     self.view.addSubview(self.player1_pitch_slider)
     self.player2_pitch_slider = self.drawPitchSlider(id:2)
@@ -202,6 +211,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   func drawLabel(id:Int) -> UILabel{
     var flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/3)
     var title = "選択されていません"
+
     // 曲名１
     if(id == 1){
       flame = CGPoint(x:self.view.bounds.width/2 , y:self.view.bounds.height/8 * 0.7)
@@ -342,7 +352,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     let rect = CGRect(x:0,y:0,width:100,height:50)
     let btn = UIButton(frame: rect)
-    if(id != 5 && id != 6 && id != 7) {
+
+    if(id >= 1 && id <= 4) {
       /*
        switch id{
        case 1:
@@ -375,9 +386,25 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       text = "全曲停止"
       frame = CGPoint(x:width * 2 / 7,y:pos_y[4 - 1])
       btn.backgroundColor = UIColor.blue
+    }else{
+      text = "削除"
+      btn.backgroundColor = UIColor.darkGray
+      frame = CGPoint(x:width * 6 / 7,y:pos_y[id - 8])
     }
     
     btn.center = frame
+    switch id {
+    case 8:
+      print("id 8")
+      btn.addTarget(self, action: #selector(PlayerViewController.DeleteBtn8Tapped(sender:)), for: .touchUpInside)
+    case 9:
+      print("id 9")
+       btn.addTarget(self, action: #selector(PlayerViewController.DeleteBtn9Tapped(sender:)), for: .touchUpInside)
+    case 10:
+      print("id 10")
+       btn.addTarget(self, action: #selector(PlayerViewController.DeleteBtn10Tapped(sender:)), for: .touchUpInside)
+    default:
+      
     if(id == 1){
       btn.addTarget(self, action: #selector(PlayerViewController.StartBtn1Tapped(sender:)), for: .touchUpInside)
       if(player.playing == true){
@@ -408,6 +435,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     if(id == 7){
       btn.addTarget(self, action: #selector(PlayerViewController.allStopTapped(sender:)), for: .touchUpInside)
+    }
     }
     btn.setTitle(text,for:.normal)
     
@@ -688,6 +716,51 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   @objc func  StartBtn6Tapped(sender:UIButton){
     self.goHome()
   }
+  @objc func  DeleteBtn8Tapped(sender:UIButton){
+
+    if self.user.Playing_1 != nil{
+      player.stop()
+      self.musicLockFlag[1] = true
+      self.user.Playing_1 = nil
+      
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+        self.player1_name.text = "再生ボタンから音楽を選択できます"
+        self.player1_name.sizeToFit()
+        self.musicLockFlag[1] = false
+        
+      }
+      
+      
+    }
+  }
+  @objc func  DeleteBtn9Tapped(sender:UIButton){
+    self.player1_name.text = "再生ボタンから音楽を選択できます"
+    self.player1_name.sizeToFit()
+    if self.user.Playing_2 != nil{
+      player2.stop()
+      self.user.Playing_2 = nil
+      self.musicLockFlag[2] = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+        self.player2_name.text = "再生ボタンから音楽を選択できます"
+        self.player2_name.sizeToFit()
+        self.musicLockFlag[2] = false
+      }
+    }
+  }
+  @objc func  DeleteBtn10Tapped(sender:UIButton){
+    if self.user.Playing_3 != nil{
+      player3.stop()
+      self.user.Playing_3 = nil
+      self.musicLockFlag[3] = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+        self.player3_name.text = "再生ボタンから音楽を選択できます"
+        self.player3_name.sizeToFit()
+        self.musicLockFlag[3] = false
+      }
+      
+    }
+  }
+  
   /************ 画面遷移系 ********************/
   func goHome(){
     self.user.homeflag = true

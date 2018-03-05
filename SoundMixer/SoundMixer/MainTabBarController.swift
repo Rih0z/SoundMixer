@@ -97,7 +97,12 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     }
     if self.user.homeflag  {
       self.user.homeflag = false
+      if self.user.playerflag {
+        self.selectedIndex = 1
+        self.user.playerflag = false
+      }else{
       self.selectedIndex = 2
+      }
       self.initFlag = false
       
     }
