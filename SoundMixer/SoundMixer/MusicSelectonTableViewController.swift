@@ -227,7 +227,8 @@ class MusicSelectonTableViewController: UITableViewController {
     // Dispose of any resources that can be recreated.
   }
   func setupHomeBtn(){
-    self.homeBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.goHome))
+    //    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
+    self.homeBtn = UIBarButtonItem(title: "決定", style: .plain, target: self, action: #selector(self.goHome))
     self.navigationItem.rightBarButtonItem = self.homeBtn
   }
   @objc func goHome(){

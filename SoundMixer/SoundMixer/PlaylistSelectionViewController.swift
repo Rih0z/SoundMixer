@@ -115,7 +115,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
     print("PlaylistControllerView")
   }
   func setupHomeBtn(){
-    self.homeBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.goHome))
+    self.homeBtn = UIBarButtonItem(title: "メトロノーム画面へ", style: .plain, target: self, action: #selector(self.goHome))
     self.navigationItem.rightBarButtonItem = self.homeBtn
   }
   @objc func goHome(){
