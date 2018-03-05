@@ -82,13 +82,17 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     super.viewDidDisappear(animated)
  
     self.receiveData()
+        self.user.beforeTmp = 1
+    
     self.lockButton()
     self.loadTemplete()
+    self.loadMusic()
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
    
     self.user.BeforeView = "player"
+
     self.setSendData()
     // self.allPause()
     print("player sendData finished")
@@ -1147,22 +1151,24 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   /*****  テンプレート読み込み    *****/
   func loadTemplete(){
     if self.loadFlag == true { //テンプレートを読み込んだとき
+      /*
       self.user.Playing_1 = self.user.Playing_1_MPMedia[self.rowNum]
       self.user.Playing_2 = self.user.Playing_2_MPMedia[self.rowNum]
       self.user.Playing_3 = self.user.Playing_3_MPMedia[self.rowNum]
       
       player.audioEngine.mainMixerNode.outputVolume = self.user.Playing_1_volume[self.rowNum]
+ */
       player1_vol_slider.value = self.user.Playing_1_volume[self.rowNum]
-      player2.audioEngine.mainMixerNode.outputVolume = self.user.Playing_2_volume[self.rowNum]
+//      player2.audioEngine.mainMixerNode.outputVolume = self.user.Playing_2_volume[self.rowNum]
       player2_vol_slider.value = self.user.Playing_2_volume[self.rowNum]
-      player3.audioEngine.mainMixerNode.outputVolume = self.user.Playing_3_volume[self.rowNum]
+  //    player3.audioEngine.mainMixerNode.outputVolume = self.user.Playing_3_volume[self.rowNum]
       player3_vol_slider.value = self.user.Playing_3_volume[self.rowNum]
       
-      player.audioUnitTimePitch.pitch = self.user.Playing_1_pitch[self.rowNum]
+    //  player.audioUnitTimePitch.pitch = self.user.Playing_1_pitch[self.rowNum]
       player1_pitch_slider.value = self.user.Playing_1_pitch[self.rowNum]
-      player2.audioUnitTimePitch.pitch = self.user.Playing_2_pitch[self.rowNum]
+   //   player2.audioUnitTimePitch.pitch = self.user.Playing_2_pitch[self.rowNum]
       player2_pitch_slider.value = self.user.Playing_2_pitch[self.rowNum]
-      player3.audioUnitTimePitch.pitch = self.user.Playing_3_pitch[self.rowNum]
+   //   player3.audioUnitTimePitch.pitch = self.user.Playing_3_pitch[self.rowNum]
       player3_pitch_slider.value = self.user.Playing_3_pitch[self.rowNum]
       
       if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
@@ -1182,6 +1188,21 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     self.player3_name = self.drawLabel(id:3)
     self.view.addSubview(self.player3_name)
     
+
+    
+    if(player.duration != 0.0){
+      self.player1_pos_slider.maximumValue = Float(player.duration)
+    }
+    if(player2.duration != 0.0){
+      self.player2_pos_slider.maximumValue = Float(player2.duration)
+    }
+    if(player3.duration != 0.0){
+      self.player3_pos_slider.maximumValue = Float(player3.duration)
+    }
+    //user.SelectionFlag = 0
+  }
+/*************  音楽読み込み　*********************/
+  func loadMusic(){
     if(self.loadFlag == false) {
       if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
         player.audioPlayerNode.stop()
@@ -1237,17 +1258,6 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       self.loadFlag = false
     }
     
-    if(player.duration != 0.0){
-      self.player1_pos_slider.maximumValue = Float(player.duration)
-    }
-    if(player2.duration != 0.0){
-      self.player2_pos_slider.maximumValue = Float(player2.duration)
-    }
-    if(player3.duration != 0.0){
-      self.player3_pos_slider.maximumValue = Float(player3.duration)
-    }
-    //user.SelectionFlag = 0
   }
-  
 }
 

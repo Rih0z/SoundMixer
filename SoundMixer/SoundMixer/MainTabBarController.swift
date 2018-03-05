@@ -18,10 +18,14 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   var user:User = User()
   var musiclabel1 :String?
   var initFlag = true
+  private var loadFlag:Bool = false
+  private var rowNum :Int = 0
+  
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     self.user.homeflag = true
-   // self.selectedIndex = 2
+    // self.selectedIndex = 2
     //self.selectedIndex = 0
     
   }
@@ -35,7 +39,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   
   override func viewDidLoad() {
     super.viewDidLoad()
-   
+    
     
   }
   
@@ -52,6 +56,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   func receiveData(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     self.user = appDelegate.user
+     self.rowNum = appDelegate.rowNum
     print("maintabbar now! beforedata is ...")
     if self.user.BeforeView != nil{
       print(self.user.BeforeView!)
@@ -75,18 +80,20 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   
   override func viewWillAppear(_ animated: Bool) {
     self.receiveData()
-    
-    self.navigationItem.hidesBackButton = true
+    self.navigationBarSetup()
+    self.tabBarSetup()
+    self.loadAll()
+  }
+  func loadAll(){
+    self.loadTemplete()
+    self.loadMusic()
+  }
+  func tabBarSetup(){
     if self.user.musicSetFlag {
       // self.user.SelectionFlag = 0
       self.user.musicSetFlag = false
       self.selectedIndex = 1
       self.initFlag = false
-    }
-    if(self.user.Playing_1 != nil){
-      let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
-      print("maintabber willappear music")
-      print(music1)
     }
     if self.user.homeflag  {
       self.user.homeflag = false
@@ -96,7 +103,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     }
     else if self.user.editflag {
       self.user.editflag = false
-      self.selectedIndex = 1
+      if self.user.beforeTmp == nil {
+        print("before tmp is nil")
+      }else{
+      self.selectedIndex = self.user.beforeTmp!
+      }
       self.initFlag = false
     }
     
@@ -104,11 +115,22 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.selectedIndex = 2
       self.initFlag = false
     }
+    /*
+     if self.user.loadMusicFlag {
+      self.selectedIndex = self.user.beforeTmp
+      print("load music flag")
+      self.user.beforeTmp = nil
+    }
+ */
+  }
+  func navigationBarSetup(){
+    
+    self.navigationItem.hidesBackButton = true
     
     self.title = self.user.Name
     self.showBarButton()
-
   }
+  
   func barButton(){
     switch self.selectedIndex {
     case 0:
@@ -119,7 +141,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     case 2:
       print("met")
     default:
-          self.showBarButton()
+      self.showBarButton()
     }
   }
   override func prepare(for segue: UIStoryboardSegue, sender: Any?){
@@ -128,13 +150,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     switch self.selectedIndex {
     case 0:
       print("0")
-      //self.title = self.user.Name
+    //self.title = self.user.Name
     case 1:
       print("!")
-      //self.title = "再生"
+    //self.title = "再生"
     case 2:
       print("2")
-      self.allPause()
+     // self.allPause()
     //self.title = "メトロノーム"
     default:
       //self.title = self.user.Name
@@ -163,23 +185,82 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     self.navigationController?.pushViewController(secondViewController!, animated: true)
   }
   func allPause(){
-   /// var text = "音楽1再生"
+    /// var text = "音楽1再生"
     if(self.user.Playing_1 != nil){
- //     text = "音楽1再生"
+      //     text = "音楽1再生"
       player.pause()
     }
     if(self.user.Playing_2 != nil){
-  //    text = "音楽2再生"
+      //    text = "音楽2再生"
       
       player2.pause()
     }
     if(self.user.Playing_3 != nil){
-   //   text = "音楽3再生"
+      //   text = "音楽3再生"
       player3.pause()
     }
     // text = "全曲再生"
     //    self.StartButton4.setTitle(text,for:.normal)
     
   }
+  /****************テンプレート読込み**************/
+  func loadTemplete(){
+    
+    if self.loadFlag == true { //テンプレートを読み込んだとき
+      self.user.Playing_1 = self.user.Playing_1_MPMedia[self.rowNum]
+      self.user.Playing_2 = self.user.Playing_2_MPMedia[self.rowNum]
+      self.user.Playing_3 = self.user.Playing_3_MPMedia[self.rowNum]
+      
+      player.audioEngine.mainMixerNode.outputVolume = self.user.Playing_1_volume[self.rowNum]
+      player2.audioEngine.mainMixerNode.outputVolume = self.user.Playing_2_volume[self.rowNum]
+      player3.audioEngine.mainMixerNode.outputVolume = self.user.Playing_3_volume[self.rowNum]
+      
+      player.audioUnitTimePitch.pitch = self.user.Playing_1_pitch[self.rowNum]
+   //   player1_pitch_slider.value = self.user.Playing_1_pitch[self.rowNum]
+      player2.audioUnitTimePitch.pitch = self.user.Playing_2_pitch[self.rowNum]
+   //   player2_pitch_slider.value = self.user.Playing_2_pitch[self.rowNum]
+      player3.audioUnitTimePitch.pitch = self.user.Playing_3_pitch[self.rowNum]
+   //   player3_pitch_slider.value = self.user.Playing_3_pitch[self.rowNum]
+      /*
+      if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
+        appDelegate.loadFlag = false
+      }*/
+      //self.loadFlag = false
+    }
+
+    //user.SelectionFlag = 0
+  }
+  /******************* 音楽読み込み ***********************/
+  func loadMusic(){
+    if self.user.loadMusicFlag {
+      if(self.loadFlag == true) {
+        if(self.user.Playing_1 != nil){
+          player.audioPlayerNode.stop()
+          let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+          player.SetUp(text_url : url)
+          print("曲１セット完了")
+          //     self.player1_pos_slider.maximumValue = Float(player.duration)
+        }
+        if(self.user.Playing_2 != nil){
+          player2.audioPlayerNode.stop()
+          let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+          player2.SetUp(text_url : url)
+          print("曲2セット完了")
+          //    self.player2_pos_slider.maximumValue = Float(player2.duration)
+        }
+        if(self.user.Playing_3 != nil){
+          player3.audioPlayerNode.stop()
+          let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+          player3.SetUp(text_url : url)
+          print("曲3セット完了")
+          //    self.player3_pos_slider.maximumValue = Float(player3.duration)
+        }
+        self.loadFlag = false
+      }
+      self.user.loadMusicFlag = false
+    }
+  }
+  
+  
 }
 

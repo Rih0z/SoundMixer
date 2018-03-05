@@ -19,6 +19,10 @@ class User {
   var musicEditFlag:[Bool] = [false,false,false]
   //どの曲を選択しているのか
   var SelectionFlag:Int = 0
+  //音楽のみ読み込むフラグ
+  var loadMusicFlag:Bool = false
+  //テンプレート読み込み前にどの画面にいたか
+  var beforeTmp:Int!
   //前にデータの受け渡しがあったビューがどこか教えてくれます．デバッグようなのでなくても大丈夫
   var BeforeView:String?
   //このフラグが立っていたらメトロノーム画面に遷移します絵d
@@ -26,6 +30,8 @@ class User {
   var musicSetFlag:Bool = false
   
   var editflag:Bool = false
+  
+  var itemUpdateFlag:Bool = false
   
   var template_name = [String]()
   

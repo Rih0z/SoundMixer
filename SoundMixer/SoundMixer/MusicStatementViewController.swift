@@ -174,7 +174,7 @@ class MusicStatementViewController: UIViewController {
     if let playlists = myPlaylistQuery.collections {
       print(playlists.count)
       self.user.BeforeView = "music statement"
-      self.sendDataSet()
+
       self.goNextPage(page: "PlaylistSelection")
     }else{
       infomationLabel.text = "選択可能なプレイリストがありません"
@@ -223,7 +223,7 @@ class MusicStatementViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
-    
+       self.user.beforeTmp = 0 
     print("musicstatement recieve data finished")
     self.setupAll()
     self.changeMusicLabels()
@@ -268,7 +268,8 @@ class MusicStatementViewController: UIViewController {
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    
+ 
+    self.sendDataSet()
     
   }
   /*

@@ -33,6 +33,7 @@ class SettingSelectionViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) { //deleteが押されたとき
     self.user.removeSetAtIndex(indexPath.row)
+  
     self.sendUserInfo()
     
     let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?

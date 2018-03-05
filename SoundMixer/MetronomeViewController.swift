@@ -49,6 +49,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   private var leftButton:UIButton!
   private var rightButton:UIButton!
   
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -60,9 +61,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    
     self.pauseAll()
     self.reset()
     self.receiveData()
+    self.user.beforeTmp = 2
     self.setupAll()
     let text = "フェードアウト"
     self.hiddenButton.setTitle(text,for:.normal)
@@ -80,6 +83,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    
     self.setSendData()
     self.pauseAll()
     let text = "全曲再生"
@@ -735,5 +739,6 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     appDelegate.user = self.user
   }
+ 
 }
 
