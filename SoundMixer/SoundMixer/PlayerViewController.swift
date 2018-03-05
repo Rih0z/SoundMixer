@@ -584,8 +584,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
   
   func lockButton(){
-     if self.user.playerflag || self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
-      self.user.playerflag  = false
+     if  self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
+    
       self.allMusicStopFlag = false
     self.playLockFlag = true
     //タブ切り替えの時はすでにインスタンスが生成されているので一つ見ればわかる

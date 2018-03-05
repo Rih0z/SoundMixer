@@ -99,7 +99,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.user.homeflag = false
       if self.user.playerflag {
         self.selectedIndex = 1
-        //self.user.playerflag = false
+        self.user.playerflag = false
       }else{
       self.selectedIndex = 2
       }
