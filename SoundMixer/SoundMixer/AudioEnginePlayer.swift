@@ -37,7 +37,7 @@ class AudioEnginePlayer: NSObject {
     var feedOutFlag = false
     let feedInOutTime:Double = 3
     var feedOutCount:Float = 0
-   var feedInCount:Float = 0
+    var feedInCount:Float = 0
     var feedOutLest:Float!
     
     var playing: Bool {
@@ -79,9 +79,9 @@ class AudioEnginePlayer: NSObject {
     
     func SetUp(text_url:URL){
         //if(player.playingFlag || player2.playingFlag || player3.playingFlag ){
-      //こうじゃないとお試し再生機能が例外になる
-      if(self.playingFlag ){
-        DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
+        //こうじゃないとお試し再生機能が例外になる
+        if(self.playingFlag ){
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
                 self.setupAll(text_url: text_url)
             }
         }else{
@@ -155,6 +155,8 @@ class AudioEnginePlayer: NSObject {
     }
     
     func play() {
+
+        
         if( (self.feedInFlag || self.feedOutFlag) )
         {
             
@@ -162,6 +164,42 @@ class AudioEnginePlayer: NSObject {
             if(self.playingFlag && self.pouseFlag == false){
                 
             }else{
+                
+                let position = Double(self.pos)
+                
+                // シーク位置（AVAudioFramePosition）取得
+                let newsampletime = AVAudioFramePosition(self.sampleRate * position)
+                
+                // 残り時間取得（sec）
+                let length = self.duration - position
+                
+                // 残りフレーム数（AVAudioFrameCount）取得
+                let framestoplay = AVAudioFrameCount(self.sampleRate * length)
+                
+                self.offset = position // ←シーク位置までの時間を一旦退避
+                
+                self.audioPlayerNode.stop()
+                
+                if framestoplay > 100 {
+                    // 指定の位置から再生するようスケジューリング
+                    self.audioPlayerNode.scheduleSegment(self.audioFile,
+                                                            startingFrame: newsampletime,
+                                                            frameCount: framestoplay,
+                                                            at: nil,
+                                                            completionHandler: nil)
+                    
+                }
+                else{
+                    self.audioPlayerNode.scheduleSegment(self.audioFile,
+                                                         startingFrame: 0,
+                                                         frameCount: AVAudioFrameCount(self.audioFile.length),
+                                                         at: nil,
+                                                         completionHandler: nil)
+                }
+                
+                
+                
+                
                 if self.firstPlayFlag || self.pouseFlag  {
                     self.playStart()
                 } else {
@@ -212,7 +250,7 @@ class AudioEnginePlayer: NSObject {
                     self.pouseFlag = true
                     self.audioEngine.pause()
                     self.audioPlayerNode.pause()
-                   self.feedOutCount = 0
+                    self.feedOutCount = 0
                     timer.invalidate()
                     self.feedOutFlag = false
                 }
@@ -229,14 +267,14 @@ class AudioEnginePlayer: NSObject {
                 timer.fire()
                 self.feedOutFlag = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime ) {
-                   self.audioEngine.mainMixerNode.outputVolume = 0
-                  self.audioEngine.stop()
+                    self.audioEngine.mainMixerNode.outputVolume = 0
+                    //self.audioEngine.stop()
                     self.audioPlayerNode.stop()
                     self.playingFlag = false
                     self.pouseFlag = false
                     timer.invalidate()
                     self.feedOutFlag = false
-                  self.feedOutCount = 0
+                    self.feedOutCount = 0
                     print("STOP COMPLETE")
                 }
             } else {
@@ -244,35 +282,35 @@ class AudioEnginePlayer: NSObject {
             
         }
     }
-  @objc func feedOut(){
-    //  if self.feedOutFlag {
-    //必要ないかも，連打した場合メッセージで待ってくださいとか出した方がいいかも　あるいは連打した場合の処理を考えるか
-    //    if self.feedInFlag {
-    //       self.feedOutFlag = false
-    //    } else {
-
-    if self.audioEngine.mainMixerNode.outputVolume == 0 {
-      
-    } else {
-      self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
-          print("feed out")
-      if self.feedOutLest != nil {
-        self.feedOutLest = nil
-      }
-     
-      
-     if feedOutCount == 28 {
-        self.audioEngine.mainMixerNode.outputVolume = 0
-      print("ccount  28  feedout    STOP")
-        self.feedOutCount = 0
-     }else{
-      self.feedOutCount = self.feedOutCount + 1
-      
-      }
-      //   }
-      //  }
+    @objc func feedOut(){
+        //  if self.feedOutFlag {
+        //必要ないかも，連打した場合メッセージで待ってくださいとか出した方がいいかも　あるいは連打した場合の処理を考えるか
+        //    if self.feedInFlag {
+        //       self.feedOutFlag = false
+        //    } else {
+        
+        if self.audioEngine.mainMixerNode.outputVolume == 0 {
+            
+        } else {
+            self.audioEngine.mainMixerNode.outputVolume -= self.feedOutVolume/30
+            //print("feed out")
+            if self.feedOutLest != nil {
+                self.feedOutLest = nil
+            }
+            
+            
+            if feedOutCount == 28 {
+                self.audioEngine.mainMixerNode.outputVolume = 0
+                print("ccount  28  feedout    STOP")
+                self.feedOutCount = 0
+            }else{
+                self.feedOutCount = self.feedOutCount + 1
+                
+            }
+            //   }
+            //  }
+        }
     }
-  }
     @objc func feedIn(){
         // if self.feedInFlag {
         //再生停止を連打した場合　，フィードインとフィードアウトが混じるので，フィードいんを止めてフィードアウトさせる
@@ -285,9 +323,9 @@ class AudioEnginePlayer: NSObject {
             self.feedInCount = 0
             //うまく実装できてないスムーズにフィードイン機能
         } else {
-            print("feed in")
+            //print("feed in")
             self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
-          self.feedInCount = self.feedInCount + 1
+            self.feedInCount = self.feedInCount + 1
             
         }
     }

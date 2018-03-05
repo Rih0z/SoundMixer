@@ -659,10 +659,10 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       let textField = alert.textFields![0] as UITextField
       var template_name = textField.text!
       if(template_name.isEmpty) {
-        template_name = "名称未設定のテンプレート"
+        template_name = "テンプレート_" + String(self.user.Playing_1_MPMedia.count)
       }
       
-      self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: player.audioEngine.mainMixerNode.outputVolume, volume2: player2.audioEngine.mainMixerNode.outputVolume, volume3: player3.audioEngine.mainMixerNode.outputVolume, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
+      self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
       
       self.sendUserInfo()
       

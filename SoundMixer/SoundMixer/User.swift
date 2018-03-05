@@ -78,4 +78,24 @@ class User {
     self.Playing_2_position.append(position2)
     self.Playing_3_position.append(position3)
   }
+  
+  func removeSetAtIndex(_ index: Int) {
+    self.template_name.remove(at: index)
+    
+    self.Playing_1_MPMedia.remove(at: index)
+    self.Playing_2_MPMedia.remove(at: index)
+    self.Playing_3_MPMedia.remove(at: index)
+    
+    self.Playing_1_pitch.remove(at: index)
+    self.Playing_2_pitch.remove(at: index)
+    self.Playing_3_pitch.remove(at: index)
+    
+    self.Playing_1_volume.remove(at: index)
+    self.Playing_2_volume.remove(at: index)
+    self.Playing_3_volume.remove(at: index)
+    
+    self.Playing_1_position.remove(at: index)
+    self.Playing_2_position.remove(at: index)
+    self.Playing_3_position.remove(at: index)
+  }
 }
