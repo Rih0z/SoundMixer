@@ -10,7 +10,8 @@ import UIKit
 
 class SettingSelectionViewController: UITableViewController {
   var user: User = User()
-//var rightBarButtonItem: UIBarButtonItem!
+  var rowNum: Int = 0
+  var showFlag: Bool = false
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
     return self.user.Playing_1_MPMedia.count
@@ -33,9 +34,14 @@ class SettingSelectionViewController: UITableViewController {
   
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) { //deleteが押されたとき
     self.user.removeSetAtIndex(indexPath.row)
+    if self.rowNum == indexPath.row { //削除されたセルと選択されていたセルが同じだった場合
+      self.showFlag = false
+    }
+    else if self.rowNum > indexPath.row { //選択されているセルより前の行のセルが削除された場合
+      self.rowNum = self.rowNum - 1
+    }
   
     self.sendUserInfo()
-    
     let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
     let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
     let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
@@ -62,6 +68,20 @@ class SettingSelectionViewController: UITableViewController {
     return "削除"
   }
   
+  override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    if self.showFlag == true {
+      if self.rowNum == indexPath.row {
+        cell.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+      }
+      else {
+        cell.backgroundColor = UIColor.clear
+      }
+    }
+    else {
+      cell.backgroundColor = UIColor.clear
+    }
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // 編集ボタンを左上に配置
@@ -79,21 +99,26 @@ class SettingSelectionViewController: UITableViewController {
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.user = appDelegate.user
+      self.rowNum = appDelegate.rowNum
+      self.showFlag = appDelegate.showFlag
     }
   }
   
-  func sendUserInfo(){
+  func sendUserInfo(){ //セルが削除されたときに実行するメソッド
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       appDelegate.user = self.user
+      appDelegate.showFlag = self.showFlag
+      appDelegate.rowNum = self.rowNum
     }
   }
   
-  func sendInfo(rowNum: Int) {
+  func sendInfo(rowNum: Int) { //セルが押下されたときに実行するメソッド
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
       appDelegate.user = self.user
       appDelegate.rowNum = rowNum
       appDelegate.loadFlag = true
+      appDelegate.showFlag = true
     }
   }
   

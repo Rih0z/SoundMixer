@@ -30,6 +30,7 @@ var player3 = AudioEnginePlayer()
   var userNum: Int = 0
   var rowNum: Int = 0
   var loadFlag: Bool = false
+  var showFlag: Bool = false
   private var nc: UINavigationController?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
