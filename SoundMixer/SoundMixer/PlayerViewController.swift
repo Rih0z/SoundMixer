@@ -67,6 +67,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   var loadFlag:Bool = false
 
   private var playLockFlag = false
+  private var allMusicStopFlag = false
   private var musicLockFlag:[Bool] = [false,false,false,false]
   var rowNum:Int = 0
   private var playMusicNum = 3
@@ -86,8 +87,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     super.viewDidDisappear(animated)
  
     self.receiveData()
-        self.user.beforeTmp = 1
-    
+    self.user.beforeTmp = 1
+    //self.setupAllBtnText()
     self.lockButton()
     self.loadTemplete()
     self.loadMusic()
@@ -354,22 +355,31 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     let btn = UIButton(frame: rect)
 
     if(id >= 1 && id <= 4) {
-      /*
+      
        switch id{
        case 1:
        text = "音楽1再生"
+       if player.playing{
+        text = "音楽1停止"
+        }
        case 2:
        text = "音楽2再生"
+       if player2.playing{
+        text = "音楽2停止"
+        }
        case 3:
        text = "音楽3再生"
+       if player3.playing{
+        text = "音楽3停止"
+        }
        case 4:
        text = "全曲再生"
        default:
        text = "再生"
        }
-       */
-      text = "準備中"
-      btn.backgroundColor = UIColor.red
+ 
+     // text = "準備中"
+      btn.backgroundColor = UIColor.blue
       frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
     }
     else if(id == 5) {
@@ -442,14 +452,53 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     return btn
   }
+  /************ ボタンテキスト編集******************/
+  
+  func setupAllBtnText(){
+    for i in 1...3 {
+      self.setupBtnText(id:i)
+    }
+  }
+  func setupBtnText(id:Int){
+    if self.user.playerflag || self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
+      
+    } else {
+    var text = "再生"
+    switch id{
+    case 1:
+      text = "音楽1再生"
+      if player.playing{
+        text = "音楽1停止"
+      }
+      self.StartButton1.setTitle(text,for:.normal)
+    case 2:
+      text = "音楽2再生"
+      if player2.playing{
+        text = "音楽2停止"
+      }
+      self.StartButton2.setTitle(text,for:.normal)
+    case 3:
+      text = "音楽3再生"
+      if player3.playing{
+        text = "音楽3停止"
+      }
+      self.StartButton3.setTitle(text,for:.normal)
+    default:
+      text = "再生"
+    }
+    }
+  }
   /**************** ボタンロック　*****************/
   func feedOutText(id:Int){
-    self.musicLockFlag[id] = true
-    self.textChangePrepare(id:id)
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
-      self.textChangePlay(id: id)
-      self.musicLockFlag[id] = false
-    }
+   
+      self.user.playerflag = false
+      self.musicLockFlag[id] = true
+      self.textChangePrepare(id:id)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+        self.textChangePlay(id: id)
+        self.musicLockFlag[id] = false
+      }
+    
   }
   
   func textChangePlay(id:Int){
@@ -460,18 +509,33 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       let text = "音楽1再生"
       self.StartButton1.setTitle(text,for:.normal)
       self.StartButton1.backgroundColor? = (UIColor.blue)
+      } else {
+        let text = "音楽1停止"
+        self.StartButton1.setTitle(text,for:.normal)
+        self.StartButton1.backgroundColor? = (UIColor.blue)
+        
       }
     case 2:
       if player2.playing == false {
       let text = "音楽2再生"
       self.StartButton2.setTitle(text,for:.normal)
       self.StartButton2.backgroundColor? = (UIColor.blue)
+      } else {
+        let text = "音楽2停止"
+        self.StartButton2.setTitle(text,for:.normal)
+        self.StartButton2.backgroundColor? = (UIColor.blue)
+        
       }
     case 3:
       if player3.playing ==  false {
       let text = "音楽3再生"
       self.StartButton3.setTitle(text,for:.normal)
       self.StartButton3.backgroundColor? = (UIColor.blue)
+      } else {
+        let text = "音楽3停止"
+        self.StartButton3.setTitle(text,for:.normal)
+        self.StartButton3.backgroundColor? = (UIColor.blue)
+        
       }
     case 4:
       let text = "全曲再生"
@@ -482,20 +546,23 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
   }
   func textChangePrepare(id:Int){
-    let text = "準備中"
+    //let text = "準備中"
     switch id {
     case 1:
+      let text = "準備中"
       self.StartButton1.setTitle(text,for:.normal)
       self.StartButton1.backgroundColor? = (UIColor.red)
     case 2:
-      
+      let text = "準備中"
       self.StartButton2.setTitle(text,for:.normal)
       self.StartButton2.backgroundColor? = (UIColor.red)
     case 3:
+      let text = "準備中"
       self.StartButton3.setTitle(text,for:.normal)
       self.StartButton3.backgroundColor? = (UIColor.red)
       
     case 4:
+      let text = "準備中"
       self.StartButton4.setTitle(text,for:.normal)
       self.StartButton4.backgroundColor? = (UIColor.red)
     default:
@@ -517,18 +584,22 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
   
   func lockButton(){
+     if self.user.playerflag || self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
+      self.user.playerflag  = false
+      self.allMusicStopFlag = false
     self.playLockFlag = true
     //タブ切り替えの時はすでにインスタンスが生成されているので一つ見ればわかる
-    if self.StartButton1 != nil{
+   // if self.StartButton1 != nil{
       self.allTextChangePrepare()
-    }
+   // }
     DispatchQueue.main.asyncAfter(deadline: .now() + 3){
       //現れてから3秒後にはもうインスタンスが生成されているので
    
       self.playLockFlag = false
       self.allTextChengePlay()
+      //self.setupAllBtnText()
       
-    
+      }
     }
   }
   
@@ -637,6 +708,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   @objc func allStopTapped(sender:UIButton){
     if (player3.playing == true || player2.playing == true || player.playing == true)
     {
+      self.allMusicStopFlag = true
       self.allPause()
       self.lockButton()
     }else{

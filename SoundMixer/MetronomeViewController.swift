@@ -52,7 +52,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+
   }
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
@@ -62,30 +62,41 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     
-    self.pauseAll()
+    if player.playing || player2.playing || player3.playing{
+      self.allplayingFlag = true
+    }
+    //self.pauseAll()
     self.reset()
     self.receiveData()
     self.user.beforeTmp = 2
     self.setupAll()
-    let text = "フェードアウト"
-    self.hiddenButton.setTitle(text,for:.normal)
-    self.hiddenButton.backgroundColor? = (UIColor.red)
-    self.allplayLockFlag = true
-    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
-      self.allplayingFlag = false
-      let text = "全曲再生"
-      self.hiddenButton.setTitle(text,for:.normal)
-      self.hiddenButton.backgroundColor? = UIColor.blue
-      self.allplayLockFlag = false
-    }
+    //self.setupAllPlayBtn() 仕様変更で必要なくなった　本当に悲しい
+
 
     
+  }
+  
+  func setupAllPlayBtn(){
+    if self.allplayingFlag{
+      
+      let text = "準備中"
+      self.hiddenButton.setTitle(text,for:.normal)
+      self.hiddenButton.backgroundColor? = (UIColor.red)
+      self.allplayLockFlag = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+        self.allplayingFlag = false
+        let text = "全曲再生"
+        self.hiddenButton.setTitle(text,for:.normal)
+        self.hiddenButton.backgroundColor? = UIColor.blue
+        self.allplayLockFlag = false
+      }
+    }
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     
     self.setSendData()
-    self.pauseAll()
+    //self.pauseAll()
     let text = "全曲再生"
     self.hiddenButton.setTitle(text,for:.normal)
     self.allplayingFlag = false
@@ -250,7 +261,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     if self.allplayingFlag {
       self.allplayLockFlag = true
       self.pauseAll()
-      let text = "フェードアウトアウト中"
+      let text = "フェードアウト"
       self.hiddenButton.setTitle(text,for:.normal)
       self.hiddenButton.backgroundColor? = (UIColor.red)
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
@@ -262,14 +273,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
       }
     } else {
       self.playAll()
-      self.allplayLockFlag = true
+      //self.allplayLockFlag = true
       let text = "フェードイン中"
       self.hiddenButton.setTitle(text,for:.normal)
-      self.hiddenButton.backgroundColor? = UIColor.red
-      
+     // self.hiddenButton.backgroundColor? = UIColor.red
+      self.allplayingFlag = true
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
-        self.allplayLockFlag = false
-        self.allplayingFlag = true
+       // self.allplayLockFlag = false
+        
         let text = "全曲停止"
         self.hiddenButton.setTitle(text,for:.normal)
         self.hiddenButton.backgroundColor? = UIColor.blue
