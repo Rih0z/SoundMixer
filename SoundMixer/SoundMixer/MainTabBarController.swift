@@ -57,6 +57,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     self.user = appDelegate.user
      self.rowNum = appDelegate.rowNum
+    self.loadFlag = appDelegate.loadFlag
     print("maintabbar now! beforedata is ...")
     if self.user.BeforeView != nil{
       print(self.user.BeforeView!)
