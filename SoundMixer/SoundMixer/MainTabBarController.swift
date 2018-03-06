@@ -40,7 +40,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    
   }
   
   override func didReceiveMemoryWarning() {
@@ -84,6 +83,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     self.navigationBarSetup()
     self.tabBarSetup()
     self.loadAll()
+    
   }
   func loadAll(){
     self.loadTemplete()

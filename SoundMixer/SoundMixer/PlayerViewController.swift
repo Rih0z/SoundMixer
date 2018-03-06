@@ -83,16 +83,28 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     self.setupTimer()
     self.loadTemplete()
     self.loadMusic()
+    //self.setupDraw()
+    
+
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
  
     self.receiveData()
+
     self.user.beforeTmp = 1
     //self.setupAllBtnText()
     self.lockButton()
+    
+    
+   
+  }
+  
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
     self.setupMusicLabel()
+    //ここにテンプレートから更新した値を代入
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
