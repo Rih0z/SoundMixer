@@ -151,12 +151,12 @@ class AudioEnginePlayer: NSObject {
                                          at: nil,
                                          completionHandler: nil)
     
-    
+    print("再生位置初期化しました")
   }
   
   func play() {
     if self.playing {
-      
+      print("このプレイヤーはすでに再生中です．ゾンビ防止")
     }else{
       
       if( (self.feedInFlag || self.feedOutFlag) )
@@ -244,6 +244,7 @@ class AudioEnginePlayer: NSObject {
   }
   
   func pause() {
+    if self.playing {
     if(self.feedOutFlag){
     }else{
       print(self.audioEngine.mainMixerNode.outputVolume)
@@ -262,10 +263,12 @@ class AudioEnginePlayer: NSObject {
           self.feedOutFlag = false
         }
       }
+      }
     }
   }
   
   func stop(){
+    if self.playing {
     if(self.feedOutFlag){
     }else{
       if self.playingFlag {
@@ -287,6 +290,7 @@ class AudioEnginePlayer: NSObject {
       } else {
       }
       
+    }
     }
   }
   @objc func feedOut(){
@@ -330,7 +334,7 @@ class AudioEnginePlayer: NSObject {
       self.feedInCount = 0
       //うまく実装できてないスムーズにフィードイン機能
     } else {
-      //print("feed in")
+      print("feed in")
       self.audioEngine.mainMixerNode.outputVolume += self.feedInVolume/30
       self.feedInCount = self.feedInCount + 1
       

@@ -66,6 +66,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   
   var loadFlag:Bool = false
 
+  private var initLockFlag:Bool = true
   private var playLockFlag = false
   private var allMusicStopFlag = false
   private var musicLockFlag:[Bool] = [false,false,false,false]
@@ -634,7 +635,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
   
   func lockButton(){
-     if  self.user.playerflag || self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
+     if  self.user.playerflag || self.allMusicStopFlag || player.playing || player2.playing || player3.playing || self.initLockFlag {
+      self.initLockFlag = false
    // self.user.playerflag = false
       self.allMusicStopFlag = false
     self.playLockFlag = true

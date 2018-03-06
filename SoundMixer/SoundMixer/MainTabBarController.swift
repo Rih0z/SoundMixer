@@ -258,21 +258,21 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       print("テンプレートから音楽読み込みいいいいいいいいいいいいいいいいいいいい")
       if(self.loadFlag == true) {
         if(self.user.Playing_1 != nil){
-          player.audioPlayerNode.stop()
+          player.stop()
           let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
           player.SetUp(text_url : url)
           print("曲１セット完了")
           //     self.player1_pos_slider.maximumValue = Float(player.duration)
         }
         if(self.user.Playing_2 != nil){
-          player2.audioPlayerNode.stop()
+          player2.stop()
           let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
           player2.SetUp(text_url : url)
           print("曲2セット完了")
           //    self.player2_pos_slider.maximumValue = Float(player2.duration)
         }
         if(self.user.Playing_3 != nil){
-          player3.audioPlayerNode.stop()
+          player3.stop()
           let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
           player3.SetUp(text_url : url)
           print("曲3セット完了")
@@ -283,7 +283,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.user.loadMusicFlag = false
     } else  {
       if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
-        player.audioPlayerNode.stop()
+        player.stop()
         //self.StartButton1.setTitle("準備中",for:.normal)
         let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player.SetUp(text_url : url)
@@ -292,7 +292,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
      //   self.player1_pos_slider.value = 0.0
       }
       if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
-        player2.audioPlayerNode.stop()
+        player2.stop()
         //self.StartButton2.setTitle("音楽2再生",for:.normal)
         let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player2.SetUp(text_url : url)
@@ -301,7 +301,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       //  self.player2_pos_slider.value = 0.0
       }
       if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
-        player3.audioPlayerNode.stop()
+        player3.stop()
         //self.StartButton3.setTitle("音楽3再生",for:.normal)
         let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
         player3.SetUp(text_url : url)

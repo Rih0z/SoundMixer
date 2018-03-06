@@ -26,6 +26,7 @@ class MusicSelectonTableViewController: UITableViewController {
   var testplayFlag : Bool = false
   var testplayLockFlag :Bool = false
   var testplaysong:String!
+
   // Cell が選択された場合
   
   
