@@ -333,6 +333,12 @@ class MusicStatementViewController: UIViewController {
       timer.fire()
       //self.feedOutFlag = true
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+        timer.invalidate()
+        if self.longTapCount == 3{
+          self.secret = true
+          self.longTapCount = 0
+          
+        }
       }
         
         if self.secret {
