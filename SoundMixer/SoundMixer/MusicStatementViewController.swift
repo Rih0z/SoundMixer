@@ -335,6 +335,7 @@ class MusicStatementViewController: UIViewController {
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
         timer.invalidate()
         if self.longTapCount == 3{
+          self.navigationController?.popToRootViewController(animated:true)
           self.secret = true
           self.longTapCount = 0
           
