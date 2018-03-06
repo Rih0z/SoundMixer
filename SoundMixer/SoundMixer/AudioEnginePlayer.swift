@@ -150,7 +150,7 @@ class AudioEnginePlayer: NSObject {
                                          frameCount: AVAudioFrameCount(self.audioFile.length),
                                          at: nil,
                                          completionHandler: nil)
-    
+     self.pos = 0
     print("再生位置初期化しました")
   }
   
