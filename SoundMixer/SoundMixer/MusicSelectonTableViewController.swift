@@ -213,7 +213,7 @@ class MusicSelectonTableViewController: UITableViewController {
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.user.BeforeView = "music selection"
-    self.setMusic()
+    
     setSendData()
     testPlayer.stop()
     if(self.user.Playing_1 != nil)
@@ -236,6 +236,7 @@ class MusicSelectonTableViewController: UITableViewController {
   @objc func goHome(){
     self.user.homeflag = true
     self.user.playerflag = true
+    self.setMusic()
     goNextPage(page: "MainTabBar")
   }
   

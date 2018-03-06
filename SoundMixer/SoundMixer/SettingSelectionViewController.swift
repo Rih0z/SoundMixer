@@ -25,10 +25,20 @@ class SettingSelectionViewController: UITableViewController {
   
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     self.user.editflag = true
-    self.sendInfo(rowNum: indexPath.row)
+    //self.sendInfo(rowNum: indexPath.row)
     self.allStop()
     self.goNextPage(page: "MainTabBar")
   }
+  
+  //追加しました　利穂　musicselection で音楽を代入するタイミングに合わせました
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+    if let indexPath = self.tableView.indexPathForSelectedRow {
+    self.sendInfo(rowNum: indexPath.row )
+    }
+
+  }
+  
   func allStop(){
     if self.user.Playing_1 != nil {
       //player.audioEngine.stop()

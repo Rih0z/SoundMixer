@@ -228,10 +228,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     
     if self.loadFlag == true { //テンプレートを読み込んだとき
       print("テンプレートから情報セットおおおおおおおおおおおおおおおおおおおおおおお")
+     
       self.user.Playing_1 = self.user.Playing_1_MPMedia[self.rowNum]
       self.user.Playing_2 = self.user.Playing_2_MPMedia[self.rowNum]
       self.user.Playing_3 = self.user.Playing_3_MPMedia[self.rowNum]
-      
+ 
       player.audioEngine.mainMixerNode.outputVolume = self.user.Playing_1_volume[self.rowNum]
       player2.audioEngine.mainMixerNode.outputVolume = self.user.Playing_2_volume[self.rowNum]
       player3.audioEngine.mainMixerNode.outputVolume = self.user.Playing_3_volume[self.rowNum]
