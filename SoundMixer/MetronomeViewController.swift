@@ -297,13 +297,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   }
   func stopAll(){
     if(self.user.Playing_1 != nil){
-      player.stop()
+      player.audioPlayerNode.stop()
     }
     if(self.user.Playing_2 != nil){
-      player2.stop()
+      player2.audioPlayerNode.stop()
     }
     if(self.user.Playing_3 != nil){
-      player3.stop()
+      player3.audioPlayerNode.stop()
     }
   
   }

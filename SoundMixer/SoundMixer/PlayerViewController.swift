@@ -1126,7 +1126,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
   @objc func changeVol3(_ sender: UISlider) {
     player3.audioEngine.mainMixerNode.outputVolume = player3_vol_slider.value
-    player3.vol = player2_vol_slider.value
+    player3.vol = player3_vol_slider.value
   }
   @objc func changeVol4(_ sender: UISlider) {
     player1_vol_slider.value = player4_vol_slider.value
