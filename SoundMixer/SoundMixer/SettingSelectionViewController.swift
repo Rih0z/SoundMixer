@@ -26,12 +26,21 @@ class SettingSelectionViewController: UITableViewController {
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     self.user.editflag = true
     self.sendInfo(rowNum: indexPath.row)
-    player.stop()
-    player2.stop()
-    player3.stop()
+    self.allStop()
     self.goNextPage(page: "MainTabBar")
   }
-  
+  func allStop(){
+    if self.user.Playing_1 != nil {
+      player.audioEngine.stop()
+    }
+    if self.user.Playing_2 != nil {
+      player2.audioEngine.stop()
+    }
+    if self.user.Playing_3 != nil {
+      player3.audioEngine.stop()
+    }
+    
+  }
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) { //deleteが押されたとき
     self.user.removeSetAtIndex(indexPath.row)
     if self.rowNum == indexPath.row { //削除されたセルと選択されていたセルが同じだった場合

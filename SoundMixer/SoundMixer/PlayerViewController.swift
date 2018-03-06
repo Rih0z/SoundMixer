@@ -92,7 +92,6 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     self.user.beforeTmp = 1
     //self.setupAllBtnText()
     self.lockButton()
-
     self.setupMusicLabel()
   }
   override func viewWillDisappear(_ animated: Bool) {
@@ -345,24 +344,42 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       self.player1_name = self.drawLabel(id:1)
       self.view.addSubview(self.player1_name)
     }else{
+      if self.user.Playing_1 != nil {
       self.player1_name.text = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle) as! String!
       self.player1_name.sizeToFit()
+      }else{
+        self.player1_name.text = "選択されていません"
+        self.player1_name.sizeToFit()
+      }
       
     }
     if self.player2_name == nil {
       self.player2_name = self.drawLabel(id:2)
       self.view.addSubview(self.player2_name)
     }else{
-      self.player2_name.text = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle) as! String!
-      self.player2_name.sizeToFit()
+      if self.user.Playing_2 != nil {
+        self.player2_name.text = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle) as! String!
+        self.player2_name.sizeToFit()
+      }else{
+        self.player2_name.text = "選択されていません"
+        self.player2_name.sizeToFit()
+        
+      }
       
     }
     if self.player3_name == nil {
       self.player3_name = self.drawLabel(id:3)
       self.view.addSubview(self.player3_name)
     }else{
-      self.player3_name.text = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle) as! String!
-      self.player3_name.sizeToFit()
+      if self.user.Playing_3 != nil{
+        self.player3_name.text = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle) as! String!
+        self.player3_name.sizeToFit()
+      }else{
+        self.player3_name.text = "選択されていません"
+        self.player3_name.sizeToFit()
+        
+      }
+      
     }
   }
   /************** ボタン系 **********************/
