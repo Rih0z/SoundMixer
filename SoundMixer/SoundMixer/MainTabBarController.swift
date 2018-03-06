@@ -261,7 +261,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
           print("曲3セット完了")
           //    self.player3_pos_slider.maximumValue = Float(player3.duration)
         }
-        self.loadFlag = false
+        //self.loadFlag = false
       }
       self.user.loadMusicFlag = false
     }

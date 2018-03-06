@@ -98,6 +98,7 @@ class MusicSelectonTableViewController: UITableViewController {
     // DispatchQueue.main.asyncAfter(deadline: .now() + 3){
     testplaysong = self.testSong.value(forProperty: MPMediaItemPropertyTitle) as! String
      self.title = self.testplaysong + "の再生準備中"
+    self.changeShowFlag()
     print("セット完了")
     if self.testplayFlag {
       let lesttime:Double = 3/*
@@ -259,6 +260,11 @@ class MusicSelectonTableViewController: UITableViewController {
         
         
       }
+    }
+  }
+  func changeShowFlag() {
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
+      appDelegate.showFlag = false
     }
   }
   

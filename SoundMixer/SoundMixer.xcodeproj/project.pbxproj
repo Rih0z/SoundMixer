@@ -109,7 +109,6 @@
 			isa = PBXGroup;
 			children = (
 				90577E102032E0ED00D46AF9 /* AppDelegate.swift */,
-				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				905E86B820357C73004BE779 /* MainTabBarDelegate.swift */,
 				9068DCD92044DE9D009648C5 /* AudioEnginePlayer.swift */,
 				909E6F532043C1BC00BDB10D /* setupParts.swift */,
@@ -128,6 +127,7 @@
 				903661C820340B63008D2B39 /* PlaylistSelectionViewController.swift */,
 				905E86B620355FF1004BE779 /* MusicSelectonTableViewController.swift */,
 				9001352620476CA30032EAB7 /* SettingSelectionViewController.swift */,
+				903661CC20342329008D2B39 /* MainTabBarController.swift */,
 				90577E142032E0ED00D46AF9 /* PlayerViewController.swift */,
 				90577E2820330C4100D46AF9 /* MetronomeViewController.swift */,
 				90577E192032E0ED00D46AF9 /* Assets.xcassets */,

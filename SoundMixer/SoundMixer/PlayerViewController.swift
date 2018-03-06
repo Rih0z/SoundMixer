@@ -1319,7 +1319,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
         appDelegate.loadFlag = false
       }
-      //self.loadFlag = false
+      self.loadFlag = false
     }
     
     
@@ -1378,6 +1378,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       }
       user.SelectionFlag = 0
     }
+      /*
     else if(self.loadFlag == true) {
       if(self.user.Playing_1 != nil){
         player.audioPlayerNode.stop()
@@ -1402,7 +1403,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       }
       self.loadFlag = false
     }
-    
+    */
   }
 }
 
