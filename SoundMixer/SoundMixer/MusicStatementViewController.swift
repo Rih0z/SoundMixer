@@ -28,7 +28,8 @@ class MusicStatementViewController: UIViewController {
   var musicLabel = [UILabel]()
 
   var musicButton = [UIButton]()
-
+  
+  var longTapCount = 0
   let titleText = "音楽選択画面"
   //配列にしたほうが綺麗なので直します
   let musicTitle = ["音楽1","音楽2","音楽3"]
@@ -328,7 +329,13 @@ class MusicStatementViewController: UIViewController {
     touchLastPoint = touchPoint
     
     if (selectLayer == self.secretButten ){
-      if self.secret {
+      let timer = Timer.scheduledTimer(timeInterval: 1 , target: self, selector: #selector(self.longTap), userInfo: nil, repeats: true)
+      timer.fire()
+      //self.feedOutFlag = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+      }
+        
+        if self.secret {
       //hitしたレイヤーがあった場合
       //  let px:CGFloat = selectLayer.position.x
       //  let py:CGFloat = selectLayer.position.y
@@ -343,6 +350,9 @@ class MusicStatementViewController: UIViewController {
     }
   }
   
+  @objc func longTap(){
+    self.longTapCount += 1
+  }
   //タッチを終えた時
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
     if(selectLayer != nil){
