@@ -81,7 +81,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       initFlag = true
     }
     self.setupTimer()
-    self.loadTemplete()
+    //self.loadTemplete()
     self.loadMusic()
     //self.setupDraw()
     
@@ -104,6 +104,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
     self.setupMusicLabel()
+    self.loadTemplete()
     //ここにテンプレートから更新した値を代入
   }
   override func viewWillDisappear(_ animated: Bool) {
