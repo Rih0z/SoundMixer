@@ -99,6 +99,7 @@ class SettingSelectionViewController: UITableViewController {
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.user = appDelegate.user
+      self.user.loadMusicFlag = true
       self.rowNum = appDelegate.rowNum
       self.showFlag = appDelegate.showFlag
     }

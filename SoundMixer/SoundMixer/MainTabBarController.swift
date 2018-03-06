@@ -213,6 +213,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   func loadTemplete(){
     
     if self.loadFlag == true { //テンプレートを読み込んだとき
+      print("テンプレートから情報セットおおおおおおおおおおおおおおおおおおおおおおお")
       self.user.Playing_1 = self.user.Playing_1_MPMedia[self.rowNum]
       self.user.Playing_2 = self.user.Playing_2_MPMedia[self.rowNum]
       self.user.Playing_3 = self.user.Playing_3_MPMedia[self.rowNum]
@@ -239,6 +240,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   /******************* 音楽読み込み ***********************/
   func loadMusic(){
     if self.user.loadMusicFlag {
+      print("テンプレートから音楽読み込みいいいいいいいいいいいいいいいいいいいい")
       if(self.loadFlag == true) {
         if(self.user.Playing_1 != nil){
           player.audioPlayerNode.stop()

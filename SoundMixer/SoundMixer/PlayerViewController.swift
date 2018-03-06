@@ -81,6 +81,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       initFlag = true
     }
     self.setupTimer()
+    self.loadTemplete()
+    self.loadMusic()
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -90,8 +92,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     self.user.beforeTmp = 1
     //self.setupAllBtnText()
     self.lockButton()
-    self.loadTemplete()
-    self.loadMusic()
+
+    self.setupMusicLabel()
   }
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
@@ -337,6 +339,31 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
     return Time
+  }
+  func setupMusicLabel(){
+    if self.player1_name == nil {
+      self.player1_name = self.drawLabel(id:1)
+      self.view.addSubview(self.player1_name)
+    }else{
+      self.player1_name.text = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle) as! String!
+      self.player1_name.sizeToFit()
+      
+    }
+    if self.player2_name == nil {
+      self.player2_name = self.drawLabel(id:2)
+      self.view.addSubview(self.player2_name)
+    }else{
+      self.player2_name.text = self.user.Playing_2?.value(forProperty: MPMediaItemPropertyTitle) as! String!
+      self.player2_name.sizeToFit()
+      
+    }
+    if self.player3_name == nil {
+      self.player3_name = self.drawLabel(id:3)
+      self.view.addSubview(self.player3_name)
+    }else{
+      self.player3_name.text = self.user.Playing_3?.value(forProperty: MPMediaItemPropertyTitle) as! String!
+      self.player3_name.sizeToFit()
+    }
   }
   /************** ボタン系 **********************/
   /*********** 描画　***************/
@@ -1322,17 +1349,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       self.loadFlag = false
     }
     
-    
-    
-    self.player1_name = self.drawLabel(id:1)
-    self.view.addSubview(self.player1_name)
-    
-    self.player2_name = self.drawLabel(id:2)
-    self.view.addSubview(self.player2_name)
-    
-    self.player3_name = self.drawLabel(id:3)
-    self.view.addSubview(self.player3_name)
-    
+    /*
+     if(self.user.Playing_1 != nil){
+     title = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
+     }
+ */
 
     
     if(player.duration != 0.0){
