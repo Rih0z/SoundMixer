@@ -19,6 +19,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
   // Cell が選択された場合
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     self.goNextPage(page: "MusicSelection")
+    self.user.playerflag = true
     //self.navigationController?.popViewControllerAnimated(true) で前の画面に戻れる？https://qiita.com/moshisora/items/
   }
   func goNextPage(page:String){
@@ -83,6 +84,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     self.receiveData()
+    //self.user.playerflag = false
     self.setupHomeBtn()
     let witchmusic = self.user.SelectionFlag
     switch (witchmusic) {
@@ -120,6 +122,7 @@ class PlaylistSelectionViewController: UITableViewController, MainTabBarDelegate
   }
   @objc func goHome(){
     self.user.homeflag = true
+    self.user.playerflag = false
     goNextPage(page: "MainTabBar")
   }
   /*

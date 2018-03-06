@@ -48,7 +48,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   private var bpmButton:UIButton!
   private var leftButton:UIButton!
   private var rightButton:UIButton!
-  
+  private var initLockFlag = true
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -71,27 +71,13 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.user.beforeTmp = 2
     self.setupAll()
     //self.setupAllPlayBtn() 仕様変更で必要なくなった　本当に悲しい
-
-
-    
-  }
-  
-  func setupAllPlayBtn(){
-    if self.allplayingFlag{
-      
-      let text = "準備中"
-      self.hiddenButton.setTitle(text,for:.normal)
-      self.hiddenButton.backgroundColor? = (UIColor.red)
-      self.allplayLockFlag = true
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
-        self.allplayingFlag = false
-        let text = "全曲再生"
-        self.hiddenButton.setTitle(text,for:.normal)
-        self.hiddenButton.backgroundColor? = UIColor.blue
-        self.allplayLockFlag = false
-      }
+    if self.initLockFlag {
+    self.allBtnLock()
+    self.initLockFlag = false
     }
   }
+  
+
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     
@@ -290,6 +276,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
     }
   }
+  
   func playAll(){
     if (self.user.Playing_1 != nil || self.user.Playing_2 != nil || self.user.Playing_3 != nil){
 /*
@@ -380,6 +367,27 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
     self.timer.fire()
   }
+  func setupAllPlayBtn(){
+    if self.allplayingFlag{
+      self.allBtnLock()
+    }
+  }
+/*************: ロック *****************/
+  
+  func allBtnLock(){
+    let text = "準備中"
+    self.hiddenButton.setTitle(text,for:.normal)
+    self.hiddenButton.backgroundColor? = (UIColor.red)
+    self.allplayLockFlag = true
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+      self.allplayingFlag = false
+      let text = "全曲再生"
+      self.hiddenButton.setTitle(text,for:.normal)
+      self.hiddenButton.backgroundColor? = UIColor.blue
+      self.allplayLockFlag = false
+    }
+  }
+  
   //************ setup UI PARTS *****************
   //スライダーを表示
   @objc func setupSlider(linewidth: CGPoint, target_value: Float , target_min :Float , target_max : Float  ) -> UISlider{

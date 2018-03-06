@@ -203,14 +203,18 @@ class AudioEnginePlayer: NSObject {
           
           
           if self.firstPlayFlag || self.pouseFlag  {
+            
             self.playStart()
+            
           } else {
             print("waiting for stop music .....")
             DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime) {
               print("3 seconds passed ! PlayStart")
               self.playStart()
             }
+            
           }
+          
         }
       }
     }

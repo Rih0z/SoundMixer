@@ -80,31 +80,24 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       self.setupDraw()
       initFlag = true
     }
+    self.receiveData()
     self.setupTimer()
-    //self.loadTemplete()
+    self.loadTemplete()
     self.loadMusic()
     //self.setupDraw()
-    
-
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewDidDisappear(animated)
- 
-    self.receiveData()
-
     self.user.beforeTmp = 1
     //self.setupAllBtnText()
     self.lockButton()
-    
-    
-   
   }
   
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
     self.setupMusicLabel()
-    self.loadTemplete()
+   // self.loadTemplete()
     //ここにテンプレートから更新した値を代入
   }
   override func viewWillDisappear(_ animated: Bool) {
@@ -548,7 +541,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   /**************** ボタンロック　*****************/
   func feedOutText(id:Int){
    
-      self.user.playerflag = false
+    //  self.user.playerflag = false
       self.musicLockFlag[id] = true
       self.textChangePrepare(id:id)
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
@@ -641,8 +634,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
   
   func lockButton(){
-     if  self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
-    
+     if  self.user.playerflag || self.allMusicStopFlag || player.playing || player2.playing || player3.playing {
+   // self.user.playerflag = false
       self.allMusicStopFlag = false
     self.playLockFlag = true
     //タブ切り替えの時はすでにインスタンスが生成されているので一つ見ればわかる
@@ -1399,37 +1392,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   }
 /*************  音楽読み込み　*********************/
   func loadMusic(){
-    if(self.loadFlag == false) {
-      if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
-        player.audioPlayerNode.stop()
-        //self.StartButton1.setTitle("準備中",for:.normal)
-        let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-        player.SetUp(text_url : url)
-        print("曲１セット完了")
-        self.player1_pos_slider.maximumValue = Float(player.duration)
-        self.player1_pos_slider.value = 0.0
-      }
-      if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
-        player2.audioPlayerNode.stop()
-        //self.StartButton2.setTitle("音楽2再生",for:.normal)
-        let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-        player2.SetUp(text_url : url)
-        print("曲2セット完了desu")
-        self.player2_pos_slider.maximumValue = Float(player2.duration)
-        self.player2_pos_slider.value = 0.0
-      }
-      if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
-        player3.audioPlayerNode.stop()
-        //self.StartButton3.setTitle("音楽3再生",for:.normal)
-        let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
-        player3.SetUp(text_url : url)
-        print("曲3セット完了")
-        self.player3_pos_slider.maximumValue = Float(player3.duration)
-        self.player3_pos_slider.value = 0.0
-      }
-      user.SelectionFlag = 0
-    }
-      /*
+      self.player1_pos_slider.maximumValue = Float(player.duration)
+       self.player1_pos_slider.value = 0.0
+    
+    self.player2_pos_slider.maximumValue = Float(player2.duration)
+    self.player2_pos_slider.value = 0.0
+    
+    self.player3_pos_slider.maximumValue = Float(player3.duration)
+    self.player3_pos_slider.value = 0.0
+    /*
     else if(self.loadFlag == true) {
       if(self.user.Playing_1 != nil){
         player.audioPlayerNode.stop()

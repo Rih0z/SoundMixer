@@ -40,6 +40,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    
   }
   
   override func didReceiveMemoryWarning() {
@@ -85,29 +86,31 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     self.loadAll()
     
   }
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+
+    
+    //ここにテンプレートから更新した値を代入
+  }
+  
   func loadAll(){
     self.loadTemplete()
     self.loadMusic()
   }
   func tabBarSetup(){
+    if self.initFlag {
+      self.selectedIndex = 2
+      self.initFlag = false
+    }
+    
     if self.user.musicSetFlag {
       // self.user.SelectionFlag = 0
       self.user.musicSetFlag = false
       self.selectedIndex = 1
       self.initFlag = false
     }
-    if self.user.homeflag  {
-      self.user.homeflag = false
-      if self.user.playerflag {
-        self.selectedIndex = 1
-        self.user.playerflag = false
-      }else{
-      self.selectedIndex = 2
-      }
-      self.initFlag = false
-      
-    }
-    else if self.user.editflag {
+
+    if self.user.editflag {
       self.user.editflag = false
       if self.user.beforeTmp == nil {
         print("before tmp is nil")
@@ -117,9 +120,20 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
       self.initFlag = false
     }
     
-    if self.initFlag {
-      self.selectedIndex = 2
+    if self.user.homeflag  {
+      self.user.homeflag = false
+      print("MAIN TAB BAR ....")
+      if self.user.playerflag {
+        print("Player")
+        self.selectedIndex = 1
+        self.user.playerflag = false
+      }else{
+        print("MetroNOME")
+        self.selectedIndex = 2
+      }
       self.initFlag = false
+      //self.user.playerflag = false
+      
     }
     /*
      if self.user.loadMusicFlag {
@@ -266,6 +280,35 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         //self.loadFlag = false
       }
       self.user.loadMusicFlag = false
+    } else  {
+      if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
+        player.audioPlayerNode.stop()
+        //self.StartButton1.setTitle("準備中",for:.normal)
+        let url: URL  = self.user.Playing_1!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player.SetUp(text_url : url)
+        print("曲１セット完了")
+      //  self.player1_pos_slider.maximumValue = Float(player.duration)
+     //   self.player1_pos_slider.value = 0.0
+      }
+      if(self.user.Playing_2 != nil && user.SelectionFlag == 2){
+        player2.audioPlayerNode.stop()
+        //self.StartButton2.setTitle("音楽2再生",for:.normal)
+        let url: URL  = self.user.Playing_2!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player2.SetUp(text_url : url)
+        print("曲2セット完了desu")
+       // self.player2_pos_slider.maximumValue = Float(player2.duration)
+      //  self.player2_pos_slider.value = 0.0
+      }
+      if(self.user.Playing_3 != nil && user.SelectionFlag == 3){
+        player3.audioPlayerNode.stop()
+        //self.StartButton3.setTitle("音楽3再生",for:.normal)
+        let url: URL  = self.user.Playing_3!.value(forProperty: MPMediaItemPropertyAssetURL) as! URL
+        player3.SetUp(text_url : url)
+        print("曲3セット完了")
+      //  self.player3_pos_slider.maximumValue = Float(player3.duration)
+      //  self.player3_pos_slider.value = 0.0
+      }
+      user.SelectionFlag = 0
     }
   }
   

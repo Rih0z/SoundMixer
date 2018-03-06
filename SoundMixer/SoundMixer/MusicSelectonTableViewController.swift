@@ -157,6 +157,7 @@ class MusicSelectonTableViewController: UITableViewController {
     self.receiveData()
     self.setupHomeBtn()
     self.showPlaylist()
+    self.user.playerflag = true
   }
   
   func receiveData(){

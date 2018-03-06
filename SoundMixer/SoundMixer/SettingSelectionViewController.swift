@@ -31,13 +31,16 @@ class SettingSelectionViewController: UITableViewController {
   }
   func allStop(){
     if self.user.Playing_1 != nil {
-      player.audioEngine.stop()
+      //player.audioEngine.stop()
+      player.stop()
     }
     if self.user.Playing_2 != nil {
-      player2.audioEngine.stop()
+     // player2.audioEngine.stop()
+      player2.stop()
     }
     if self.user.Playing_3 != nil {
-      player3.audioEngine.stop()
+     // player3.audioEngine.stop()
+      player3.stop()
     }
     
   }
@@ -104,6 +107,7 @@ class SettingSelectionViewController: UITableViewController {
     self.tableView.reloadData()
   }
   
+
   func recUserInfo(){
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
