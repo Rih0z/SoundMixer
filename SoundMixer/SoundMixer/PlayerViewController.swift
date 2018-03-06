@@ -98,6 +98,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
     self.setupMusicLabel()
+    self.setupAllDrawTimeLabel()
    // self.loadTemplete()
     //ここにテンプレートから更新した値を代入
   }
@@ -345,6 +346,63 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     //print(PlayingSong.value(forProperty: MPMediaItemPropertyTitle)! as! UnsafePointer<Int8>)
     return Time
+  }
+  func setupDrawTimeLabel(id:Int){
+    var min = 0
+    var sec = 0
+    if(id == 1){
+      min = Int((player.pos + 0.49) / 60.0)
+      sec = Int(Int(player.pos + 0.49) % 60)
+      let title = String(format:"%02d:%02d",min, sec)
+     Player1Time.text = title
+      Player1Time.sizeToFit()
+    }
+    else if(id == 2){
+      min = Int((player2.pos + 0.49) / 60.0)
+      sec = Int(Int(player2.pos + 0.49) % 60)
+      let title = String(format:"%02d:%02d",min, sec)
+      Player2Time.text = title
+      Player2Time.sizeToFit()
+    }
+    else if(id == 3){
+      min = Int((player3.pos + 0.49) / 60.0)
+      sec = Int(Int(player3.pos + 0.49) % 60)
+      let title = String(format:"%02d:%02d",min, sec)
+      Player3Time.text = title
+      Player3Time.sizeToFit()
+    }
+    
+  }
+  func resetDrawTimeLabel(id:Int){
+    var min = 0
+    var sec = 0
+    min = Int((0 + 0.49) / 60.0)
+    sec = Int(Int(0 + 0.49) % 60)
+    let title = String(format:"%02d:%02d",min, sec)
+    if(id == 1){
+
+      Player1Time.text = title
+      Player1Time.sizeToFit()
+    }
+    else if(id == 2){
+      Player2Time.text = title
+      Player2Time.sizeToFit()
+    }
+    else if(id == 3){
+      Player3Time.text = title
+      Player3Time.sizeToFit()
+    }
+    
+  }
+  func setupAllDrawTimeLabel(){
+    for i in 1...3{
+    setupDrawTimeLabel(id: i)
+    }
+  }
+  func resetAllDrawTimeLabel(){
+    for i in 1...3{
+      resetDrawTimeLabel(id: i)
+    }
   }
   func setupMusicLabel(){
     if self.player1_name == nil {
@@ -649,6 +707,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
    
       self.playLockFlag = false
       self.allTextChengePlay()
+      self.resetAllDrawTimeLabel()
       //self.setupAllBtnText()
       
       }
@@ -846,11 +905,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       player.stop()
       self.musicLockFlag[1] = true
       self.user.Playing_1 = nil
-      
+      self.DeleteButton[0].backgroundColor = UIColor.red
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+     self.DeleteButton[0].backgroundColor = UIColor.darkGray
         self.player1_name.text = "再生ボタンから音楽を選択できます"
         self.player1_name.sizeToFit()
         self.musicLockFlag[1] = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
+          self.resetDrawTimeLabel(id:1)
+        }
         
       }
       
@@ -858,16 +921,21 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
   }
   @objc func  DeleteBtn9Tapped(sender:UIButton){
-    self.player1_name.text = "再生ボタンから音楽を選択できます"
+  
     self.player1_name.sizeToFit()
     if self.user.Playing_2 != nil{
       player2.stop()
       self.user.Playing_2 = nil
       self.musicLockFlag[2] = true
+         self.DeleteButton[1].backgroundColor = UIColor.red
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+           self.DeleteButton[1].backgroundColor = UIColor.darkGray
         self.player2_name.text = "再生ボタンから音楽を選択できます"
         self.player2_name.sizeToFit()
         self.musicLockFlag[2] = false
+         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
+          self.resetDrawTimeLabel(id:2)
+        }
       }
     }
   }
@@ -876,10 +944,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
       player3.stop()
       self.user.Playing_3 = nil
       self.musicLockFlag[3] = true
+       self.DeleteButton[2].backgroundColor = UIColor.red
       DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
         self.player3_name.text = "再生ボタンから音楽を選択できます"
+         self.DeleteButton[2].backgroundColor = UIColor.darkGray
         self.player3_name.sizeToFit()
         self.musicLockFlag[3] = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
+        self.resetDrawTimeLabel(id:3)
+        }
+        
       }
       
     }
