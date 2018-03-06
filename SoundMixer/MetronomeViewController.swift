@@ -34,7 +34,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   var speedLabel:UILabel!
   var slider:UISlider!
   
-  private var hiddenFlag :Bool = false
+  private var hiddenFlag :Bool = true
   
   private var selectLayer:CALayer!
   private var clearLayer:CALayer!
@@ -210,9 +210,9 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
   }
   func animationOnOff(){
-    if self.allplayLockFlag {
+  //  if self.allplayLockFlag {
       
-    } else {
+//    } else {
      // if self.allplayingFlag {
     //  } else {
         //アニメ非表示ボタンが押されたら
@@ -220,14 +220,12 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
         if self.hiddenFlag
         {
           self.reset()
-          self.drawHiddenButton()
-          self.drawAnimationButton()
-          
+          self.drawMustButton()
           let text = "アニメ表示"
           self.animationButton.setTitle(text,for:.normal)
           
         }else{
-          
+          self.reset()
           let tmpbpm = self.bpm
           self.setupAll()
           self.bpm = tmpbpm
@@ -237,7 +235,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
           
         }
     //  }
-    }
+   // }
   }
   
   func playStartStop(){
@@ -339,7 +337,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   }
   //***********set up *************
   func setupAll(){
+    if self.hiddenFlag {
+      self.drawMustButton()
+    }else{
     self.drawSetUp()
+    }
     self.setupTimer()
     self.setupBpm()
   }
@@ -452,21 +454,28 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.rightButton.center = CGPoint(x:width * 4 / 5,y:height - 100)
     
     changeLRButten()
+    if self.hiddenFlag {
+      
+    }else{
     self.view.addSubview(self.leftButton)
     self.view.addSubview(self.rightButton)
-    
+    }
     
     
     drawRects()
     self.drawBpmButton()
-    self.drawHiddenButton()
-    self.drawAnimationButton()
+    self.drawMustButton()
+
     //ピンチ
     let pinch = UIPinchGestureRecognizer()
     pinch.addTarget(self,action:#selector(MetronomeViewController.pinchGesture(sender:)))
     pinch.delegate = self
     self.view.addGestureRecognizer(pinch)
     
+  }
+  func drawMustButton(){
+    self.drawHiddenButton()
+    self.drawAnimationButton()
   }
   func changeLRButten(){
     
@@ -511,7 +520,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
     self.bpmButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
     self.bpmButton.addTarget(self, action: #selector(MetronomeViewController.bpmBtnTapped(sender:)), for: .touchUpInside)
+    if self.hiddenFlag {
+      
+    }else{
     self.view.addSubview(self.bpmButton)
+    }
   }
   func drawHiddenButton(){
     let width = self.view.bounds.width
@@ -531,7 +544,12 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let height = self.view.bounds.height
     let rect = CGRect(x:0,y:0,width:150,height:50)
     let frame = CGPoint(x:width * 4 / 5,y:height / 6 - 55)
-    let text = "アニメ非表示"
+    var text = "アニメ表示"
+    if self.hiddenFlag {
+    text = "アニメ表示"
+    }else{
+      text = "アニメ非表示"
+    }
     self.animationButton = setupButton(rect: rect, lineWidth: frame, text: text, color: UIColor.blue)
     self.animationButton.addTarget(self, action: #selector(MetronomeViewController.animationBtnTapped(sender:)), for: .touchUpInside)
     self.view.addSubview(self.animationButton)
@@ -548,7 +566,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let oval = MyShapeLayer()
     oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
     oval.drawOval(lineWidth:1)
+    if self.hiddenFlag {
+      
+    }else{
     self.view.layer.addSublayer(oval)
+    }
     self.leftoval = oval
   }
   @objc func drawRight(){
@@ -558,7 +580,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     let oval2 = MyShapeLayer()
     oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
     oval2.drawOval(lineWidth:1)
+    if self.hiddenFlag {
+      
+    } else {
     self.view.layer.addSublayer(oval2)
+    }
     self.rightoval = oval2
   }
   @objc func blueBorder(layer : CALayer?) {
@@ -582,7 +608,12 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }else{
       self.slider = setupSlider(linewidth: sliderFlame, target_value: self.tmpspeed, target_min: self.tmpmin, target_max: self.tmpmax)
     }
-    self.view.addSubview(self.slider)
+    if self.hiddenFlag {
+    
+    }else{
+      self.view.addSubview(self.slider)
+      
+    }
   }
   
   func drawLabel() {
@@ -598,7 +629,11 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     }
     self.speedLabel = speedtext
     self.speedLabel.sizeToFit()
+    if self.hiddenFlag {
+      
+    }else{
     self.view.addSubview(self.speedLabel)
+    }
   }
   
   //**********clear***************

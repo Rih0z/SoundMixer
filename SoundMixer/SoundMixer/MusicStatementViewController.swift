@@ -312,6 +312,19 @@ class MusicStatementViewController: UIViewController {
     //選択されたレイヤーをselectLayerにいれる
     self.selectLayerFunc(layer:layer)
     if(selectLayer == self.secretButten ){
+      let timer = Timer.scheduledTimer(timeInterval: 1 , target: self, selector: #selector(self.longTap), userInfo: nil, repeats: true)
+      timer.fire()
+      //self.feedOutFlag = true
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
+        timer.invalidate()
+        if self.longTapCount >= 2 && self.longTapCount <= 3{
+          self.navigationController?.popToRootViewController(animated:true)
+          self.secret = true
+          self.longTapCount = 0
+        }else if self.longTapCount >= 5{
+          self.longTapCount = 0
+        }
+      }
       if(self.secret)
       {
         self.navigationController?.popToRootViewController(animated:true)
@@ -329,18 +342,9 @@ class MusicStatementViewController: UIViewController {
     touchLastPoint = touchPoint
     
     if (selectLayer == self.secretButten ){
-      let timer = Timer.scheduledTimer(timeInterval: 1 , target: self, selector: #selector(self.longTap), userInfo: nil, repeats: true)
-      timer.fire()
-      //self.feedOutFlag = true
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ) {
-        timer.invalidate()
-        if self.longTapCount == 3{
-          self.navigationController?.popToRootViewController(animated:true)
-          self.secret = true
-          self.longTapCount = 0
-          
-        }
-      }
+      selectLayer.borderWidth = 3.0
+      selectLayer.borderColor = UIColor.red.cgColor
+
         
         if self.secret {
       //hitしたレイヤーがあった場合

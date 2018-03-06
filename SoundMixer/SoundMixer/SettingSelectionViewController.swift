@@ -86,7 +86,7 @@ class SettingSelectionViewController: UITableViewController {
  
       for i in 0...(self.user.Playing_1_MPMedia.count - 1) {
         print(self.user.template_name[i])
-         let music1:MPMediaItem = self.user.Playing_1_MPMedia as! MPMediaItem
+        // let music1:MPMediaItem = self.user.Playing_1_MPMedia as! MPMediaItem
        // print(self.user.m)
       }
       

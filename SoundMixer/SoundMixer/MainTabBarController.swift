@@ -82,7 +82,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
   override func viewWillAppear(_ animated: Bool) {
     self.receiveData()
     self.navigationBarSetup()
-    self.tabBarSetup()
+    self.tabbarChoice()
     self.loadAll()
     
   }
@@ -93,6 +93,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     //ここにテンプレートから更新した値を代入
   }
   
+  func tabbarChoice(){
+    if self.loadFlag {
+      self.selectedIndex =  self.user.beforeTmp
+    }else{
+      self.tabBarSetup()
+    }
+  }
   func loadAll(){
     self.loadTemplete()
     self.loadMusic()
@@ -131,6 +138,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         print("MetroNOME")
         self.selectedIndex = 2
       }
+     // if self.loadFlag {
+      
+        
+      //}
+      
       self.initFlag = false
       //self.user.playerflag = false
       
@@ -280,6 +292,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
         }
         //self.loadFlag = false
       }
+      
       self.user.loadMusicFlag = false
     } else  {
       if(self.user.Playing_1 != nil && user.SelectionFlag == 1){
