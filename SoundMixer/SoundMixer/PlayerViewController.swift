@@ -869,33 +869,50 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
     }
     @objc func  StartBtn5Tapped(sender:UIButton){
-        let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
-        let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            var template_name = textField.text!
-            if(template_name.isEmpty) {
-                template_name = "テンプレート_" + String(self.user.Playing_1_MPMedia.count)
-            }
-            
-            self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
-            
-            self.sendUserInfo()
-            
-            let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
-            let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
-            let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
-            userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position], forKey: String(self.user.Id - 1)+"_"+"Setting")
-            print("いけてる，その2")
-        }
-        let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
-        
-        // UIAlertControllerにtextFieldを追加
-        alert.addTextField { (textField:UITextField!) -> Void in }
-        alert.addAction(saveAction)
-        alert.addAction(cancelAction)
-        
-        present(alert, animated: true, completion: nil)
+      self.showInputAlert()
     }
+  func showInputAlert() {
+    let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
+    let saveAction = UIAlertAction(title: "入力完了", style: .default) { (action:UIAlertAction!) -> Void in
+      let textField = alert.textFields![0] as UITextField
+      var template_name = textField.text!
+      if(template_name.isEmpty) {
+        self.urgeInputAlert()
+      }
+      else {
+        self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
+        
+        self.sendUserInfo()
+        
+        let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
+        let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
+        let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
+        userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position], forKey: String(self.user.Id - 1)+"_"+"Setting")
+        print("いけてる，その2")
+      }
+    }
+    let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
+    
+    // UIAlertControllerにtextFieldを追加
+    alert.addTextField { (textField:UITextField!) -> Void in }
+    alert.addAction(saveAction)
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: true, completion: nil)
+  }
+  func urgeInputAlert() {
+    let alert = UIAlertController(title: "テンプレート名を入力しないと登録できません", message: "", preferredStyle: .alert)
+    let saveAction = UIAlertAction(title: "了解", style: .default) { (action:UIAlertAction!) -> Void in
+      self.showInputAlert()
+    }
+    let cancelAction = UIAlertAction(title: "登録せずに終了", style: .default) { (action:UIAlertAction!) -> Void in }
+    
+    // UIAlertControllerにtextFieldを追加
+    alert.addAction(saveAction)
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: true, completion: nil)
+  }
     @objc func  StartBtn6Tapped(sender:UIButton){
         self.goHome()
     }

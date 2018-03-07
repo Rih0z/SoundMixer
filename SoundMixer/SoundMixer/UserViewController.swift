@@ -137,6 +137,9 @@ class UserViewController: UITableViewController {
         appDelegate.user.Playing_3_position = dic!["position3"] as! [Double]
         //print("テスト  \(appDelegate.user.Playing_1_MPMedia[0]!.value(forProperty: MPMediaItemPropertyTitle)! as! String) ")
       }
+      else {
+        appDelegate.user = user
+      }
     }
   }
   override func viewWillAppear(_ animated: Bool) {

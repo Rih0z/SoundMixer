@@ -29,7 +29,7 @@ class AudioEnginePlayer: NSObject {
     let FREQUENCY: [Float] = [31, 62, 125, 250, 500, 1000, 2000, 4000, 8000, 16000]
     let BANDS: [Float] = [0 , 0 , 0 , 0 , 0 , 0 , 0 , -15.0 , -30.0 , -50.0]
     var feedOutVolume:Float!
-    let feedInVolume:Float = 0.5
+    var feedInVolume:Float = 0.5
     var playingFlag:Bool = false
     var pouseFlag:Bool = false
     var firstPlayFlag:Bool = true
@@ -263,6 +263,7 @@ class AudioEnginePlayer: NSObject {
         self.audioEngine.mainMixerNode.outputVolume = 0//.1
         timer.fire()
         self.feedInFlag = true
+      self.feedInVolume = self.vol
         DispatchQueue.main.asyncAfter(deadline: .now() + self.feedInOutTime){
             print("AFTER 5 SECONDS")
             timer.invalidate()

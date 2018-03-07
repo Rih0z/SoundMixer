@@ -686,14 +686,17 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     self.flag = true
   }
   func resetTimerText(){
+    if self.speedLabel != nil {
     if bpmModeFlag
     {
+      
       self.speedLabel.text = String(floor(self.bpm*10)/10 ) + " BPM"
     }else
     {
       self.speedLabel.text = String( floor(self.tmpspeed*10)/10 ) + "秒毎"
     }
     self.speedLabel.sizeToFit()
+    }
   }
   /************** Touch Action ****************/
   func hitLayer(touch:UITouch) -> CALayer{
