@@ -140,6 +140,7 @@ class UserViewController: UITableViewController {
       else {
         appDelegate.user = user
       }
+      appDelegate.showFlag = false
     }
   }
   override func viewWillAppear(_ animated: Bool) {
