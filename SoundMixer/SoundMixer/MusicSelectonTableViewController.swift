@@ -125,7 +125,6 @@ class MusicSelectonTableViewController: UITableViewController {
         
     }
     func stopMusics(){
-        
         if self.user.Playing_1 != nil {
             player.stop()
         }

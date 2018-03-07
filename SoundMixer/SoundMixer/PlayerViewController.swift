@@ -373,22 +373,35 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         }
         
     }
+    
+    // 再生位置が0になるのを編集しました
     func resetDrawTimeLabel(id:Int){
+        
         var min = 0
         var sec = 0
+        /*
         min = Int((0 + 0.49) / 60.0)
         sec = Int(Int(0 + 0.49) % 60)
         let title = String(format:"%02d:%02d",min, sec)
+        */
         if(id == 1){
-            
+            min = Int((player.pos + 0.49) / 60.0)
+            sec = Int(Int(player.pos + 0.49) % 60)
+            let title = String(format:"%02d:%02d",min, sec)
             Player1Time.text = title
             Player1Time.sizeToFit()
         }
         else if(id == 2){
+            min = Int((player2.pos + 0.49) / 60.0)
+            sec = Int(Int(player2.pos + 0.49) % 60)
+            let title = String(format:"%02d:%02d",min, sec)
             Player2Time.text = title
             Player2Time.sizeToFit()
         }
         else if(id == 3){
+            min = Int((player3.pos + 0.49) / 60.0)
+            sec = Int(Int(player3.pos + 0.49) % 60)
+            let title = String(format:"%02d:%02d",min, sec)
             Player3Time.text = title
             Player3Time.sizeToFit()
         }
@@ -914,6 +927,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     present(alert, animated: true, completion: nil)
   }
     @objc func  StartBtn6Tapped(sender:UIButton){
+        
         self.goHome()
     }
     @objc func  DeleteBtn8Tapped(sender:UIButton){
@@ -982,12 +996,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.goNextPage(page: "MainTabBar")
         if self.user.Playing_1 != nil{
             player.stop()
+            player.pos = 0.0
         }
         if self.user.Playing_2 != nil {
             player2.stop()
+            player2.pos = 0.0
         }
         if self.user.Playing_3 != nil {
             player3.stop()
+            player3.pos = 0.0
         }
     }
     func goNextPage(page:String){
@@ -1302,7 +1319,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     /************** タイマー系　***************/
     @objc func timerUpdate() {
         
-        if player.playing == true{
+        if player.playing == true && player.feedOutFlag == false{
             
             let nodeTime = player.audioPlayerNode.lastRenderTime
             let playerTime = player.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
@@ -1323,7 +1340,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 player.pos = 0.0
                 player.offset = 0.0
                 Player1Time.text = String(format:"%02d:%02d",0, 0)
-                
+                print("\n\naaaaaaaaaaaaaaaaaaaaaaaa\n\n")
             }
             else{
                 
@@ -1333,11 +1350,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 let min = Int((currentTime + 0.49) / 60.0)
                 let sec = Int(Int(currentTime + 0.49) % 60)
                 Player1Time.text = String(format:"%02d:%02d",min, sec)
+                print("time : " , String(format:"%02d:%02d",min, sec))
             }
         }
         
         
-        if player2.playing == true{
+        if player2.playing == true && player2.feedOutFlag == false{
             
             let nodeTime = player2.audioPlayerNode.lastRenderTime
             let playerTime = player2.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
@@ -1372,7 +1390,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         }
         
         
-        if player3.playing == true{
+        if player3.playing == true && player3.feedOutFlag == false{
             
             let nodeTime = player3.audioPlayerNode.lastRenderTime
             let playerTime = player3.audioPlayerNode.playerTime(forNodeTime: nodeTime!)
