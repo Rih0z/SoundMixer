@@ -530,7 +530,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
           text = "リセット"
           frame = CGPoint(x:width / 2,y:pos_y[4 - 1])
           btn.backgroundColor = UIColor.yellow
-        
+        btn.setTitleColor(UIColor.gray, for: .normal)
         }else{
             text = "削除"
             btn.backgroundColor = UIColor.darkGray
@@ -559,19 +559,25 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 btn.addTarget(self, action: #selector(PlayerViewController.StartBtn1Tapped(sender:)), for: .touchUpInside)
                 if(player.playing == true){
                     text = "音楽1停止"
-                }
+                }else{
+                  text = "音楽1再生"
+              }
             }
             if(id == 2){
                 btn.addTarget(self, action: #selector(PlayerViewController.StartBtn2Tapped(sender:)), for: .touchUpInside)
                 if(player2.playing == true){
                     text = "音楽2停止"
-                }
+                }else {
+                  text = "音楽2再生"
+              }
             }
             if(id == 3){
                 btn.addTarget(self, action: #selector(PlayerViewController.StartBtn3Tapped(sender:)), for: .touchUpInside)
                 if(player3.playing == true){
                     text = "音楽3停止"
-                }
+                }else {
+                  text = "音楽3再生"
+              }
             }
             if(id == 4){
                 //  btn.addTarget(self, action: #selector(PlayerViewController.StartBtn4Tapped(sender:)), for: .touchUpInside)
@@ -742,10 +748,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 self.player3_pos_slider.maximumValue = Float(player3.duration)
                 print("\n\n曲の長さを再設定しました\n\n")
                 
-                self.allTextChengePlay()
+              
                 self.resetAllDrawTimeLabel()
                 //self.setupAllBtnText()
-                
+               DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                self.allTextChengePlay()
+              }
             }
         }
     }
@@ -1003,14 +1011,10 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
                     self.resetDrawTimeLabel(id:1)
                 }
-                
             }
-            
-            
         }
     }
     @objc func  DeleteBtn9Tapped(sender:UIButton){
-        
         self.player1_name.sizeToFit()
         if self.user.Playing_2 != nil{
             player2.stop()
@@ -1042,12 +1046,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
                     self.resetDrawTimeLabel(id:3)
                 }
-                
-            }
-            
+          }
         }
     }
-  
   @objc func  resetBtn10Tapped(sender:UIButton){
     if self.initLockFlag {
     }else{
@@ -1059,13 +1060,60 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.resetButton.backgroundColor = UIColor.yellow
       }
     }
-    
   }
   func resetPlay(){
     self.allStop()
+    self.allVolReset()
+    self.allPitchReset()
     //ここにリセットの処理お願いします
   }
-  
+  func playVolReset(whitch:Int){
+    switch(whitch){
+    case 1:
+    if self.user.Playing_1 != nil {
+      player.vol = 0.5
+    }
+    case 2:
+    if  self.user.Playing_2 != nil {
+      player2.vol = 0.5
+    }
+    case 3:
+    if self.user.Playing_3 != nil {
+      player3.vol = 0.5
+    }
+    default:
+      print("bug")
+    }
+  }
+  func allVolReset(){
+    for i in 1...3 {
+      self.playVolReset(whitch: i)
+    }
+  }
+  func playPitchReset(whitch:Int){
+    switch(whitch){
+    case 1:
+      if self.user.Playing_1 != nil {
+        player.pitch = 0
+      }
+    case 2:
+      if  self.user.Playing_2 != nil {
+        player2.pitch = 0
+      }
+    case 3:
+      if self.user.Playing_3 != nil {
+        player3.pitch = 0
+      }
+    default:
+      print("bug")
+    }
+    
+  }
+  func allPitchReset(){
+    for i in 1...3 {
+      self.playPitchReset(whitch: i)
+    }
+  }
   func allStop(){
     //nilチェックもかねてるからstopの中でも見てるけど一応
     if player.playing {
