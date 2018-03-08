@@ -73,9 +73,24 @@ class User {
       self.Playing_3_MPMedia.append(nil)
     }
     
-    self.Playing_1_pitch.append(pitch1)
-    self.Playing_2_pitch.append(pitch2)
-    self.Playing_3_pitch.append(pitch3)
+    if(musicEditFlag[0] == true){
+        self.Playing_1_pitch.append(pitch1)
+    }
+    else{
+        self.Playing_1_pitch.append(0)
+    }
+    if(musicEditFlag[1] == true){
+        self.Playing_2_pitch.append(pitch2)
+    }
+    else{
+        self.Playing_2_pitch.append(0)
+    }
+    if(musicEditFlag[2] == true){
+        self.Playing_3_pitch.append(pitch3)
+    }
+    else{
+        self.Playing_3_pitch.append(0)
+    }
     
     self.Playing_1_volume.append(volume1)
     self.Playing_2_volume.append(volume2)

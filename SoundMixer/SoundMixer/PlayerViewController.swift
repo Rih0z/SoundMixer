@@ -57,6 +57,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var player4_vol_slider:UISlider!
     
     var volumeParentView = UIView()
+    var volumeView:MPVolumeView!
     
     var player1_pos_slider:UISlider!
     var player2_pos_slider:UISlider!
@@ -130,8 +131,6 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     func setupDraw(){
         
-        setupVolumeSlider()
-        
         self.StartButton1 = self.DrawStartButton(id:1)
         self.view.addSubview(self.StartButton1)
         
@@ -173,7 +172,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.view.addSubview(self.player2_vol_slider)
         self.player3_vol_slider = self.drawVolSlider(id:3)
         self.view.addSubview(self.player3_vol_slider)
-        //self.player4_vol_slider = self.drawVolSlider(id:4)
+        self.player4_vol_slider = self.drawVolSlider(id:4)
         //self.view.addSubview(self.player4_vol_slider)
         
         self.player1_pos_slider = self.drawPosSlider(id:1)
@@ -208,6 +207,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.view.addSubview(self.Player2Time)
         self.Player3Time = self.drawTimeLabel(id: 3)
         self.view.addSubview(self.Player3Time)
+        
+        setupVolumeSlider()
         
     }
     /********************* ラベル系 *********************/
@@ -1184,6 +1185,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             slider.value = player3.vol
         }
         if(id == 4){
+            //slider.value = 0.8  // スライダーの値が変更された時に呼び出されるメソッドを設定
             slider.addTarget(self, action: #selector(self.changeVol4), for: .valueChanged)
         }
         
@@ -1203,7 +1205,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         //let volumeView = MPVolumeView(frame: CGRect(x: -1000, y: -1000, width: 0, height: 0))
         //let volumeView = MPVolumeView(frame: CGRect(x: pos_x, y: pos_y, width: length_x, height: length_y))
         
-        let volumeView = MPVolumeView()
+        volumeView = MPVolumeView()
         volumeView.frame.size.width = self.view.bounds.width / 2.35
         volumeView.sizeToFit()
         volumeView.center = sliderFlame
@@ -1234,6 +1236,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     // 端末音量の更新
     @objc func changeVol4(_ sender: UISlider) {
+        //self.player4_vol_slider.value = sender.value
+        
         /*
         
          player1_vol_slider.value = player4_vol_slider.value
@@ -1392,6 +1396,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     /************** タイマー系　***************/
     @objc func timerUpdate() {
+        //print(volumeView.value(forKey: ""))
         
         if player.playing == true && player.feedOutFlag == false{
             
