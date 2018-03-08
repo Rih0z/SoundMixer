@@ -334,7 +334,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         let title = String(format:"%02d:%02d",min, sec)
         
-        flame = CGPoint(x:self.view.bounds.width*8/14 , y:pos_y[id - 1])
+        flame = CGPoint(x:self.view.bounds.width/2 , y:pos_y[id - 1])
         
         var Time:UILabel!
         let rect = CGRect(x:0,y:0,width:self.view.bounds.width,height:30)
@@ -1215,7 +1215,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let height = self.view.bounds.height
         let pos_y = [height * 2.2 / 8 , height * 4.2 / 8 , height * 6.2 / 8 ,  height * 11 / 12]
         
-        let sliderFlame = CGPoint(x:self.view.bounds.width * 1.8 / 3  , y:pos_y[id - 1])
+        let sliderFlame = CGPoint(x:self.view.bounds.width  / 2  , y:pos_y[id - 1])
         
         // スライダーの作成
         let slider = UISlider()
