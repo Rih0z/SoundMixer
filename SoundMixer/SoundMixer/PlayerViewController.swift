@@ -158,7 +158,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             self.view.addSubview(self.DeleteButton[i - 8])
         }
         self.resetButton = self.DrawStartButton(id: 11)
-      self.view.addSubview(self.resetButton)
+        self.view.addSubview(self.resetButton)
         self.player1_pitch_slider = self.drawPitchSlider(id:1)
         self.view.addSubview(self.player1_pitch_slider)
         self.player2_pitch_slider = self.drawPitchSlider(id:2)
@@ -387,10 +387,10 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         var min = 0
         var sec = 0
         /*
-        min = Int((0 + 0.49) / 60.0)
-        sec = Int(Int(0 + 0.49) % 60)
-        let title = String(format:"%02d:%02d",min, sec)
-        */
+         min = Int((0 + 0.49) / 60.0)
+         sec = Int(Int(0 + 0.49) % 60)
+         let title = String(format:"%02d:%02d",min, sec)
+         */
         if(id == 1){
             min = Int((player.pos + 0.49) / 60.0)
             sec = Int(Int(player.pos + 0.49) % 60)
@@ -526,11 +526,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             frame = CGPoint(x:width * 2 / 7,y:pos_y[4 - 1])
             btn.backgroundColor = UIColor.blue
         }
-          else if(id == 11){
-          text = "リセット"
-          frame = CGPoint(x:width / 2,y:pos_y[4 - 1])
-          btn.backgroundColor = UIColor.yellow
-        btn.setTitleColor(UIColor.gray, for: .normal)
+        else if(id == 11){
+            text = "リセット"
+            frame = CGPoint(x:width / 2,y:pos_y[4 - 1])
+            btn.backgroundColor = UIColor.yellow
+            btn.setTitleColor(UIColor.gray, for: .normal)
         }else{
             text = "削除"
             btn.backgroundColor = UIColor.darkGray
@@ -549,10 +549,10 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             print("id 10")
             btn.addTarget(self, action: #selector(PlayerViewController.DeleteBtn10Tapped(sender:)), for: .touchUpInside)
         case 11:
-          print("id 11")
-          btn.addTarget(self, action: #selector(PlayerViewController.resetBtn10Tapped(sender:)), for: .touchUpInside)
-          
-          
+            print("id 11")
+            btn.addTarget(self, action: #selector(PlayerViewController.resetBtn10Tapped(sender:)), for: .touchUpInside)
+            
+            
         default:
             
             if(id == 1){
@@ -560,24 +560,24 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 if(player.playing == true){
                     text = "音楽1停止"
                 }else{
-                  text = "音楽1再生"
-              }
+                    text = "音楽1再生"
+                }
             }
             if(id == 2){
                 btn.addTarget(self, action: #selector(PlayerViewController.StartBtn2Tapped(sender:)), for: .touchUpInside)
                 if(player2.playing == true){
                     text = "音楽2停止"
                 }else {
-                  text = "音楽2再生"
-              }
+                    text = "音楽2再生"
+                }
             }
             if(id == 3){
                 btn.addTarget(self, action: #selector(PlayerViewController.StartBtn3Tapped(sender:)), for: .touchUpInside)
                 if(player3.playing == true){
                     text = "音楽3停止"
                 }else {
-                  text = "音楽3再生"
-              }
+                    text = "音楽3再生"
+                }
             }
             if(id == 4){
                 //  btn.addTarget(self, action: #selector(PlayerViewController.StartBtn4Tapped(sender:)), for: .touchUpInside)
@@ -748,12 +748,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 self.player3_pos_slider.maximumValue = Float(player3.duration)
                 print("\n\n曲の長さを再設定しました\n\n")
                 
-              
+                
                 self.resetAllDrawTimeLabel()
                 //self.setupAllBtnText()
-               DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
-                self.allTextChengePlay()
-              }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1){
+                    self.allTextChengePlay()
+                }
             }
         }
     }
@@ -913,85 +913,85 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
     }
     @objc func  StartBtn5Tapped(sender:UIButton){
-      self.showInputAlert()
-    }
-  func showInputAlert() {
-    let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
-    let saveAction = UIAlertAction(title: "入力完了", style: .default) { (action:UIAlertAction!) -> Void in
-      let textField = alert.textFields![0] as UITextField
-      let template_name = textField.text!
-      if(template_name.isEmpty) {
-        self.showNormalAlert(str: "テンプレート名を入力しないと登録できません", removeFlag: false, index: 0)
-        print("お先に")
-      }
-      else {
-        var deleteIndex: Int?
-        let arrayNum = self.user.Playing_1_MPMedia.count
-        for i in 0..<arrayNum {
-          if self.user.template_name[i] == template_name {
-            deleteIndex = i
-          }
-        }
-        if deleteIndex != nil {
-          self.showNormalAlert(str: "入力されたテンプレート名   [\(template_name)]は既に存在します。上書きしてもよろしいですか？", removeFlag: true, index: deleteIndex!)
-        }
-        else {
-          self.saveData(template_name: template_name)
-        }
-      }
-    }
-    let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
-    
-    // UIAlertControllerにtextFieldを追加
-    alert.addTextField { (textField:UITextField!) -> Void in }
-    alert.addAction(saveAction)
-    alert.addAction(cancelAction)
-    
-    present(alert, animated: true, completion: nil)
-  }
-  func showNormalAlert(str: String, removeFlag: Bool, index: Int) {
-    let alert = UIAlertController(title: str, message: "", preferredStyle: .alert)
-    let saveAction = UIAlertAction(title: "了解", style: .default) { (action:UIAlertAction!) -> Void in
-      if removeFlag == false { //テンプレート名が入力されなくて了解ボタンが押されたら再入力
         self.showInputAlert()
-      }
-      else if removeFlag == true { //テンプレート名が被って上書きしてもいいか聞いて了解ボタンを押したら上書き
-        let template_name = self.user.template_name[index]
-        self.user.removeSetAtIndex(index)
-        if self.rowNum == index { //消去するテンプレートが選択されていた場合
-          self.sendShowFlag()
-        }
-        else if self.rowNum > index { //選択されているセルより前の行のセルが削除された場合
-          self.rowNum = self.rowNum - 1
-          self.sendRowNum()
-        }
-        self.saveData(template_name: template_name)
-        print("テンプレート名が被った")
-      }
     }
-    let cancelAction = UIAlertAction(title: "登録せずに終了", style: .default) { (action:UIAlertAction!) -> Void in
+    func showInputAlert() {
+        let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
+        let saveAction = UIAlertAction(title: "入力完了", style: .default) { (action:UIAlertAction!) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            let template_name = textField.text!
+            if(template_name.isEmpty) {
+                self.showNormalAlert(str: "テンプレート名を入力しないと登録できません", removeFlag: false, index: 0)
+                print("お先に")
+            }
+            else {
+                var deleteIndex: Int?
+                let arrayNum = self.user.Playing_1_MPMedia.count
+                for i in 0..<arrayNum {
+                    if self.user.template_name[i] == template_name {
+                        deleteIndex = i
+                    }
+                }
+                if deleteIndex != nil {
+                    self.showNormalAlert(str: "入力されたテンプレート名   [\(template_name)]は既に存在します。上書きしてもよろしいですか？", removeFlag: true, index: deleteIndex!)
+                }
+                else {
+                    self.saveData(template_name: template_name)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
+        
+        // UIAlertControllerにtextFieldを追加
+        alert.addTextField { (textField:UITextField!) -> Void in }
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
-    
-    // UIAlertControllerにtextFieldを追加
-    alert.addAction(saveAction)
-    alert.addAction(cancelAction)
-    
-    present(alert, animated: true, completion: nil)
-  }
-  func saveData(template_name: String) {
-    
-    let now_data:String = getToday()
-    
-    self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value) , date: now_data)
-    
-    self.sendUserInfo()
-    
-    let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
-    let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
-    let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
-    userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position, "date": self.user.saved_date], forKey: String(self.user.Id - 1)+"_"+"Setting")
-    print("保存")
-  }
+    func showNormalAlert(str: String, removeFlag: Bool, index: Int) {
+        let alert = UIAlertController(title: str, message: "", preferredStyle: .alert)
+        let saveAction = UIAlertAction(title: "了解", style: .default) { (action:UIAlertAction!) -> Void in
+            if removeFlag == false { //テンプレート名が入力されなくて了解ボタンが押されたら再入力
+                self.showInputAlert()
+            }
+            else if removeFlag == true { //テンプレート名が被って上書きしてもいいか聞いて了解ボタンを押したら上書き
+                let template_name = self.user.template_name[index]
+                self.user.removeSetAtIndex(index)
+                if self.rowNum == index { //消去するテンプレートが選択されていた場合
+                    self.sendShowFlag()
+                }
+                else if self.rowNum > index { //選択されているセルより前の行のセルが削除された場合
+                    self.rowNum = self.rowNum - 1
+                    self.sendRowNum()
+                }
+                self.saveData(template_name: template_name)
+                print("テンプレート名が被った")
+            }
+        }
+        let cancelAction = UIAlertAction(title: "登録せずに終了", style: .default) { (action:UIAlertAction!) -> Void in
+        }
+        
+        // UIAlertControllerにtextFieldを追加
+        alert.addAction(saveAction)
+        alert.addAction(cancelAction)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    func saveData(template_name: String) {
+        
+        let now_data:String = getToday()
+        
+        self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value) , date: now_data)
+        
+        self.sendUserInfo()
+        
+        let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
+        let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
+        let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
+        userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position, "date": self.user.saved_date], forKey: String(self.user.Id - 1)+"_"+"Setting")
+        print("保存")
+    }
     @objc func  StartBtn6Tapped(sender:UIButton){
         
         self.goHome()
@@ -1000,6 +1000,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         if self.user.Playing_1 != nil{
             player.stop()
+            self.playVolReset(whitch:1)
+            self.playPitchReset(whitch:1)
+            self.playPosReset(whitch:1)
             self.musicLockFlag[1] = true
             self.user.Playing_1 = nil
             self.DeleteButton[0].backgroundColor = UIColor.red
@@ -1008,6 +1011,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 self.player1_name.text = "再生ボタンから音楽を選択できます"
                 self.player1_name.sizeToFit()
                 self.musicLockFlag[1] = false
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
                     self.resetDrawTimeLabel(id:1)
                 }
@@ -1018,6 +1022,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.player1_name.sizeToFit()
         if self.user.Playing_2 != nil{
             player2.stop()
+            self.playVolReset(whitch:2)
+            self.playPitchReset(whitch:2)
+            self.playPosReset(whitch:2)
             self.user.Playing_2 = nil
             self.musicLockFlag[2] = true
             self.DeleteButton[1].backgroundColor = UIColor.red
@@ -1035,6 +1042,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     @objc func  DeleteBtn10Tapped(sender:UIButton){
         if self.user.Playing_3 != nil{
             player3.stop()
+            self.playVolReset(whitch:3)
+            self.playPitchReset(whitch:3)
+            self.playPosReset(whitch:3)
             self.user.Playing_3 = nil
             self.musicLockFlag[3] = true
             self.DeleteButton[2].backgroundColor = UIColor.red
@@ -1046,87 +1056,146 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1 ){
                     self.resetDrawTimeLabel(id:3)
                 }
-          }
+            }
         }
     }
-  @objc func  resetBtn10Tapped(sender:UIButton){
-    if self.initLockFlag {
-    }else{
-      self.initLockFlag = true
-      self.lockButton()
-      self.resetPlay()
-      self.resetButton.backgroundColor = UIColor.red
-      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
-        self.resetButton.backgroundColor = UIColor.yellow
-      }
+    @objc func  resetBtn10Tapped(sender:UIButton){
+        if self.initLockFlag {
+        }else{
+            self.initLockFlag = true
+            self.lockButton()
+            self.resetPlay()
+            self.resetButton.backgroundColor = UIColor.red
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+                self.resetButton.backgroundColor = UIColor.yellow
+            }
+        }
     }
-  }
-  func resetPlay(){
-    self.allStop()
-    self.allVolReset()
-    self.allPitchReset()
-    //ここにリセットの処理お願いします
-  }
-  func playVolReset(whitch:Int){
-    switch(whitch){
-    case 1:
-    if self.user.Playing_1 != nil {
-      player.vol = 0.5
+    func resetPlay(){
+        self.allStop()
+        self.allVolReset()
+        self.allPitchReset()
+        self.allPosReset()
+        
+        //ここにリセットの処理お願いします
     }
-    case 2:
-    if  self.user.Playing_2 != nil {
-      player2.vol = 0.5
+    func playVolReset(whitch:Int){
+        switch(whitch){
+        case 1:
+            
+            if self.user.Playing_1 != nil {
+                player.vol = 0.5
+                player1_vol_slider.value = 0.5
+            }
+        case 2:
+            
+            if  self.user.Playing_2 != nil {
+                player2.vol = 0.5
+                player2_vol_slider.value = 0.5
+            }
+        case 3:
+            
+            if self.user.Playing_3 != nil {
+                player3.vol = 0.5
+                player3_vol_slider.value = 0.5
+            }
+        default:
+            print("bug")
+        }
     }
-    case 3:
-    if self.user.Playing_3 != nil {
-      player3.vol = 0.5
+    func allVolReset(){
+        for i in 1...3 {
+            self.playVolReset(whitch: i)
+        }
     }
-    default:
-      print("bug")
+    func playPitchReset(whitch:Int){
+        switch(whitch){
+        case 1:
+            if self.user.Playing_1 != nil {
+                player.pitch = 0
+                player1_pitch_slider.value = 0.0
+            }
+        case 2:
+            if  self.user.Playing_2 != nil {
+                player2.pitch = 0
+                player2_pitch_slider.value = 0.0
+            }
+        case 3:
+            if self.user.Playing_3 != nil {
+                player3.pitch = 0
+                player3_pitch_slider.value = 0.0
+            }
+        default:
+            print("bug")
+        }
+        
     }
-  }
-  func allVolReset(){
-    for i in 1...3 {
-      self.playVolReset(whitch: i)
+    func allPitchReset(){
+        for i in 1...3 {
+            self.playPitchReset(whitch: i)
+        }
     }
-  }
-  func playPitchReset(whitch:Int){
-    switch(whitch){
-    case 1:
-      if self.user.Playing_1 != nil {
-        player.pitch = 0
-      }
-    case 2:
-      if  self.user.Playing_2 != nil {
-        player2.pitch = 0
-      }
-    case 3:
-      if self.user.Playing_3 != nil {
-        player3.pitch = 0
-      }
-    default:
-      print("bug")
+    func playPosReset(whitch:Int){
+        switch(whitch){
+        case 1:
+            if self.user.Playing_1 != nil {
+                player.pos = 0
+                player1_pos_slider.value = 0.0
+                player.offset = 0.0
+                Player1Time.text = String(format:"%02d:%02d",0, 0)
+                player.audioPlayerNode.scheduleSegment(player.audioFile,
+                                                       startingFrame: 0,
+                                                       frameCount: AVAudioFrameCount(player.audioFile.length),
+                                                       at: nil,
+                                                       completionHandler: nil)
+            }
+        case 2:
+            if  self.user.Playing_2 != nil {
+                player2.pos = 0
+                player2.offset = 0.0
+                player2_pos_slider.value = 0.0
+                Player2Time.text = String(format:"%02d:%02d",0, 0)
+                player2.audioPlayerNode.scheduleSegment(player2.audioFile,
+                                                       startingFrame: 0,
+                                                       frameCount: AVAudioFrameCount(player2.audioFile.length),
+                                                       at: nil,
+                                                       completionHandler: nil)
+            }
+        case 3:
+            if self.user.Playing_3 != nil {
+                player3.pos = 0
+                player3.offset = 0.0
+                player3_pos_slider.value = 0.0
+                Player3Time.text = String(format:"%02d:%02d",0, 0)
+                player3.audioPlayerNode.scheduleSegment(player3.audioFile,
+                                                       startingFrame: 0,
+                                                       frameCount: AVAudioFrameCount(player3.audioFile.length),
+                                                       at: nil,
+                                                       completionHandler: nil)
+            }
+        default:
+            print("bug")
+        }
+        
+    }
+    func allPosReset(){
+        for i in 1...3 {
+            self.playPosReset(whitch: i)
+        }
+    }
+    func allStop(){
+        //nilチェックもかねてるからstopの中でも見てるけど一応
+        if player.playing {
+            player.stop()
+        }
+        if player2.playing {
+            player2.stop()
+        }
+        if player3.playing {
+            player3.stop()
+        }
     }
     
-  }
-  func allPitchReset(){
-    for i in 1...3 {
-      self.playPitchReset(whitch: i)
-    }
-  }
-  func allStop(){
-    //nilチェックもかねてるからstopの中でも見てるけど一応
-    if player.playing {
-      player.stop()
-    }
-    if player2.playing {
-      player2.stop()
-    }
-    if player3.playing {
-      player3.stop()
-    }
-  }
-
     /************ 画面遷移系 ********************/
     func goHome(){
         self.user.homeflag = true
@@ -1334,7 +1403,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         //self.player4_vol_slider.value = sender.value
         
         /*
-        
+         
          player1_vol_slider.value = player4_vol_slider.value
          player2_vol_slider.value = player4_vol_slider.value
          player3_vol_slider.value = player4_vol_slider.value
@@ -1618,16 +1687,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             appDelegate.user = self.user
         }
     }
-  func sendShowFlag() {
-    if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
-      appDelegate.showFlag = false
+    func sendShowFlag() {
+        if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
+            appDelegate.showFlag = false
+        }
     }
-  }
-  func sendRowNum() {
-    if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
-      appDelegate.rowNum = self.rowNum
+    func sendRowNum() {
+        if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
+            appDelegate.rowNum = self.rowNum
+        }
     }
-  }
     func receiveData(){
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
             self.user = appDelegate.user
@@ -1729,7 +1798,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     
     func getToday() -> String {
-
+        
         let now = Date()
         let formatter = DateFormatter()
         formatter.dateStyle = .long
