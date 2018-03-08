@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--音楽選択-->
+        <!--選択-->
         <scene sceneID="TKL-lX-ubg">
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="En8-cZ-hqc" customClass="MusicStatementViewController" customModule="SoundMixer" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,7 +20,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="5xS-Zn-SGu"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="音楽選択" id="Rjk-AH-A3k"/>
+                    <tabBarItem key="tabBarItem" title="選択" id="Rjk-AH-A3k"/>
                     <navigationItem key="navigationItem" id="CnG-7S-EOp"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
