@@ -153,11 +153,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.StartButton7 = self.DrawStartButton(id: 7)
         self.view.addSubview(self.StartButton7)
         
-        for i in 8...10 {
+        for i in 8...(8 + (self.playMusicNum - 1)) {
             self.DeleteButton[i - 8] = self.DrawStartButton(id: i)
             self.view.addSubview(self.DeleteButton[i - 8])
         }
-        
+        self.resetButton = self.DrawStartButton(id: 11)
+      self.view.addSubview(self.resetButton)
         self.player1_pitch_slider = self.drawPitchSlider(id:1)
         self.view.addSubview(self.player1_pitch_slider)
         self.player2_pitch_slider = self.drawPitchSlider(id:2)
@@ -547,6 +548,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         case 10:
             print("id 10")
             btn.addTarget(self, action: #selector(PlayerViewController.DeleteBtn10Tapped(sender:)), for: .touchUpInside)
+        case 11:
+          print("id 11")
+          btn.addTarget(self, action: #selector(PlayerViewController.resetBtn10Tapped(sender:)), for: .touchUpInside)
+          
+          
         default:
             
             if(id == 1){
@@ -1041,7 +1047,38 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             
         }
     }
+  
+  @objc func  resetBtn10Tapped(sender:UIButton){
+    if self.initLockFlag {
+    }else{
+      self.initLockFlag = true
+      self.lockButton()
+      self.resetPlay()
+      self.resetButton.backgroundColor = UIColor.red
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+        self.resetButton.backgroundColor = UIColor.yellow
+      }
+    }
     
+  }
+  func resetPlay(){
+    self.allStop()
+    //ここにリセットの処理お願いします
+  }
+  
+  func allStop(){
+    //nilチェックもかねてるからstopの中でも見てるけど一応
+    if player.playing {
+      player.stop()
+    }
+    if player2.playing {
+      player2.stop()
+    }
+    if player3.playing {
+      player3.stop()
+    }
+  }
+
     /************ 画面遷移系 ********************/
     func goHome(){
         self.user.homeflag = true
