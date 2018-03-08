@@ -26,7 +26,7 @@ class MusicSelectonTableViewController: UITableViewController {
     var testplayFlag : Bool = false
     var testplayLockFlag :Bool = false
     var testplaysong:String!
-    
+    var prepareLockFlag = false
     // Cell が選択された場合
     
     
@@ -100,6 +100,7 @@ class MusicSelectonTableViewController: UITableViewController {
         testplaysong = self.testSong.value(forProperty: MPMediaItemPropertyTitle) as! String
         self.title = self.testplaysong + "の再生準備中"
         self.changeShowFlag()
+      self.prepareLockFlag = true
         print("セット完了")
         if self.testplayFlag {
             let lesttime:Double = 3/*
@@ -113,13 +114,15 @@ class MusicSelectonTableViewController: UITableViewController {
                 self.title = self.testplaysong + "再生中"
                 self.testplayLockFlag = false
                 self.testplayFlag = false
+              self.prepareLockFlag = false
             }
         }else {
             print("test play setup")
-            
-            
+          
             self.testPlayer.SetUp(text_url: url)
-            self.testPlayer.play()
+        
+          self.testPlayer.play()
+            self.prepareLockFlag = false
         }
         // }
         
@@ -215,7 +218,11 @@ class MusicSelectonTableViewController: UITableViewController {
         self.user.BeforeView = "music selection"
         
         setSendData()
-        testPlayer.stop()
+       DispatchQueue.main.asyncAfter(deadline: .now() + (4)) {
+        if self.testPlayer.playing {
+        self.testPlayer.stop()
+        }
+      }
         if(self.user.Playing_1 != nil)
         {
             let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
@@ -234,11 +241,15 @@ class MusicSelectonTableViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = self.homeBtn
     }
     @objc func goHome(){
+      if self.prepareLockFlag{
+      self.title = "お試し再生準備中です．お待ちください..."
+      }else{
         self.user.homeflag = true
         self.user.playerflag = true
         self.setMusic()
         self.update_duration()
         goNextPage(page: "MainTabBar")
+      }
     }
     
     @objc func timerUpdate() {
