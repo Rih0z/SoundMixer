@@ -59,7 +59,6 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var player1_pos_slider:UISlider!
     var player2_pos_slider:UISlider!
     var player3_pos_slider:UISlider!
-    var player4_pos_slider:UISlider!
     
     var initFlag = false
     var timer: Timer?
@@ -719,6 +718,11 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 //現れてから3秒後にはもうインスタンスが生成されているので
                 
                 self.playLockFlag = false
+                self.player1_pos_slider.maximumValue = Float(player.duration)
+                self.player2_pos_slider.maximumValue = Float(player2.duration)
+                self.player3_pos_slider.maximumValue = Float(player3.duration)
+                print("\n\n曲の長さを再設定しました\n\n")
+                
                 self.allTextChengePlay()
                 self.resetAllDrawTimeLabel()
                 //self.setupAllBtnText()
@@ -888,20 +892,25 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     let alert = UIAlertController(title: "テンプレート名を入力してください", message: "", preferredStyle: .alert)
     let saveAction = UIAlertAction(title: "入力完了", style: .default) { (action:UIAlertAction!) -> Void in
       let textField = alert.textFields![0] as UITextField
-      var template_name = textField.text!
+      let template_name = textField.text!
       if(template_name.isEmpty) {
-        self.urgeInputAlert()
+        self.showNormalAlert(str: "テンプレート名を入力しないと登録できません", removeFlag: false, index: 0)
+        print("お先に")
       }
       else {
-        self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
-        
-        self.sendUserInfo()
-        
-        let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
-        let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
-        let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
-        userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position], forKey: String(self.user.Id - 1)+"_"+"Setting")
-        print("いけてる，その2")
+        var deleteIndex: Int?
+        let arrayNum = self.user.Playing_1_MPMedia.count
+        for i in 0..<arrayNum {
+          if self.user.template_name[i] == template_name {
+            deleteIndex = i
+          }
+        }
+        if deleteIndex != nil {
+          self.showNormalAlert(str: "入力されたテンプレート名   [\(template_name)]は既に存在します。上書きしてもよろしいですか？", removeFlag: true, index: deleteIndex!)
+        }
+        else {
+          self.saveData(template_name: template_name)
+        }
       }
     }
     let cancelAction = UIAlertAction(title: "取り消し", style: .default) { (action:UIAlertAction!) -> Void in }
@@ -913,18 +922,45 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     present(alert, animated: true, completion: nil)
   }
-  func urgeInputAlert() {
-    let alert = UIAlertController(title: "テンプレート名を入力しないと登録できません", message: "", preferredStyle: .alert)
+  func showNormalAlert(str: String, removeFlag: Bool, index: Int) {
+    let alert = UIAlertController(title: str, message: "", preferredStyle: .alert)
     let saveAction = UIAlertAction(title: "了解", style: .default) { (action:UIAlertAction!) -> Void in
-      self.showInputAlert()
+      if removeFlag == false { //テンプレート名が入力されなくて了解ボタンが押されたら再入力
+        self.showInputAlert()
+      }
+      else if removeFlag == true { //テンプレート名が被って上書きしてもいいか聞いて了解ボタンを押したら上書き
+        let template_name = self.user.template_name[index]
+        self.user.removeSetAtIndex(index)
+        if self.rowNum == index { //消去するテンプレートが選択されていた場合
+          self.sendShowFlag()
+        }
+        else if self.rowNum > index { //選択されているセルより前の行のセルが削除された場合
+          self.rowNum = self.rowNum - 1
+          self.sendRowNum()
+        }
+        self.saveData(template_name: template_name)
+        print("テンプレート名が被った")
+      }
     }
-    let cancelAction = UIAlertAction(title: "登録せずに終了", style: .default) { (action:UIAlertAction!) -> Void in }
+    let cancelAction = UIAlertAction(title: "登録せずに終了", style: .default) { (action:UIAlertAction!) -> Void in
+    }
     
     // UIAlertControllerにtextFieldを追加
     alert.addAction(saveAction)
     alert.addAction(cancelAction)
     
     present(alert, animated: true, completion: nil)
+  }
+  func saveData(template_name: String) {
+    self.user.setSetting(temp_name: template_name, MPMedia1: self.user.Playing_1, MPMedia2: self.user.Playing_2, MPMedia3: self.user.Playing_3, pitch1: self.player1_pitch_slider.value, pitch2: self.player2_pitch_slider.value, pitch3: self.player3_pitch_slider.value, volume1: self.player1_vol_slider.value, volume2: self.player2_vol_slider.value, volume3: self.player3_vol_slider.value, position1: Double(self.player1_pos_slider.value), position2: Double(self.player2_pos_slider.value), position3: Double(self.player3_pos_slider.value))
+    
+    self.sendUserInfo()
+    
+    let MPMedia1 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_1_MPMedia) as NSData?
+    let MPMedia2 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_2_MPMedia) as NSData?
+    let MPMedia3 = NSKeyedArchiver.archivedData(withRootObject: self.user.Playing_3_MPMedia) as NSData?
+    userDefaults.set(["temp_name": self.user.template_name, "MPMedia1": MPMedia1!, "MPMedia2": MPMedia2!, "MPMedia3": MPMedia3!, "pitch1": self.user.Playing_1_pitch, "pitch2": self.user.Playing_2_pitch, "pitch3": self.user.Playing_3_pitch, "volume1": self.user.Playing_1_volume, "volume2": self.user.Playing_2_volume, "volume3": self.user.Playing_3_volume, "position1": self.user.Playing_1_position, "position2": self.user.Playing_2_position, "position3": self.user.Playing_3_position], forKey: String(self.user.Id - 1)+"_"+"Setting")
+    print("保存")
   }
     @objc func  StartBtn6Tapped(sender:UIButton){
         
@@ -1444,6 +1480,16 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             appDelegate.user = self.user
         }
     }
+  func sendShowFlag() {
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
+      appDelegate.showFlag = false
+    }
+  }
+  func sendRowNum() {
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
+      appDelegate.rowNum = self.rowNum
+    }
+  }
     func receiveData(){
         if let appDelegate = UIApplication.shared.delegate as! AppDelegate!{
             self.user = appDelegate.user
@@ -1491,12 +1537,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         
         if(player.duration != 0.0){
+            print("曲１の長さを設定しました")
             self.player1_pos_slider.maximumValue = Float(player.duration)
         }
         if(player2.duration != 0.0){
+            print("曲２の長さを設定しました")
             self.player2_pos_slider.maximumValue = Float(player2.duration)
         }
         if(player3.duration != 0.0){
+            print("曲３の長さを設定しました")
             self.player3_pos_slider.maximumValue = Float(player3.duration)
         }
         //user.SelectionFlag = 0
@@ -1511,6 +1560,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         self.player3_pos_slider.maximumValue = Float(player3.duration)
         self.player3_pos_slider.value = 0.0
+        print("曲の長さを設定しました")
+        
         /*
          else if(self.loadFlag == true) {
          if(self.user.Playing_1 != nil){
