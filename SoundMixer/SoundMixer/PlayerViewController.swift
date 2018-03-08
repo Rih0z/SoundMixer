@@ -45,6 +45,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     private var StartButton7:UIButton! = UIButton()
     
     private var DeleteButton:[UIButton] = [UIButton(),UIButton(),UIButton()]
+    private var resetButton:UIButton! = UIButton()
     
     var player1_pitch_slider:UISlider!
     var player2_pitch_slider:UISlider!
@@ -523,6 +524,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             text = "全曲停止"
             frame = CGPoint(x:width * 2 / 7,y:pos_y[4 - 1])
             btn.backgroundColor = UIColor.blue
+        }
+          else if(id == 11){
+          text = "リセット"
+          frame = CGPoint(x:width / 2,y:pos_y[4 - 1])
+          btn.backgroundColor = UIColor.yellow
+        
         }else{
             text = "削除"
             btn.backgroundColor = UIColor.darkGray

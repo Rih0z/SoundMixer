@@ -123,6 +123,7 @@ class UserViewController: UITableViewController {
       if userDefaults.object(forKey: String(user.Id-1)+"_"+"Setting") != nil {
         var dic = userDefaults.dictionary(forKey: String(user.Id-1)+"_"+"Setting")
         appDelegate.user.template_name = dic!["temp_name"] as! [String]
+        appDelegate.user.saved_date = dic!["date"] as! [String]
         appDelegate.user.Playing_1_MPMedia = NSKeyedUnarchiver.unarchiveObject(with: dic!["MPMedia1"] as! Data) as! [MPMediaItem?]
         appDelegate.user.Playing_2_MPMedia = NSKeyedUnarchiver.unarchiveObject(with: dic!["MPMedia2"] as! Data) as! [MPMediaItem?]
         appDelegate.user.Playing_3_MPMedia = NSKeyedUnarchiver.unarchiveObject(with: dic!["MPMedia3"] as! Data) as! [MPMediaItem?]
