@@ -17,6 +17,8 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   var timer: Timer!
   var leftoval: CALayer!
   var rightoval: CALayer!
+  var leftsideoval:CALayer!
+  var rightsideoval:CALayer!
   var flag:Bool = true
   var setupflag:Bool = true
  //全曲再生のとこ
@@ -95,18 +97,52 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   //**************:update*******************
   @objc func update(tm: Timer) {
     // do something
+    var time = Double(self.tmpspeed) / 4
+    
+    if self.bpmModeFlag
+    {
+      time = Double(1 / (self.bpm/60) )/4
+      
+    }
     if(self.hiddenFlag){
       
     }else{
       if self.flag {
-        self.blueBorder(layer: self.leftoval)
-        self.whiteBorder(layer: self.rightoval)
-        self.drawRight()
+        //左
+      self.blueBorder(layer: self.leftoval)
+       // self.whiteBorder(layer: self.rightoval)
+        self.whiteBorder(layer: self.leftsideoval)
+         self.drawLeftSide()
+      //  self.drawRight()
+        DispatchQueue.main.asyncAfter(deadline: .now() + time){
+          self.grayBorder(layer: self.leftsideoval)
+          self.whiteBorder(layer: self.leftoval)
+          self.drawLeft()
+         
+          DispatchQueue.main.asyncAfter(deadline: .now() + time){
+            self.grayBorder(layer: self.rightsideoval)
+            self.whiteBorder(layer: self.leftsideoval)
+            self.drawLeftSide()
+          }
+        }
         self.flag = false
       }else {
+        //右
         self.blueBorder(layer: self.rightoval)
-        self.whiteBorder(layer: self.leftoval)
-        self.drawLeft()
+        //self.whiteBorder(layer: self.leftoval)
+        self.whiteBorder(layer: self.rightsideoval)
+       // self.drawLeft()
+        self.drawRightSide()
+        DispatchQueue.main.asyncAfter(deadline: .now() + time){
+          self.grayBorder(layer: self.rightsideoval)
+          self.whiteBorder(layer: self.rightoval)
+          self.drawRight()
+          DispatchQueue.main.asyncAfter(deadline: .now() + time){
+            self.grayBorder(layer: self.leftsideoval)
+            self.whiteBorder(layer: self.rightsideoval)
+            self.drawRightSide()
+          }
+        }
         self.flag = true
       }
     }
@@ -364,7 +400,7 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     {
       self.timer = Timer.scheduledTimer(timeInterval: Double(1 / (self.bpm/60) ), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
       
-    } else{
+    } else {
       self.timer = Timer.scheduledTimer(timeInterval: Double(self.tmpspeed), target: self, selector: #selector(self.update), userInfo: nil, repeats: true)
     }
     self.timer.fire()
@@ -558,27 +594,58 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
   @objc func drawRects(){
     drawRight()
     drawLeft()
+    drawRightSide()
+    drawLeftSide()
   }
   @objc func drawLeft(){
-    // let width = self.view.bounds.width
+    let width = self.view.bounds.width
     let height = self.view.bounds.height
     //初期の左側ボタン
     let oval = MyShapeLayer()
-    oval.frame = CGRect(x:30,y:height/2,width:80,height:80)
+    oval.frame = CGRect(x:width/6,y:height/2,width:80,height:80)
     oval.drawOval(lineWidth:1)
     if self.hiddenFlag {
-      
     }else{
     self.view.layer.addSublayer(oval)
     }
     self.leftoval = oval
+  }
+  //右寄り
+  @objc func drawLeftSide(){
+     let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    //初期の左側ボタン
+    let oval = MyShapeLayer()
+    oval.frame = CGRect(x:width/2 - width/6 ,y:height/2,width:80,height:80)
+    oval.drawOval(lineWidth:1)
+    oval.borderColor = UIColor.clear.cgColor
+    oval.backgroundColor = UIColor.clear.cgColor
+    if self.hiddenFlag {
+    }else{
+      self.view.layer.addSublayer(oval)
+    }
+    self.leftsideoval = oval
+  }
+  //右寄り
+  @objc func drawRightSide(){
+    let width = self.view.bounds.width
+    let height = self.view.bounds.height
+    //初期の左側ボタン
+    let oval = MyShapeLayer()
+    oval.frame = CGRect(x:width/2 + width/6 - 80 ,y:height/2,width:80,height:80)
+    oval.drawOval(lineWidth:1)
+    if self.hiddenFlag {
+    }else{
+      self.view.layer.addSublayer(oval)
+    }
+    self.rightsideoval = oval
   }
   @objc func drawRight(){
     let width = self.view.bounds.width
     let height = self.view.bounds.height
     //初期の右側ボタン
     let oval2 = MyShapeLayer()
-    oval2.frame = CGRect(x:width - 30 - 80,y:height/2,width:80,height:80)
+    oval2.frame = CGRect(x:width * 5/6 - 80,y:height/2,width:80,height:80)
     oval2.drawOval(lineWidth:1)
     if self.hiddenFlag {
       
@@ -594,6 +661,14 @@ class MetronomeViewController: UIViewController  , UIGestureRecognizerDelegate ,
     layer?.borderWidth = 4.0
     layer?.borderColor = UIColor.blue.cgColor
   }
+  @objc func grayBorder(layer : CALayer?) {
+    if((layer == self.view.layer) || (layer == nil)){
+      return
+    }
+    layer?.borderWidth = 4.0
+    layer?.borderColor = UIColor.gray.cgColor
+  }
+  
   @objc func whiteBorder(layer : CALayer?) {
     if((layer == self.view.layer) || (layer == nil)){
       return

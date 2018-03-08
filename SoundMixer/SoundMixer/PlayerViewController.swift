@@ -56,6 +56,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     var player3_vol_slider:UISlider!
     var player4_vol_slider:UISlider!
     
+    var volumeParentView = UIView()
+    
     var player1_pos_slider:UISlider!
     var player2_pos_slider:UISlider!
     var player3_pos_slider:UISlider!
@@ -127,6 +129,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         }
     }
     func setupDraw(){
+        
+        setupVolumeSlider()
+        
         self.StartButton1 = self.DrawStartButton(id:1)
         self.view.addSubview(self.StartButton1)
         
@@ -168,8 +173,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.view.addSubview(self.player2_vol_slider)
         self.player3_vol_slider = self.drawVolSlider(id:3)
         self.view.addSubview(self.player3_vol_slider)
-        self.player4_vol_slider = self.drawVolSlider(id:4)
-        self.view.addSubview(self.player4_vol_slider)
+        //self.player4_vol_slider = self.drawVolSlider(id:4)
+        //self.view.addSubview(self.player4_vol_slider)
         
         self.player1_pos_slider = self.drawPosSlider(id:1)
         self.view.addSubview(self.player1_pos_slider)
@@ -1186,6 +1191,34 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
     }
     
+    // 端末音量の描画および設定
+    func setupVolumeSlider() {
+        // Note: This slider implementation uses a MPVolumeView
+        // The volume slider only works in devices, not the simulator.
+        
+        
+        let sliderFlame = CGPoint(x:self.view.bounds.width * 3.4 / 4  , y:self.view.bounds.height * 10.2 / 12)
+        
+        volumeParentView.backgroundColor = UIColor.clear
+        //let volumeView = MPVolumeView(frame: CGRect(x: -1000, y: -1000, width: 0, height: 0))
+        //let volumeView = MPVolumeView(frame: CGRect(x: pos_x, y: pos_y, width: length_x, height: length_y))
+        
+        let volumeView = MPVolumeView()
+        volumeView.frame.size.width = self.view.bounds.width / 2.35
+        volumeView.sizeToFit()
+        volumeView.center = sliderFlame
+        
+        
+        for view in volumeView.subviews {
+            let uiview: UIView = view as UIView
+            if (uiview.description as NSString).range(of: "MPVolumeSlider").location != NSNotFound {
+                self.player4_vol_slider = (uiview as! UISlider)
+                self.view.addSubview(volumeView)
+            }
+        }
+        
+    }
+    
     @objc func changeVol1(_ sender: UISlider) {
         player.audioEngine.mainMixerNode.outputVolume = player1_vol_slider.value
         player.vol = player1_vol_slider.value
@@ -1198,16 +1231,21 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         player3.audioEngine.mainMixerNode.outputVolume = player3_vol_slider.value
         player3.vol = player3_vol_slider.value
     }
+    
+    // 端末音量の更新
     @objc func changeVol4(_ sender: UISlider) {
-        player1_vol_slider.value = player4_vol_slider.value
-        player2_vol_slider.value = player4_vol_slider.value
-        player3_vol_slider.value = player4_vol_slider.value
-        player.audioEngine.mainMixerNode.outputVolume = player1_vol_slider.value
-        player2.audioEngine.mainMixerNode.outputVolume = player2_vol_slider.value
-        player3.audioEngine.mainMixerNode.outputVolume = player3_vol_slider.value
-        player.vol = player1_vol_slider.value
-        player2.vol = player2_vol_slider.value
-        player3.vol = player3_vol_slider.value
+        /*
+        
+         player1_vol_slider.value = player4_vol_slider.value
+         player2_vol_slider.value = player4_vol_slider.value
+         player3_vol_slider.value = player4_vol_slider.value
+         player.audioEngine.mainMixerNode.outputVolume = player1_vol_slider.value
+         player2.audioEngine.mainMixerNode.outputVolume = player2_vol_slider.value
+         player3.audioEngine.mainMixerNode.outputVolume = player3_vol_slider.value
+         player.vol = player1_vol_slider.value
+         player2.vol = player2_vol_slider.value
+         player3.vol = player3_vol_slider.value
+         */
     }
     
     // 再生位置スライダ作成
