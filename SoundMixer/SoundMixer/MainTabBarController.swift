@@ -335,7 +335,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
             let title2 = (self.user.Playing_2_MPMedia[self.rowNum]?.value(forProperty: MPMediaItemPropertyTitle)! as! String)
             let title3 = (self.user.Playing_3_MPMedia[self.rowNum]?.value(forProperty: MPMediaItemPropertyTitle)! as! String)
             
-            
+            let name:String = self.user.template_name[self.rowNum] + "\n"
+            let saved_date:String = self.user.saved_date[self.rowNum] + "\n"
             let text1:String = ("音楽1\n曲名 : " + title1
                 + "\nピッチ : " + String(self.user.Playing_1_pitch[self.rowNum])
                 + "db \n音量 : "  + String(self.user.Playing_1_volume[self.rowNum]) + "\n")
@@ -348,7 +349,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
             
             
             let board = UIPasteboard.general
-            board.string = text1 + text2 + text3
+            board.string = name + saved_date + text1 + text2 + text3
         }
     }
 }
