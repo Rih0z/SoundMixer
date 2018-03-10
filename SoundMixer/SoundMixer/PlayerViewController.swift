@@ -96,6 +96,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         self.user.beforeTmp = 1
         //self.setupAllBtnText()
         self.lockButton()
+      self.checkEdit()
     }
     
     override func viewWillLayoutSubviews() {
@@ -256,7 +257,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         MusicTitle = setupText(lineWidth: flame, text:title,size: rect)
         MusicTitle.sizeToFit()
         
-        if(self.user.musicEditFlag[id - 1] == true){
+        if(self.user.musicEditFlag[id - 1] == false){
             MusicTitle.backgroundColor = UIColor.gray // 白
         }
         
@@ -436,6 +437,13 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 self.player1_name.text = "選択されていません"
                 self.player1_name.sizeToFit()
             }
+          //label
+          if(self.user.musicEditFlag[1 - 1] == false){
+            self.player1_name.backgroundColor = UIColor.gray // 白
+          }else {
+            self.player1_name.backgroundColor = UIColor.clear
+            
+          }
             
         }
         if self.player2_name == nil {
@@ -450,7 +458,15 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 self.player2_name.sizeToFit()
                 
             }
+          //label
+          if(self.user.musicEditFlag[2 - 1] == false){
+            self.player2_name.backgroundColor = UIColor.gray // 白
+          }else {
+            self.player2_name.backgroundColor = UIColor.clear
             
+          }
+      
+          
         }
         if self.player3_name == nil {
             self.player3_name = self.drawLabel(id:3)
@@ -464,9 +480,58 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
                 self.player3_name.sizeToFit()
                 
             }
+          //label
+          if(self.user.musicEditFlag[3 - 1] == false){
+            self.player3_name.backgroundColor = UIColor.gray // 白
+          }else {
+            self.player3_name.backgroundColor = UIColor.clear
             
+          }
         }
     }
+  func checkEdit(){
+    if self.player1_name == nil {
+      self.player1_name = self.drawLabel(id:1)
+      self.view.addSubview(self.player1_name)
+    }else{
+      //label
+      if(self.user.musicEditFlag[1 - 1] == false){
+        self.player1_name.backgroundColor = UIColor.gray // 白
+      }else {
+        self.player1_name.backgroundColor = UIColor.clear
+      }
+      
+    }
+    if self.player2_name == nil {
+      self.player2_name = self.drawLabel(id:2)
+      self.view.addSubview(self.player2_name)
+    }else{
+
+      //label
+      if(self.user.musicEditFlag[2 - 1] == false){
+        self.player2_name.backgroundColor = UIColor.gray // 白
+      }else {
+        self.player2_name.backgroundColor = UIColor.clear
+        
+      }
+      
+      
+    }
+    if self.player3_name == nil {
+      self.player3_name = self.drawLabel(id:3)
+      self.view.addSubview(self.player3_name)
+    }else{
+
+      //label
+      if(self.user.musicEditFlag[3 - 1] == false){
+        self.player3_name.backgroundColor = UIColor.gray // 白
+      }else {
+        self.player3_name.backgroundColor = UIColor.clear
+        
+      }
+    }
+    
+  }
     /************** ボタン系 **********************/
     /*********** 描画　***************/
     // 曲再生ボタン

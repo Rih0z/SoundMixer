@@ -16,7 +16,7 @@ class User {
     var Playing_2:MPMediaItem?
     var Playing_3:MPMediaItem?
     //チェックボックスのフラグ
-    var musicEditFlag:[Bool] = [false,false,false]
+    var musicEditFlag:[Bool] = [true,true,true]
     //どの曲を選択しているのか
     var SelectionFlag:Int = 0
     //音楽のみ読み込むフラグ
