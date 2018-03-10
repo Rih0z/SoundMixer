@@ -36,6 +36,7 @@ class User {
     
     var template_name = [String]()
     var saved_date = [String]()
+    var setNum: Int = 0
     
     var Playing_1_MPMedia = [MPMediaItem?]()
     var Playing_2_MPMedia = [MPMediaItem?]()
@@ -56,6 +57,7 @@ class User {
     func setSetting(temp_name: String, MPMedia1: MPMediaItem?, MPMedia2: MPMediaItem?, MPMedia3: MPMediaItem?, pitch1: Float, pitch2: Float, pitch3: Float, volume1: Float, volume2: Float, volume3: Float, position1: Double, position2: Double, position3: Double , date: String) {
         self.template_name.append(temp_name)
         self.saved_date.append(date)
+        self.setNum = self.setNum + 1
         
         if MPMedia1 != nil {
             self.Playing_1_MPMedia.append(MPMedia1!)
@@ -106,6 +108,7 @@ class User {
     
     func removeSetAtIndex(_ index: Int) {
         self.template_name.remove(at: index)
+        self.saved_date.remove(at: index)
         
         self.Playing_1_MPMedia.remove(at: index)
         self.Playing_2_MPMedia.remove(at: index)

@@ -331,9 +331,32 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
     func CopyClipboard(){
         
         if self.loadFlag == true { //テンプレートを読み込んだとき
-            let title1 = (self.user.Playing_1_MPMedia[self.rowNum]?.value(forProperty: MPMediaItemPropertyTitle)! as! String)
+            /*let title1 = (self.user.Playing_1_MPMedia[self.rowNum]!.value(forProperty: MPMediaItemPropertyTitle)! as! String)
             let title2 = (self.user.Playing_2_MPMedia[self.rowNum]?.value(forProperty: MPMediaItemPropertyTitle)! as! String)
-            let title3 = (self.user.Playing_3_MPMedia[self.rowNum]?.value(forProperty: MPMediaItemPropertyTitle)! as! String)
+            let title3 = (self.user.Playing_3_MPMedia[self.rowNum]?.value(forProperty: MPMediaItemPropertyTitle)! as! String)*/
+          
+          var title1: String
+          var title2: String
+          var title3: String
+          if self.user.Playing_1_MPMedia[self.rowNum] != nil {
+            title1 = (self.user.Playing_1_MPMedia[self.rowNum]!.value(forProperty: MPMediaItemPropertyTitle)! as! String)
+          }
+          else {
+            title1 = "選択されていません"
+          }
+          if self.user.Playing_2_MPMedia[self.rowNum] != nil {
+            title2 = (self.user.Playing_2_MPMedia[self.rowNum]!.value(forProperty: MPMediaItemPropertyTitle)! as! String)
+          }
+          else {
+            title2 = "選択されていません"
+          }
+          if self.user.Playing_3_MPMedia[self.rowNum] != nil {
+            title3 = (self.user.Playing_3_MPMedia[self.rowNum]!.value(forProperty: MPMediaItemPropertyTitle)! as! String)
+          }
+          else {
+            title3 = "選択されていません"
+          }
+          
             
             let name:String = self.user.template_name[self.rowNum] + "\n"
             let saved_date:String = self.user.saved_date[self.rowNum] + "\n"
