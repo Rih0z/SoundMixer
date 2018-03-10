@@ -1363,14 +1363,24 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         // The volume slider only works in devices, not the simulator.
         
         
-        let sliderFlame = CGPoint(x:self.view.bounds.width * 3.4 / 4  , y:self.view.bounds.height * 10.2 / 12)
+        let sliderFlame = CGPoint(x:self.view.bounds.width * 3.4 / 4 , y:self.view.bounds.height * 10.2 / 12)
         
         volumeParentView.backgroundColor = UIColor.clear
         //let volumeView = MPVolumeView(frame: CGRect(x: -1000, y: -1000, width: 0, height: 0))
         //let volumeView = MPVolumeView(frame: CGRect(x: pos_x, y: pos_y, width: length_x, height: length_y))
-        
+      
+      /* 1373行目の
+       volumeView.frame.size.width = self.view.bounds.width / 2.7
+       の2.7を変更したら全体音量のスライダの長さが変わります
+       
+       もともと2.35だったのを2.7に変えてみたけど
+       これでもダメそうなら3とかにしたらいけると思う */
+      
         volumeView = MPVolumeView()
-        volumeView.frame.size.width = self.view.bounds.width / 2.35
+        volumeView.frame.size.width = self.view.bounds.width / 2.7
+     // volumeView.frame = CGRect(x:0,y:0,width:self.view.bounds.width / 2.7,height:50)
+      
+      
         volumeView.sizeToFit()
         volumeView.center = sliderFlame
         
