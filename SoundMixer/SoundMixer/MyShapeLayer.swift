@@ -28,7 +28,15 @@ class MyShapeLayer: CALayer {
     ovalShapeLayer.path = UIBezierPath(ovalIn: CGRect(x:0, y:0, width:self.frame.width, height: self.frame.height)).cgPath
     self.addSublayer(ovalShapeLayer)
   }
-  
+  @objc func drawSideOval(lineWidth:CGFloat){
+    let ovalShapeLayer = CAShapeLayer()
+    ovalShapeLayer.strokeColor = UIColor.blue.cgColor
+    ovalShapeLayer.fillColor = UIColor.clear.cgColor
+    ovalShapeLayer.borderColor = UIColor.clear.cgColor
+    ovalShapeLayer.lineWidth = lineWidth
+    ovalShapeLayer.path = UIBezierPath(ovalIn: CGRect(x:0, y:0, width:self.frame.width, height: self.frame.height)).cgPath
+    self.addSublayer(ovalShapeLayer)
+  }
   @objc func clearAll(lineWidth:CGFloat){
     let rect = CAShapeLayer()
     rect.strokeColor = UIColor.white.cgColor
