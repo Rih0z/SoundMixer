@@ -275,7 +275,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         let pos_y = [height * 1.3 / 8 , height * 3.3 / 8 , height * 5.3 / 8 ,  height * 10 / 12]
         
         var flame:CGPoint
-        let title = "ピッチ"
+        let title = "音程"
         
         flame = CGPoint(x:self.view.bounds.width/14 , y:pos_y[id - 1])
         

@@ -40,7 +40,7 @@ class MusicStatementViewController: UIViewController {
   
   let buttonText = ["音楽1を変更する","音楽2を変更する","音楽3を変更する"]
 
-  let teachingText = "スイッチをオンにしないと，音楽編集画面でのピッチ変更が有効になりません"
+  let teachingText = "スイッチをオンにしないと，音楽編集画面での音程変更が有効になりません"
   
   
   /*

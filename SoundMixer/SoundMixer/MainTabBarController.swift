@@ -361,13 +361,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate{
             let name:String = self.user.template_name[self.rowNum] + "\n"
             let saved_date:String = self.user.saved_date[self.rowNum] + "\n"
             let text1:String = ("音楽1\n曲名 : " + title1
-                + "\nピッチ : " + String(self.user.Playing_1_pitch[self.rowNum])
+                + "\n音程 : " + String(self.user.Playing_1_pitch[self.rowNum])
                 + "db \n音量 : "  + String(self.user.Playing_1_volume[self.rowNum]) + "\n")
             let text2:String = ("\n音楽2\n曲名 : " + title2
-                + "\nピッチ : " + String(self.user.Playing_2_pitch[self.rowNum])
+                + "\n音程 : " + String(self.user.Playing_2_pitch[self.rowNum])
                 + "db \n音量 : "  + String(self.user.Playing_2_volume[self.rowNum]) + "\n")
             let text3:String = ("\n音楽3\n曲名 : " + title3
-                + "\nピッチ : " + String(self.user.Playing_3_pitch[self.rowNum])
+                + "\n音程 : " + String(self.user.Playing_3_pitch[self.rowNum])
                 + "db \n音量 : "  + String(self.user.Playing_3_volume[self.rowNum]) + "\n")
             
             
