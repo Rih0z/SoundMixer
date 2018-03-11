@@ -23,7 +23,8 @@ class UserViewController: UITableViewController {
     print("Loadaaaaaaaaaaaaaaaaasssssssssssssssssss")
     self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     self.tableView.delegate   = self
-    self.tableView.dataSource = self        // タイトルを付けておきましょう
+    self.tableView.dataSource = self
+    // タイトルを付けておきましょう
     self.title = "ユーザー選択"
     if(setupFlag){
       self.setupNavigationBar()
@@ -52,8 +53,8 @@ class UserViewController: UITableViewController {
       let textField = alert.textFields![0] as UITextField
       self.user?.Name = textField.text!
       self.users.append(self.user!)
-      self.userNumber += 1;
-      self.userNum += 1
+      self.userNumber = self.users.count + 1
+      self.userNum = self.users.count
       self.tableView.reloadData()
       
       /* ID ごとにユーザを辞書形式で登録しユーザ数も保存（クラスでの保存ができない） */
@@ -75,7 +76,7 @@ class UserViewController: UITableViewController {
   func sendUserInfo() {
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
       appDelegate.users = self.users
-      appDelegate.userNum = self.userNum
+      appDelegate.userNum = self.users.count
     }
   }
   // Cell が選択された場合
@@ -87,8 +88,9 @@ class UserViewController: UITableViewController {
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
       self.users = appDelegate.users
-      self.userNum = appDelegate.userNum
-      self.userNumber = self.userNum + 1
+      self.userNum = self.users.count  //appDelegate.userNum
+      //ここ怪しいと思う
+      self.userNumber = self.users.count + 1
     }
   }
   
@@ -97,13 +99,13 @@ class UserViewController: UITableViewController {
     let secondViewController = storyboard.instantiateInitialViewController()
     self.navigationController?.pushViewController(secondViewController!, animated: true)
   }
+  
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
     return self.users.count
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell",for: indexPath)
-    
     cell.textLabel?.text = self.users[indexPath.row].Name
     return cell
   }
@@ -148,7 +150,18 @@ class UserViewController: UITableViewController {
   override func viewWillAppear(_ animated: Bool) {
     self.recUserInfo()
     self.tableView.reloadData()
+    if self.users.count != 0 {
+    for i in 0...(self.users.count - 1) {
+      print(self.users[i].Name)
+    }
+    }
   }
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
+ //self.tableView.reloadData()
+    
+  }
+  
   /*
    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
    if let indexPath = self.tableView.indexPathForSelectedRow {

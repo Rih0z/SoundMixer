@@ -228,7 +228,8 @@ class MusicStatementViewController: UIViewController {
     print("musicstatement recieve data finished")
     self.setupAll()
     self.changeMusicLabels()
-    
+    print("MYYYYYYYYYYY NAME       IS SSSSSSSSSSSSSSSS")
+    print(self.user.Name)
   }
   
   func changeMusicLabels(){

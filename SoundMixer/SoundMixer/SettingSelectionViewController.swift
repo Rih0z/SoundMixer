@@ -13,7 +13,7 @@ class SettingSelectionViewController: UITableViewController {
   var user: User = User()
   var rowNum: Int = 0
   var showFlag: Bool = false
-  
+  var selectMusicFlag :Bool = false
 /*****************: テーブル系 ********************/
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int ) -> Int {
     return self.user.Playing_1_MPMedia.count
@@ -48,7 +48,7 @@ class SettingSelectionViewController: UITableViewController {
     
     self.tableView.reloadData()
   }
-  
+
   override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { //全てのセルを編集可能にする
     return true
   }
@@ -125,8 +125,12 @@ class SettingSelectionViewController: UITableViewController {
   //　musicselection で音楽を代入するタイミングに合わせました
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    if self.selectMusicFlag {
     if let indexPath = self.tableView.indexPathForSelectedRow {
       self.sendInfo(rowNum: indexPath.row )
+    }
+    }else {
+      self.backUserInfo()
     }
     
   }
@@ -134,8 +138,8 @@ class SettingSelectionViewController: UITableViewController {
   func goNextPage(page:String){
     let storyboard: UIStoryboard = UIStoryboard(name: page, bundle: nil)
     let secondViewController = storyboard.instantiateInitialViewController()
-    
     self.navigationController?.pushViewController(secondViewController!, animated: true)
+    self.selectMusicFlag = true
   }
 /***********データ共有系 **************/
   override func setEditing(_ editing: Bool, animated: Bool) { //Edit, doneが押されたとき
@@ -178,6 +182,13 @@ class SettingSelectionViewController: UITableViewController {
       appDelegate.showFlag = true
     }
   }
+  func backUserInfo(){ //セルが削除されたときに実行するメソッド
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+    {
+      appDelegate.user = self.user
+    }
+  }
+  
   /************** player系 ******************/
   func allStop(){
     if self.user.Playing_1 != nil {

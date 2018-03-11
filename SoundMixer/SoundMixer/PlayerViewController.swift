@@ -547,6 +547,13 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         let rect = CGRect(x:0,y:0,width:100,height:50)
         let btn = UIButton(frame: rect)
+      
+      let shapeLayer = CAShapeLayer()
+      
+      var uiPath = UIBezierPath()
+
+      
+      
         
         if(id >= 1 && id <= 4) {
             
@@ -575,6 +582,18 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             // text = "準備中"
             btn.backgroundColor = UIColor.blue
             frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
+          if id > 0 && id < 4 {
+            uiPath.move(to:CGPoint(x:0, y: pos_y[id - 1] + 60 ))// ここから
+            uiPath.addLine(to:CGPoint(x:self.view.bounds.width, y:pos_y[id - 1] + 60 ))  // ここまで線を引く
+            
+            shapeLayer.strokeColor = UIColor.black.cgColor  // 微妙に分かりにくい。色は要指定。
+            shapeLayer.borderWidth = 10
+            shapeLayer.path = uiPath.cgPath  // なんだこれは
+            
+            // 作成したCALayerを画面に追加
+            view.layer.addSublayer(shapeLayer)
+          }
+          
         }
         else if(id == 5) {
             text = "登録"
