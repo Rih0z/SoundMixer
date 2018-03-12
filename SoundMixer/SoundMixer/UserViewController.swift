@@ -112,14 +112,30 @@ class UserViewController: UITableViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+    {
+        print()
+        for i in 0...(appDelegate.users.count - 1) {
+            print("セットデータ前のユーザ名[" , i , "]：　" , appDelegate.users[i].Name)
+        }
+        
+    }
     self.setSendData()
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+    {
+        print()
+        for i in 0...(appDelegate.users.count - 1) {
+            print("セットデータ後のユーザ名[" , i , "]：　" , appDelegate.users[i].Name)
+        }
+        
+    }
     self.setupFlag = false
   }
   func setSendData(){
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     if let indexPath = self.tableView.indexPathForSelectedRow {
       let user = users[indexPath.row]
-      user.BeforeView = "user view"
+      appDelegate.user.BeforeView = "user view"
       appDelegate.user.Id = user.Id
       appDelegate.user.Name = user.Name
       if userDefaults.object(forKey: String(user.Id-1)+"_"+"Setting") != nil {
@@ -142,12 +158,15 @@ class UserViewController: UITableViewController {
         //print("テスト  \(appDelegate.user.Playing_1_MPMedia[0]!.value(forProperty: MPMediaItemPropertyTitle)! as! String) ")
       }
       else {
-        appDelegate.user = user
+        print("選択された場所は　" , indexPath.row)
+        //appDelegate.user = user
+        print("\n\n辞書の読み込みはしていません\n\n")
       }
       appDelegate.showFlag = false
     }
   }
   override func viewWillAppear(_ animated: Bool) {
+    print("ユーザの読み込みをしています")
     self.recUserInfo()
     self.tableView.reloadData()
     if self.users.count != 0 {
