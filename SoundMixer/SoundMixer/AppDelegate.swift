@@ -28,6 +28,7 @@ var player3 = AudioEnginePlayer()
   var users = [User]()
   //var init_users: [User] = []
   var userNum: Int = 0
+  var allUserNum: Int = 0
   var rowNum: Int = 0
   var loadFlag: Bool = false
   var showFlag: Bool = false
@@ -41,6 +42,7 @@ var player3 = AudioEnginePlayer()
     var user = User()
     if userDefaults.object(forKey: "userNumber") != nil {
       userNum = userDefaults.integer(forKey: "userNumber")
+      allUserNum = userNum
       for i in 0..<userNum {
         var dic = userDefaults.dictionary(forKey: String(i))
         users.append(User())
