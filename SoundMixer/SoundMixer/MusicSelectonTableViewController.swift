@@ -19,7 +19,7 @@ class MusicSelectonTableViewController: UITableViewController {
     var Song:MPMediaItem!
     var user:User = User()
     var homeBtn: UIBarButtonItem!
-  var exStopBtn:UIBarButtonItem!
+    var exStopBtn:UIBarButtonItem!
     var testsongUrl:URL!
     var testSong:MPMediaItem!
     var testPlayer:AudioEnginePlayer = AudioEnginePlayer()
@@ -101,8 +101,9 @@ class MusicSelectonTableViewController: UITableViewController {
         testplaysong = self.testSong.value(forProperty: MPMediaItemPropertyTitle) as! String
         self.title = self.testplaysong + "の再生準備中"
         self.changeShowFlag()
-      self.prepareLockFlag = true
+        self.prepareLockFlag = true
         print("セット完了")
+        self.testPlayer.feedOutVolume = 0.5
         if self.testplayFlag {
             let lesttime:Double = 3/*
              if testPlayer.feedOutLest != nil{
@@ -115,35 +116,36 @@ class MusicSelectonTableViewController: UITableViewController {
                 self.title = self.testplaysong + "再生中"
                 self.testplayLockFlag = false
                 self.testplayFlag = false
-              self.prepareLockFlag = false
+                self.prepareLockFlag = false
             }
         }else {
             print("test play setup")
-          
+            
             self.testPlayer.SetUp(text_url: url)
-        
-          self.testPlayer.play()
+            
+            self.testPlayer.play()
             self.prepareLockFlag = false
         }
         // }
         
     }
-  
-  @objc func exstop(){
-    if player.playing {
-      player.audioEngine.stop()
+    
+    @objc func exstop(){
+        if player.playing {
+            player.audioPlayerNode.stop()
+        }
+        if player2.playing {
+            player2.audioPlayerNode.stop()
+        }
+        if player2.playing {
+            player3.audioPlayerNode.stop()
+        }
+        if self.testPlayer.playing {
+            self.testPlayer.audioEngine.mainMixerNode.outputVolume = 0.0
+            self.testPlayer.stop()
+        }
     }
-    if player2.playing {
-      player2.audioEngine.stop()
-    }
-    if player2.playing {
-      player3.audioEngine.stop()
-    }
-    if self.testPlayer.playing {
-      self.testPlayer.audioEngine.stop()
-    }
-  }
-  
+    
     @objc func stopMusics(){
         if self.user.Playing_1 != nil {
             player.stop()
@@ -175,15 +177,15 @@ class MusicSelectonTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.receiveData()
-      self.setupNavigationItems()
+        self.setupNavigationItems()
         self.showPlaylist()
         self.user.playerflag = true
     }
-  func setupNavigationItems(){
-    self.setupHomeBtn()
-    self.setupExStopBtn()
-    self.setNaviBtn()
-  }
+    func setupNavigationItems(){
+        self.setupHomeBtn()
+        self.setupExStopBtn()
+        self.setNaviBtn()
+    }
     func receiveData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user
@@ -239,11 +241,11 @@ class MusicSelectonTableViewController: UITableViewController {
         self.user.BeforeView = "music selection"
         
         setSendData()
-       DispatchQueue.main.asyncAfter(deadline: .now() + (1)) {
-        if self.testPlayer.playing {
-        self.testPlayer.stop()
+        DispatchQueue.main.asyncAfter(deadline: .now() + (1)) {
+            if self.testPlayer.playing {
+                self.testPlayer.stop()
+            }
         }
-      }
         if(self.user.Playing_1 != nil)
         {
             let music1 = self.user.Playing_1?.value(forProperty: MPMediaItemPropertyTitle)! as! String
@@ -259,27 +261,27 @@ class MusicSelectonTableViewController: UITableViewController {
     func setupHomeBtn(){
         //    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
         self.homeBtn = UIBarButtonItem(title: "決定", style: .plain, target: self, action: #selector(self.goHome))
-       // self.navigationItem.rightBarButtonItem = self.homeBtn
+        // self.navigationItem.rightBarButtonItem = self.homeBtn
     }
-  func setupExStopBtn(){
-    //    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
-    self.exStopBtn = UIBarButtonItem(title: "緊急停止", style: .plain, target: self, action: #selector(self.exstop))
-
-  }
-  func setNaviBtn(){
+    func setupExStopBtn(){
+        //    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
+        self.exStopBtn = UIBarButtonItem(title: "緊急停止", style: .plain, target: self, action: #selector(self.exstop))
+        
+    }
+    func setNaviBtn(){
         self.navigationItem.rightBarButtonItems = [self.homeBtn,self.exStopBtn]
-    
-  }
+        
+    }
     @objc func goHome(){
-      if self.prepareLockFlag{
-      self.title = "お試し再生準備中です．お待ちください..."
-      }else{
-        self.user.homeflag = true
-        self.user.playerflag = true
-        self.setMusic()
-        self.update_duration()
-        goNextPage(page: "MainTabBar")
-      }
+        if self.prepareLockFlag{
+            self.title = "お試し再生準備中です．お待ちください..."
+        }else{
+            self.user.homeflag = true
+            self.user.playerflag = true
+            self.setMusic()
+            self.update_duration()
+            goNextPage(page: "MainTabBar")
+        }
     }
     
     @objc func timerUpdate() {
