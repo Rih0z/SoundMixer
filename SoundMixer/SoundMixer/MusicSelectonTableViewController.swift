@@ -19,6 +19,7 @@ class MusicSelectonTableViewController: UITableViewController {
     var Song:MPMediaItem!
     var user:User = User()
     var homeBtn: UIBarButtonItem!
+  var exStopBtn:UIBarButtonItem!
     var testsongUrl:URL!
     var testSong:MPMediaItem!
     var testPlayer:AudioEnginePlayer = AudioEnginePlayer()
@@ -127,7 +128,23 @@ class MusicSelectonTableViewController: UITableViewController {
         // }
         
     }
-    func stopMusics(){
+  
+  @objc func exstop(){
+    if player.playing {
+      player.audioEngine.stop()
+    }
+    if player2.playing {
+      player2.audioEngine.stop()
+    }
+    if player2.playing {
+      player3.audioEngine.stop()
+    }
+    if self.testPlayer.playing {
+      self.testPlayer.audioEngine.stop()
+    }
+  }
+  
+    @objc func stopMusics(){
         if self.user.Playing_1 != nil {
             player.stop()
         }
@@ -158,11 +175,15 @@ class MusicSelectonTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.receiveData()
-        self.setupHomeBtn()
+      self.setupNavigationItems()
         self.showPlaylist()
         self.user.playerflag = true
     }
-    
+  func setupNavigationItems(){
+    self.setupHomeBtn()
+    self.setupExStopBtn()
+    self.setNaviBtn()
+  }
     func receiveData(){
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.user = appDelegate.user
@@ -238,8 +259,17 @@ class MusicSelectonTableViewController: UITableViewController {
     func setupHomeBtn(){
         //    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
         self.homeBtn = UIBarButtonItem(title: "決定", style: .plain, target: self, action: #selector(self.goHome))
-        self.navigationItem.rightBarButtonItem = self.homeBtn
+       // self.navigationItem.rightBarButtonItem = self.homeBtn
     }
+  func setupExStopBtn(){
+    //    self.barRightButton = UIBarButtonItem(title: "テンプレート", style: .plain, target: self, action: #selector(self.goLoadSetting))
+    self.exStopBtn = UIBarButtonItem(title: "緊急停止", style: .plain, target: self, action: #selector(self.exstop))
+
+  }
+  func setNaviBtn(){
+        self.navigationItem.rightBarButtonItems = [self.homeBtn,self.exStopBtn]
+    
+  }
     @objc func goHome(){
       if self.prepareLockFlag{
       self.title = "お試し再生準備中です．お待ちください..."
