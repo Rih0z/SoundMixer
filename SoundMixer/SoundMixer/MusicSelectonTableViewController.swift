@@ -218,7 +218,7 @@ class MusicSelectonTableViewController: UITableViewController {
         self.user.BeforeView = "music selection"
         
         setSendData()
-       DispatchQueue.main.asyncAfter(deadline: .now() + (4)) {
+       DispatchQueue.main.asyncAfter(deadline: .now() + (1)) {
         if self.testPlayer.playing {
         self.testPlayer.stop()
         }

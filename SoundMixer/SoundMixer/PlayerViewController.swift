@@ -46,6 +46,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     
     private var DeleteButton:[UIButton] = [UIButton(),UIButton(),UIButton()]
     private var resetButton:UIButton! = UIButton()
+  private var exStopButton:UIButton! = UIButton()
     
     var player1_pitch_slider:UISlider!
     var player2_pitch_slider:UISlider!
@@ -160,6 +161,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         }
         self.resetButton = self.DrawStartButton(id: 11)
         self.view.addSubview(self.resetButton)
+      self.exStopButton = self.DrawStartButton(id: 12)
+      self.view.addSubview(self.exStopButton)
         self.player1_pitch_slider = self.drawPitchSlider(id:1)
         self.view.addSubview(self.player1_pitch_slider)
         self.player2_pitch_slider = self.drawPitchSlider(id:2)
@@ -614,7 +617,12 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             text = "リセット"
             frame = CGPoint(x:width / 2,y:pos_y[4 - 1])
             btn.backgroundColor = UIColor.yellow
-            btn.setTitleColor(UIColor.gray, for: .normal)
+        }else if(id == 12){
+          text = "緊急停止"
+          frame = CGPoint(x:width / 2,y:pos_y[4 - 1] - 60 )
+          btn.backgroundColor = UIColor.orange
+          
+          
         }else{
             text = "削除"
             btn.backgroundColor = UIColor.darkGray
@@ -635,8 +643,9 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         case 11:
             print("id 11")
             btn.addTarget(self, action: #selector(PlayerViewController.resetBtn10Tapped(sender:)), for: .touchUpInside)
-            
-            
+        case 12:
+          print("id 12")
+             btn.addTarget(self, action: #selector(PlayerViewController.deleteBtn10Tapped(sender:)), for: .touchUpInside)
         default:
             
             if(id == 1){
@@ -1165,6 +1174,32 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         
         //ここにリセットの処理お願いします
     }
+  @objc func  deleteBtn10Tapped(sender:UIButton){
+    if self.initLockFlag {
+    }else{
+      self.exstop()
+      self.initLockFlag = true
+      self.lockButton()
+      self.resetPlay()
+      self.resetButton.backgroundColor = UIColor.red
+      DispatchQueue.main.asyncAfter(deadline: .now() + 3 ){
+        self.resetButton.backgroundColor = UIColor.yellow
+      }
+    }
+  }
+  
+  func exstop(){
+    if player.playing {
+      player.audioEngine.stop()
+    }
+    if player2.playing {
+      player2.audioEngine.stop()
+    }
+    if player2.playing {
+      player3.audioEngine.stop()
+    }
+  }
+  
     func playVolReset(whitch:Int){
         switch(whitch){
         case 1:
