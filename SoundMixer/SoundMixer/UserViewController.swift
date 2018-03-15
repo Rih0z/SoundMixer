@@ -122,7 +122,7 @@ class UserViewController: UITableViewController {
         self.tableView.reloadData()
         
         /* ID ごとにユーザを辞書形式で登録しユーザ数も保存（クラスでの保存ができない） */
-        userDefaults.set(["ID": indexPath.row, "Name": self.user!.Name], forKey: String(indexPath.row))
+        userDefaults.set(["ID": self.user!.Id, "Name": self.user!.Name], forKey: String(indexPath.row))
         
         /* ユーザを追加するたびにappDelegateと共有*/
         self.sendUserInfo()
@@ -153,6 +153,14 @@ class UserViewController: UITableViewController {
     cell.backgroundColor = UIColor.clear
   }
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) { //削除が押されたとき
+    self.users.remove(at: indexPath.row)
+    userDefaults.removeObject(forKey: String(indexPath.row))
+    
+    userDefaults.set(self.users.count, forKey: "userNumber")
+    if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
+      appDelegate.users = self.users
+    }
+    self.tableView.reloadData()
     /*if indexPath.row == self.users.count - 1 { //削除されたユーザが最後の行のユーザの場合
       print("last")
       self.users.remove(at: indexPath.row)
@@ -222,23 +230,23 @@ class UserViewController: UITableViewController {
   
   override func viewWillDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
-    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+    /*if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
         print()
         for i in 0...(appDelegate.users.count - 1) {
             print("セットデータ前のユーザ名[" , i , "]：　" , appDelegate.users[i].Name)
         }
         
-    }
+    }*/
     self.setSendData()
-    if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
+    /*if let appDelegate = UIApplication.shared.delegate as! AppDelegate!
     {
         print()
         for i in 0...(appDelegate.users.count - 1) {
             print("セットデータ後のユーザ名[" , i , "]：　" , appDelegate.users[i].Name)
         }
         
-    }
+    }*/
     self.setupFlag = false
   }
   func setSendData(){

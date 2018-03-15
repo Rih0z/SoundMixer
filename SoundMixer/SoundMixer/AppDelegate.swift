@@ -40,18 +40,36 @@ var player3 = AudioEnginePlayer()
     setNabivigationBar()
     
     var user = User()
+    var i:Int = 0, j:Int = 0
     if userDefaults.object(forKey: "userNumber") != nil {
       userNum = userDefaults.integer(forKey: "userNumber")
       allUserNum = userNum
-      for i in 0..<userNum {
+      while(true) {
+        if userDefaults.object(forKey: String(j)) != nil {
+          var dic = userDefaults.dictionary(forKey: String(j))
+          users.append(User())
+          user.Id = dic!["ID"] as! Int
+          user.Name = dic!["Name"] as! String
+          users[i].Id = user.Id
+          users[i].Name = user.Name
+          i = i + 1
+          print(i)
+        }
+        j = j + 1
+        if i == userNum {
+          break
+        }
+      }
+      /*for i in 0..<userNum {
         var dic = userDefaults.dictionary(forKey: String(i))
         users.append(User())
         user.Id = dic!["ID"] as! Int
         user.Name = dic!["Name"] as! String
         users[i].Id = user.Id
         users[i].Name = user.Name
-        }
+        }*/
     }
+    //print("returnできてます")
     return true
   }
     
