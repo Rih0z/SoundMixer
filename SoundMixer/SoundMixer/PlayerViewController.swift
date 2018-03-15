@@ -1463,7 +1463,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
        これでもダメそうなら3とかにしたらいけると思う */
       
         volumeView = MPVolumeView()
-        volumeView.frame.size.width = self.view.bounds.width / 2.7
+        volumeView.frame.size.width = self.view.bounds.width / 2.4
      // volumeView.frame = CGRect(x:0,y:0,width:self.view.bounds.width / 2.7,height:50)
       
       
