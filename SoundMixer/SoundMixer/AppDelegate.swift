@@ -43,7 +43,6 @@ var player3 = AudioEnginePlayer()
     var i:Int = 0, j:Int = 0
     if userDefaults.object(forKey: "userNumber") != nil {
       userNum = userDefaults.integer(forKey: "userNumber")
-      allUserNum = userNum
       while(true) {
         if userDefaults.object(forKey: String(j)) != nil {
           var dic = userDefaults.dictionary(forKey: String(j))
@@ -60,16 +59,10 @@ var player3 = AudioEnginePlayer()
           break
         }
       }
-      /*for i in 0..<userNum {
-        var dic = userDefaults.dictionary(forKey: String(i))
-        users.append(User())
-        user.Id = dic!["ID"] as! Int
-        user.Name = dic!["Name"] as! String
-        users[i].Id = user.Id
-        users[i].Name = user.Name
-        }*/
     }
-    //print("returnできてます")
+    if userDefaults.object(forKey: "allUserNum") != nil {
+      allUserNum = userDefaults.integer(forKey: "allUserNum")
+    }
     return true
   }
     

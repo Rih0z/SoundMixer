@@ -64,7 +64,7 @@ class UserViewController: UITableViewController {
   func Clicked(){
     self.user = User()//Userクラスのインスタンス作成
     //self.user?.Id = self.userNumber
-    self.user?.Id = self.users.count + 1
+    self.user?.Id = self.allUserNum + 1
     
     let alert = UIAlertController(title: "あなたの名前を入力してください", message: "", preferredStyle: .alert)
     let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
@@ -84,6 +84,7 @@ class UserViewController: UITableViewController {
       /* ID ごとにユーザを辞書形式で登録しユーザ数も保存（クラスでの保存ができない） */
       userDefaults.set(["ID": self.user!.Id, "Name": self.user!.Name], forKey: String(self.user!.Id - 1))
       userDefaults.set(self.users.count, forKey: "userNumber")
+      userDefaults.set(self.allUserNum, forKey: "allUserNum")
       
       /* ユーザを追加するたびにappDelegateと共有*/
       self.sendUserInfo()
@@ -107,22 +108,22 @@ class UserViewController: UITableViewController {
   // Cell が選択された場合
   override func tableView(_ table: UITableView,didSelectRowAt indexPath: IndexPath) {
     if tableView.isEditing == true { //編集中
-      self.user = User()
+      //self.user = User()
       let alert = UIAlertController(title: "[" + self.users[indexPath.row].Name + "]のユーザ名変更", message: "新しい名前を入力してください", preferredStyle: .alert)
       let saveAction = UIAlertAction(title: "入力終了", style: .default) { (action:UIAlertAction!) -> Void in
         let textField = alert.textFields![0] as UITextField
         if (textField.text!.isEmpty) {
-          self.user?.Name = "ユーザ" + String(self.allUserNum)
+          textField.text! = "ユーザ" + String(self.allUserNum)
         }
-        else {
-          self.user?.Name = textField.text!
-        }
-        self.user?.Id = indexPath.row + 1
-        self.users[indexPath.row] = self.user!
+        /*else {
+           textField.text!
+        }*/
+        //self.user?.Id = indexPath.row + 1
+        self.users[indexPath.row].Name = textField.text!
         self.tableView.reloadData()
         
         /* ID ごとにユーザを辞書形式で登録しユーザ数も保存（クラスでの保存ができない） */
-        userDefaults.set(["ID": self.user!.Id, "Name": self.user!.Name], forKey: String(indexPath.row))
+        userDefaults.set(["ID": self.users[indexPath.row].Id, "Name": self.users[indexPath.row].Name], forKey: String(self.users[indexPath.row].Id - 1))
         
         /* ユーザを追加するたびにappDelegateと共有*/
         self.sendUserInfo()
@@ -153,52 +154,14 @@ class UserViewController: UITableViewController {
     cell.backgroundColor = UIColor.clear
   }
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) { //削除が押されたとき
+    userDefaults.removeObject(forKey: String(self.users[indexPath.row].Id - 1))
     self.users.remove(at: indexPath.row)
-    userDefaults.removeObject(forKey: String(indexPath.row))
     
     userDefaults.set(self.users.count, forKey: "userNumber")
     if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
       appDelegate.users = self.users
     }
     self.tableView.reloadData()
-    /*if indexPath.row == self.users.count - 1 { //削除されたユーザが最後の行のユーザの場合
-      print("last")
-      self.users.remove(at: indexPath.row)
-      if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
-        appDelegate.users = self.users
-      }
-      userDefaults.set(self.users.count, forKey: "userNumber")
-      userDefaults.removeObject(forKey: String(indexPath.row))
-      userDefaults.removeObject(forKey: String(indexPath.row) + "_" + "Setting")
-      self.tableView.reloadData()
-    }
-    else {
-      print("not last")
-      for i in indexPath.row..<self.users.count {
-        if i == self.users.count - 1 {
-          userDefaults.removeObject(forKey: String(i))
-          userDefaults.removeObject(forKey: String(i) + "_" + "Setting")
-          break
-        }
-        else {
-          var basic_setting = userDefaults.dictionary(forKey: String(i + 1))
-          userDefaults.set(["ID": i + 1, "Name": basic_setting!["Name"] as! String], forKey: String(i))
-          if userDefaults.object(forKey: String(i + 1)+"_"+"Setting") != nil {
-            var music_setting = userDefaults.dictionary(forKey: String(i + 1)+"_"+"Setting")
-            userDefaults.set(["temp_name": music_setting!["temp_name"], "MPMedia1": music_setting!["MPMedia1"], "MPMedia2": music_setting!["MPMedia2"], "MPMedia3": music_setting!["MPMedia3"], "pitch1": music_setting!["pitch1"], "pitch2": music_setting!["pitch2"], "pitch3": music_setting!["pitch3"], "volume1": music_setting!["volume1"], "volume2": music_setting!["volume2"], "volume3": music_setting!["volume3"], "position1": music_setting!["position1"], "position2": music_setting!["position2"], "position3": music_setting!["position3"], "date": music_setting!["date"], "setNum": music_setting!["setNum"]], forKey: String(i)+"_"+"Setting")
-          }
-          else {
-            userDefaults.removeObject(forKey: String(i) + "_" + "Setting")
-          }
-        }
-      }
-      self.users.remove(at: indexPath.row)
-      userDefaults.set(self.users.count, forKey: "userNumber")
-      if let appDelegate = UIApplication.shared.delegate as! AppDelegate! {
-        appDelegate.users = self.users
-      }
-      self.tableView.reloadData()
-    }*/
   }
   
   func recUserInfo(){

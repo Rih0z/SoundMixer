@@ -122,6 +122,22 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+        /***************領域***************/
+  func drawZone(){
+    
+    let rect = CAShapeLayer()
+    rect.strokeColor = UIColor.black.cgColor
+    rect.fillColor = UIColor.lightGray.cgColor
+    rect.lineWidth = 1
+    rect.path = UIBezierPath(rect:CGRect(x:0,y:self.view.bounds.height * 1.55/5,width:self.view.bounds.width,height:self.view.bounds.height * 1.5/5.8)).cgPath
+    self.view.layer.addSublayer(rect)
+    let rect2 = CAShapeLayer()
+    rect2.strokeColor = UIColor.black.cgColor
+    rect2.fillColor = UIColor.lightGray.cgColor
+    rect2.lineWidth = 1
+    rect2.path = UIBezierPath(rect:CGRect(x:0,y:self.view.bounds.height * 4/5,width:self.view.bounds.width,height:self.view.bounds.height/4)).cgPath
+    self.view.layer.addSublayer(rect2)
+  }
     
     
     /*********** 初期化系 **************/
@@ -134,6 +150,8 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
     }
     func setupDraw(){
         
+      self.drawZone()
+
         self.StartButton1 = self.DrawStartButton(id:1)
         self.view.addSubview(self.StartButton1)
         
@@ -585,6 +603,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             // text = "準備中"
             btn.backgroundColor = UIColor.blue
             frame = CGPoint(x:width * 1 / 7,y:pos_y[id - 1])
+            /*
           if id > 0 && id < 4 {
             uiPath.move(to:CGPoint(x:0, y: pos_y[id - 1] + 60 ))// ここから
             uiPath.addLine(to:CGPoint(x:self.view.bounds.width, y:pos_y[id - 1] + 60 ))  // ここまで線を引く
@@ -596,7 +615,7 @@ class PlayerViewController: UIViewController, MPMediaPickerControllerDelegate {
             // 作成したCALayerを画面に追加
             view.layer.addSublayer(shapeLayer)
           }
-          
+          */
         }
         else if(id == 5) {
             text = "登録"
