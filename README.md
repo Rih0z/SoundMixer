@@ -44,8 +44,8 @@ SoundMixerは、発達障害を持つ子どもや人がパニックや興奮状�
 
 
 - **スクリーンショット**:  
-  ![資産状況管理プログラム](https://github.com/Rih0z/SoundMixer/blob/main/images/IMG_0019.jpeg?raw=true)
-  ![資産状況管理プログラム](https://github.com/Rih0z/SoundMixer/blob/main/images/IMG_0020.jpeg?raw=true)
+  ![資産状況管理プログラム](https://github.com/Rih0z/SoundMixer/images/IMG_0019.jpeg?raw=true)
+  ![資産状況管理プログラム](https://github.com/Rih0z/SoundMixer/images/IMG_0020.jpeg?raw=true)
 
 ## 研究成果
 
