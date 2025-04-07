@@ -42,6 +42,11 @@ SoundMixerは、発達障害を持つ子どもや人がパニックや興奮状�
 4. 「アニメーション表示」ボタンで視覚的なフィードバックのON/OFF切替
 5. 「全曲再生」ボタンで選択した音楽トラックをメトロノームに合わせて再生
 
+
+- **スクリーンショット**:  
+  ![資産状況管理プログラム](https://github.com/Rih0z/SoundMixer/blob/main/images/IMG_0019.jpeg?raw=true)
+  ![資産状況管理プログラム](https://github.com/Rih0z/SoundMixer/blob/main/images/IMG_0020.jpeg?raw=true)
+
 ## 研究成果
 
 本アプリを使用した研究では、以下の知見が得られました：
